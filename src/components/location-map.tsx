@@ -13,6 +13,7 @@ import {
   SuperClusterAlgorithm,
 } from "@googlemaps/markerclusterer";
 import Link from "next/link";
+import { getCategoryConfig, CATEGORY_COLORS } from "@/lib/categories";
 import { MapPin, Trees, Landmark, Waves, Mountain } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -39,25 +40,69 @@ if (typeof document !== "undefined") {
   document.head.appendChild(style);
 }
 
-/** Creates a DOM element for a location pin marker */
-function createPinContent(isSelected: boolean): HTMLDivElement {
+/** Marker color map matching the source project */
+const MARKER_TYPE_COLORS: Record<string, string> = {
+  house: "#3b71ca",
+  garden: "#007a3d",
+  castle: "#7c3aed",
+  countryside: "#b45309",
+  coast: "#0284c7",
+};
+
+function darkenHex(hex: string, pct: number): string {
+  const r = Math.max(0, Math.round(parseInt(hex.slice(1, 3), 16) * (1 - pct / 100)));
+  const g = Math.max(0, Math.round(parseInt(hex.slice(3, 5), 16) * (1 - pct / 100)));
+  const b = Math.max(0, Math.round(parseInt(hex.slice(5, 7), 16) * (1 - pct / 100)));
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+}
+
+/** Creates a DOM element for a location marker — type-colored dot, or special pin for visited/wishlisted */
+function createMarkerContent(
+  category: string | null,
+  isSelected: boolean,
+  isVisited: boolean,
+  isWishlisted: boolean
+): HTMLDivElement {
   const wrapper = document.createElement("div");
   wrapper.className = "nt-marker-enter";
 
+  // Visited → gold pin with ✓
+  if (isVisited) {
+    const [fill, stroke, symbol] = ["#D4A843", "#a07020", "✓"];
+    wrapper.style.cssText = "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));";
+    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="26" height="34">
+      <path d="M13 0C7.477 0 3 4.477 3 10c0 7.5 10 24 10 24S23 17.5 23 10c0-5.523-4.477-10-10-10z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+      <text x="13" y="14" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">${symbol}</text>
+    </svg>`;
+    return wrapper;
+  }
+
+  // Wishlisted → cyan pin with ★
+  if (isWishlisted) {
+    const [fill, stroke, symbol] = ["#06b6d4", "#0891b2", "★"];
+    wrapper.style.cssText = "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));";
+    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="26" height="34">
+      <path d="M13 0C7.477 0 3 4.477 3 10c0 7.5 10 24 10 24S23 17.5 23 10c0-5.523-4.477-10-10-10z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+      <text x="13" y="14" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">${symbol}</text>
+    </svg>`;
+    return wrapper;
+  }
+
+  // Selected → larger green pin
   if (isSelected) {
     wrapper.style.cssText = "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));";
-    wrapper.innerHTML = `<svg width="36" height="44" viewBox="0 0 36 44" xmlns="http://www.w3.org/2000/svg">
-      <path d="M18 42C18 42 33 25.5 33 15.5C33 7.49 26.51 1 18 1C9.49 1 3 7.49 3 15.5C3 25.5 18 42 18 42Z" fill="#15803d" stroke="#fff" stroke-width="2.5"/>
-      <circle cx="18" cy="15.5" r="5.5" fill="#fff"/>
+    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="30" height="40">
+      <path d="M13 0C7.477 0 3 4.477 3 10c0 7.5 10 24 10 24S23 17.5 23 10c0-5.523-4.477-10-10-10z" fill="#007A3D" stroke="#fff" stroke-width="2"/>
+      <circle cx="13" cy="10" r="4" fill="#fff"/>
     </svg>`;
-  } else {
-    wrapper.style.cssText =
-      "filter: drop-shadow(0 1px 1.5px rgba(0,0,0,0.4));";
-    wrapper.innerHTML = `<svg width="32" height="40" viewBox="0 0 32 40" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16 38C16 38 29 23 29 14C29 6.82 23.18 1 16 1C8.82 1 3 6.82 3 14C3 23 16 38 16 38Z" fill="#166534" stroke="#22c55e" stroke-width="2"/>
-      <circle cx="16" cy="14" r="5" fill="#22c55e"/>
-    </svg>`;
+    return wrapper;
   }
+
+  // Default → type-colored dot
+  const color = MARKER_TYPE_COLORS[category ?? ""] ?? "#3b71ca";
+  const border = darkenHex(color, 20);
+  wrapper.style.cssText = "filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35));";
+  wrapper.innerHTML = `<div style="width:16px;height:16px;background:${color};border:2.5px solid ${border};border-radius:50%;"></div>`;
 
   return wrapper;
 }
@@ -78,7 +123,7 @@ function createClusterContent(count: number): HTMLDivElement {
   const wrapper = document.createElement("div");
   wrapper.className = "nt-marker-enter";
   wrapper.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1}" fill="#22c55e" stroke="#166534" stroke-width="1.5" opacity="0.9"/>
+    <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1}" fill="#4ade80" stroke="#005a2d" stroke-width="1.5" opacity="0.9"/>
     <text x="50%" y="50%" text-anchor="middle" dy=".35em" fill="#fff" font-family="system-ui,sans-serif" font-weight="bold" font-size="${fontSize}">${count}</text>
   </svg>`;
 
@@ -101,6 +146,10 @@ export interface LocationMapProps {
   locations: LocationData[];
   selectedLocationId?: number | null;
   onLocationSelect?: (locationId: number | null) => void;
+  visited?: Record<string, { date: string }[]>;
+  wishlist?: Record<string, true>;
+  onToggleVisited?: (name: string) => void;
+  onToggleWishlist?: (name: string) => void;
   className?: string;
 }
 
@@ -143,10 +192,18 @@ function ClusteredMarkers({
   locations,
   selectedLocationId,
   onLocationSelect,
+  visited,
+  wishlist,
+  onToggleVisited,
+  onToggleWishlist,
 }: {
   locations: LocationData[];
   selectedLocationId?: number | null;
   onLocationSelect?: (locationId: number | null) => void;
+  visited?: Record<string, { date: string }[]>;
+  wishlist?: Record<string, true>;
+  onToggleVisited?: (name: string) => void;
+  onToggleWishlist?: (name: string) => void;
 }) {
   const map = useMap();
   const markerLib = useMapsLibrary("marker");
@@ -214,7 +271,7 @@ function ClusteredMarkers({
           lat: Number(loc.latitude),
           lng: Number(loc.longitude),
         },
-        content: createPinContent(false),
+        content: createMarkerContent(loc.category, false, !!visited?.[loc.name], !!wishlist?.[loc.name]),
         title: loc.name,
       });
 
@@ -243,18 +300,25 @@ function ClusteredMarkers({
     };
   }, [map, markerLib, locations, onLocationSelect]);
 
-  // Update selected marker style
+  // Update marker styles when selection, visited, or wishlist state changes
   useEffect(() => {
     markersRef.current.forEach((marker, id) => {
+      const loc = locations.find((l) => l.id === id);
+      if (!loc) return;
       const isSelected = id === selectedLocationId;
-      const content = createPinContent(isSelected);
+      const content = createMarkerContent(
+        loc.category,
+        isSelected,
+        !!visited?.[loc.name],
+        !!wishlist?.[loc.name]
+      );
       if (isSelected) {
         content.className = "nt-marker-select";
       }
       marker.content = content;
       marker.zIndex = isSelected ? 10000 : null;
     });
-  }, [selectedLocationId, locations]);
+  }, [selectedLocationId, locations, visited, wishlist]);
 
   // Pan to selected location
   useEffect(() => {
@@ -276,6 +340,10 @@ function ClusteredMarkers({
     typeof window !== "undefined" && window.innerWidth >= 768;
   if (!isDesktop || !selectedLocation) return null;
 
+  const v = visited?.[selectedLocation.name];
+  const w = !!wishlist?.[selectedLocation.name];
+  const catConfig = selectedLocation.category ? getCategoryConfig(selectedLocation.category) : null;
+
   return (
     <InfoWindow
       position={{
@@ -283,118 +351,111 @@ function ClusteredMarkers({
         lng: Number(selectedLocation.longitude),
       }}
       onCloseClick={() => onLocationSelect?.(null)}
-      maxWidth={320}
+      maxWidth={280}
     >
-      <div style={{ padding: 4, fontFamily: "system-ui, sans-serif" }}>
-        {selectedLocation.heroImageUrl && (
-          <div
-            style={{
-              aspectRatio: "16/9",
-              borderRadius: 8,
-              overflow: "hidden",
-              marginBottom: 12,
-            }}
-          >
-            <img
-              src={selectedLocation.heroImageUrl}
-              alt={selectedLocation.name}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          </div>
-        )}
-        <Link
-          href={`/locations/${selectedLocation.slug}`}
-          style={{ textDecoration: "none" }}
-        >
-          <h3
-            style={{
-              fontWeight: 600,
-              fontSize: 16,
-              color: "#1a1a2e",
-              margin: 0,
-            }}
-          >
-            {selectedLocation.name}
-          </h3>
-        </Link>
-        {selectedLocation.shortDescription && (
-          <p
-            style={{
-              fontSize: 13,
-              color: "#666",
-              marginTop: 4,
-              lineHeight: 1.4,
-            }}
-          >
-            {selectedLocation.shortDescription}
-          </p>
-        )}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginTop: 8,
-            fontSize: 13,
-            color: "#666",
-          }}
-        >
-          {selectedLocation.region && (
-            <span style={{ display: "flex", alignItems: "center", gap: 4 }}>
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              {selectedLocation.region}
+      <div style={{ padding: 2, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+        {/* Title */}
+        <div style={{ fontSize: 15, fontWeight: 600, color: "#222", marginBottom: 4 }}>
+          {selectedLocation.name}
+        </div>
+
+        {/* Region · Type */}
+        <div style={{ fontSize: 12, color: "#777", marginBottom: 6 }}>
+          {selectedLocation.region}
+          {catConfig && <> · {catConfig.label}</>}
+        </div>
+
+        {/* Badges */}
+        <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 6 }}>
+          {v && (
+            <span style={{
+              display: "inline-block", fontSize: 11, fontWeight: 600,
+              padding: "2px 7px", borderRadius: 10,
+              background: "#fdf3d8", color: "#a07020", border: "1px solid #e9c66f",
+            }}>
+              ✓ Visited
             </span>
           )}
-          {selectedLocation.category && (
-            <span
-              style={{
-                background: "#f0fdf4",
-                color: "#15803d",
-                padding: "2px 8px",
-                borderRadius: 4,
-                fontSize: 12,
-                fontWeight: 500,
-              }}
-            >
-              {selectedLocation.category}
+          {w && !v && (
+            <span style={{
+              display: "inline-block", fontSize: 11, fontWeight: 600,
+              padding: "2px 7px", borderRadius: 10,
+              background: "#ecfeff", color: "#0891b2", border: "1px solid #67e8f9",
+            }}>
+              ★ Wishlist
             </span>
           )}
         </div>
-        <div
-          style={{
-            marginTop: 12,
-            paddingTop: 12,
-            borderTop: "1px solid #eee",
-            textAlign: "right",
-          }}
-        >
-          <Link
-            href={`/locations/${selectedLocation.slug}`}
+
+        {/* Visit dates */}
+        {v && v.length > 0 && v.map((entry, i) => (
+          <div key={i} style={{ fontSize: 12, color: "#007A3D", fontWeight: 500, marginBottom: 2 }}>
+            📅 {new Date(entry.date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+          </div>
+        ))}
+
+        {/* Action buttons */}
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 8 }}>
+          <button
+            onClick={() => onToggleVisited?.(selectedLocation.name)}
             style={{
-              fontSize: 14,
-              fontWeight: 500,
-              color: "#15803d",
-              textDecoration: "none",
+              padding: "6px 14px", borderRadius: 5, border: "none",
+              fontSize: 12, fontWeight: 500, cursor: "pointer",
+              background: v ? "#D4A843" : "#007A3D", color: "#fff",
             }}
           >
-            View Details →
-          </Link>
+            {v ? "✎ Edit visits" : "✓ Mark Visited"}
+          </button>
+          <button
+            onClick={() => onToggleWishlist?.(selectedLocation.name)}
+            style={{
+              padding: "6px 12px", borderRadius: 5,
+              border: `1.5px solid #06b6d4`,
+              fontSize: 12, fontWeight: 500, cursor: "pointer",
+              background: w ? "#06b6d4" : "#fff",
+              color: w ? "#fff" : "#06b6d4",
+            }}
+          >
+            {w ? "★ Wishlisted" : "☆ Wishlist"}
+          </button>
+        </div>
+
+        {/* Parking & Directions */}
+        <div style={{ marginTop: 8, paddingTop: 8, borderTop: "1px solid #eee" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#999", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>
+            🚗 Parking &amp; Directions
+          </div>
+          <div style={{ fontSize: 11, color: "#666", lineHeight: 1.5, marginBottom: 6 }}>
+            NT car park on site — free for members. Charges apply for non-members.
+          </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            <a
+              href={`https://www.google.com/maps/dir/?api=1&destination=${selectedLocation.latitude},${selectedLocation.longitude}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "5px 11px", borderRadius: 5,
+                border: "1.5px solid #0284c7",
+                fontSize: 11, fontWeight: 500, cursor: "pointer",
+                background: "#fff", color: "#0284c7",
+                textDecoration: "none",
+              }}
+            >
+              📍 Get Directions
+            </a>
+            <Link
+              href={`/locations/${selectedLocation.slug}`}
+              style={{
+                padding: "5px 11px", borderRadius: 5,
+                border: "1.5px solid #007A3D",
+                fontSize: 11, fontWeight: 500,
+                background: "#007A3D", color: "#fff",
+                textDecoration: "none",
+              }}
+            >
+              View Details →
+            </Link>
+          </div>
         </div>
       </div>
     </InfoWindow>
@@ -405,6 +466,10 @@ export function LocationMap({
   locations,
   selectedLocationId,
   onLocationSelect,
+  visited,
+  wishlist,
+  onToggleVisited,
+  onToggleWishlist,
   className,
 }: LocationMapProps) {
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
@@ -455,9 +520,44 @@ export function LocationMap({
             locations={validLocations}
             selectedLocationId={selectedLocationId}
             onLocationSelect={onLocationSelect}
+            visited={visited}
+            wishlist={wishlist}
+            onToggleVisited={onToggleVisited}
+            onToggleWishlist={onToggleWishlist}
           />
         </GoogleMap>
       </APIProvider>
+
+      {/* Map Legend */}
+      <div className="absolute bottom-8 right-3 z-10 rounded-lg bg-white px-4 py-3 text-xs shadow-lg">
+        <h4 className="mb-2 font-semibold text-muted-foreground">Property Types</h4>
+        {([
+          ["#3b71ca", "House & Garden"],
+          ["#007a3d", "Garden"],
+          ["#7c3aed", "Castle"],
+          ["#b45309", "Countryside"],
+          ["#0284c7", "Coast"],
+        ] as const).map(([color, label]) => (
+          <div key={label} className="mb-1 flex items-center gap-2">
+            <div className="h-3.5 w-3.5 shrink-0 rounded-full" style={{ background: color }} />
+            <span>{label}</span>
+          </div>
+        ))}
+        <div className="mb-1 mt-1.5 flex items-center gap-2 border-t pt-1.5">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 21" width="14" height="18" className="shrink-0">
+            <path d="M8 0C4.686 0 2 2.686 2 6c0 4.5 6 15 6 15s6-10.5 6-15c0-3.314-2.686-6-6-6z" fill="#D4A843" stroke="#a07020" strokeWidth="1"/>
+            <text x="8" y="8" textAnchor="middle" dominantBaseline="middle" fontSize="7" fill="white" fontWeight="bold" fontFamily="sans-serif">✓</text>
+          </svg>
+          <span>Visited</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 21" width="14" height="18" className="shrink-0">
+            <path d="M8 0C4.686 0 2 2.686 2 6c0 4.5 6 15 6 15s6-10.5 6-15c0-3.314-2.686-6-6-6z" fill="#06b6d4" stroke="#0891b2" strokeWidth="1"/>
+            <text x="8" y="8" textAnchor="middle" dominantBaseline="middle" fontSize="7" fill="white" fontWeight="bold" fontFamily="sans-serif">★</text>
+          </svg>
+          <span>Wishlist</span>
+        </div>
+      </div>
     </div>
   );
 }

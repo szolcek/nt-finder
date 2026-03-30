@@ -11,6 +11,7 @@ import type { Metadata } from "next";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Globe, Clock } from "lucide-react";
+import { getCategoryConfig } from "@/lib/categories";
 import { PricingTable } from "@/components/pricing-table";
 import { ReviewList } from "@/components/review-list";
 import { auth } from "@/lib/auth";
@@ -133,11 +134,14 @@ export default async function LocationPage({
           <div>
             <div className="flex items-start gap-3">
               <h1 className="text-3xl font-bold">{location.name}</h1>
-              {location.category && (
-                <Badge variant="secondary" className="mt-1">
-                  {location.category}
-                </Badge>
-              )}
+              {location.category && (() => {
+                const cat = getCategoryConfig(location.category);
+                return (
+                  <Badge variant="outline" className={`mt-1 border-0 ${cat.bg} ${cat.text}`}>
+                    {cat.label}
+                  </Badge>
+                );
+              })()}
             </div>
 
             {avgRating && (

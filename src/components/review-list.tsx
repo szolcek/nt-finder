@@ -82,10 +82,10 @@ export function ReviewList({ reviews }: { reviews: Review[] }) {
               <p className="text-sm text-muted-foreground">{review.body}</p>
             )}
             {review.tip && (
-              <div className="mt-2 rounded-md bg-green-50 p-3">
+              <div className="mt-2 rounded-md bg-nt-green-light p-3">
                 <p className="text-sm">
-                  <span className="font-medium text-green-800">Tip: </span>
-                  <span className="text-green-700">{review.tip}</span>
+                  <span className="font-medium text-nt-green-dark">Tip: </span>
+                  <span className="text-primary">{review.tip}</span>
                 </p>
               </div>
             )}

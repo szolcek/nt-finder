@@ -33,11 +33,11 @@ const features = [
 export default function HomePage() {
   return (
     <>
-      <section className="bg-gradient-to-b from-green-50 to-background py-20">
+      <section className="bg-gradient-to-b from-nt-green-light to-background py-20">
         <div className="mx-auto max-w-6xl px-4 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             Explore the
-            <span className="text-green-700"> National Trust</span>
+            <span className="text-primary"> National Trust</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
             Find locations, check pricing, save your trips, and share tips with
@@ -59,7 +59,7 @@ export default function HomePage() {
           {features.map((feature) => (
             <Card key={feature.title}>
               <CardHeader>
-                <feature.icon className="mb-2 h-8 w-8 text-green-700" />
+                <feature.icon className="mb-2 h-8 w-8 text-primary" />
                 <CardTitle className="text-lg">{feature.title}</CardTitle>
               </CardHeader>
               <CardContent>

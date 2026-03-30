@@ -26,7 +26,7 @@ export function Nav() {
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-14 max-w-6xl items-center px-4">
         <Link href="/" className="mr-6 flex items-center gap-2 font-semibold">
-          <MapPin className="h-5 w-5 text-green-700" />
+          <MapPin className="h-5 w-5 text-primary" />
           <span>NT Finder</span>
         </Link>
 
