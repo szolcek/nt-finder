@@ -100,13 +100,15 @@ function createMarkerContent(
   const pinH = Math.round(34 * pinScale);
   const fontSize = Math.round(11 * pinScale);
 
-  // Visited → gold pin with ✓
+  // Visited → gold pin with ✓ — 20% larger than other pins for emphasis
   if (isVisited) {
-    const [fill, stroke, symbol] = ["#D4A843", "#a07020", "✓"];
-    wrapper.style.cssText = "filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));";
-    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="${pinW}" height="${pinH}">
-      <path d="M13 0C7.477 0 3 4.477 3 10c0 7.5 10 24 10 24S23 17.5 23 10c0-5.523-4.477-10-10-10z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
-      <text x="13" y="14" text-anchor="middle" dominant-baseline="middle" font-size="${fontSize}" fill="white" font-weight="bold" font-family="sans-serif">${symbol}</text>
+    const vW = Math.round(pinW * 1.2);
+    const vH = Math.round(pinH * 1.2);
+    const vFont = Math.round(fontSize * 1.15);
+    wrapper.style.cssText = "filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));";
+    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="${vW}" height="${vH}">
+      <path d="M13 0C7.477 0 3 4.477 3 10c0 7.5 10 24 10 24S23 17.5 23 10c0-5.523-4.477-10-10-10z" fill="#c79b1a" stroke="#fff" stroke-width="2"/>
+      <text x="13" y="13" text-anchor="middle" dominant-baseline="middle" font-size="${vFont}" fill="white" font-weight="bold" font-family="sans-serif">✓</text>
     </svg>`;
     return wrapper;
   }
@@ -185,6 +187,8 @@ export interface LocationMapProps {
   initialCenter?: { lat: number; lng: number };
   initialZoom?: number;
   onCameraChanged?: (center: { lat: number; lng: number }, zoom: number) => void;
+  userLocation?: { lat: number; lng: number } | null;
+  nearMeRadius?: number; // miles
   className?: string;
 }
 
@@ -393,14 +397,12 @@ function ClusteredMarkers({
     });
   }, [map, selectedLocationId, locations]);
 
-  // InfoWindow for selected location — desktop only
+  // InfoWindow for selected location
   const selectedLocation = selectedLocationId
     ? locations.find((l) => l.id === selectedLocationId)
     : null;
 
-  const isDesktop =
-    typeof window !== "undefined" && window.innerWidth >= 768;
-  if (!isDesktop || !selectedLocation) return null;
+  if (!selectedLocation) return null;
 
   const v = visited?.[selectedLocation.name];
   const w = !!wishlist?.[selectedLocation.name];
@@ -629,6 +631,86 @@ function ClusteredMarkers({
   );
 }
 
+/** Draws a pulsing blue dot for user location and a radius circle */
+function UserLocationOverlay({
+  position,
+  radiusMiles,
+}: {
+  position: { lat: number; lng: number };
+  radiusMiles: number;
+}) {
+  const map = useMap();
+  const markerLib = useMapsLibrary("marker");
+  const markerRef = useRef<google.maps.marker.AdvancedMarkerElement | null>(null);
+  const circleRef = useRef<google.maps.Circle | null>(null);
+
+  // Create/update marker
+  useEffect(() => {
+    if (!map || !markerLib) return;
+
+    if (!markerRef.current) {
+      const el = document.createElement("div");
+      el.innerHTML = `<div style="
+        width:16px;height:16px;background:#4285F4;border:3px solid #fff;
+        border-radius:50%;box-shadow:0 0 0 2px rgba(66,133,244,0.3), 0 2px 6px rgba(0,0,0,0.3);
+      "></div>`;
+      markerRef.current = new google.maps.marker.AdvancedMarkerElement({
+        map,
+        position,
+        content: el,
+        zIndex: 9999,
+      });
+    } else {
+      markerRef.current.position = position;
+    }
+
+    return () => {
+      if (markerRef.current) {
+        markerRef.current.map = null;
+        markerRef.current = null;
+      }
+    };
+  }, [map, markerLib, position]);
+
+  // Create/update circle
+  useEffect(() => {
+    if (!map) return;
+    const radiusMeters = radiusMiles * 1609.34;
+
+    if (!circleRef.current) {
+      circleRef.current = new google.maps.Circle({
+        map,
+        center: position,
+        radius: radiusMeters,
+        fillColor: "#4285F4",
+        fillOpacity: 0.08,
+        strokeColor: "#4285F4",
+        strokeOpacity: 0.4,
+        strokeWeight: 2,
+      });
+    } else {
+      circleRef.current.setCenter(position);
+      circleRef.current.setRadius(radiusMeters);
+    }
+
+    return () => {
+      if (circleRef.current) {
+        circleRef.current.setMap(null);
+        circleRef.current = null;
+      }
+    };
+  }, [map, position, radiusMiles]);
+
+  // Fit map to circle bounds
+  useEffect(() => {
+    if (!map || !circleRef.current) return;
+    const bounds = circleRef.current.getBounds();
+    if (bounds) map.fitBounds(bounds, 40);
+  }, [map, radiusMiles, position]);
+
+  return null;
+}
+
 export function LocationMap({
   locations,
   selectedLocationId,
@@ -640,6 +722,8 @@ export function LocationMap({
   initialCenter,
   initialZoom,
   onCameraChanged,
+  userLocation,
+  nearMeRadius,
   className,
 }: LocationMapProps) {
   const hasInitialPosition = !!(initialCenter && initialZoom);
@@ -690,7 +774,10 @@ export function LocationMap({
             borderRadius: "var(--radius-lg, 12px)",
           }}
         >
-          <MapController locations={validLocations} skipFit={hasInitialPosition} />
+          <MapController locations={validLocations} skipFit={hasInitialPosition || !!userLocation} />
+          {userLocation && nearMeRadius && (
+            <UserLocationOverlay position={userLocation} radiusMiles={nearMeRadius} />
+          )}
           <ClusteredMarkers
             locations={validLocations}
             selectedLocationId={selectedLocationId}

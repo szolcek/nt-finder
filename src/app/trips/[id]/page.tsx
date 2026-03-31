@@ -18,6 +18,11 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { MapPin, Calendar } from "lucide-react";
+import { TripEditForm } from "@/components/trip-edit-form";
+import {
+  TripLocationPicker,
+  RemoveLocationButton,
+} from "@/components/trip-location-picker";
 
 export default async function TripDetailPage({
   params,
@@ -38,7 +43,7 @@ export default async function TripDetailPage({
 
   if (!trip) notFound();
 
-  const [tripLocs, tripPhotos] = await Promise.all([
+  const [tripLocs, tripPhotos, allLocations] = await Promise.all([
     db
       .select({
         id: tripLocations.id,
@@ -61,11 +66,20 @@ export default async function TripDetailPage({
       .select()
       .from(photos)
       .where(eq(photos.tripId, tripId)),
+    db
+      .select({
+        id: locations.id,
+        name: locations.name,
+        region: locations.region,
+        category: locations.category,
+      })
+      .from(locations)
+      .where(eq(locations.isPublished, true)),
   ]);
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-6 flex items-start justify-between">
+      <div className="mb-6 flex items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">{trip.name}</h1>
           <div className="mt-2 flex items-center gap-3">
@@ -86,6 +100,13 @@ export default async function TripDetailPage({
             )}
           </div>
         </div>
+        <TripEditForm trip={{
+          id: trip.id,
+          name: trip.name,
+          description: trip.description,
+          tripDate: trip.tripDate,
+          status: trip.status,
+        }} />
       </div>
 
       {trip.description && (
@@ -94,17 +115,20 @@ export default async function TripDetailPage({
 
       <Separator className="my-6" />
 
-      <h2 className="mb-4 text-xl font-semibold">
-        Locations ({tripLocs.length})
-      </h2>
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-xl font-semibold">
+          Locations ({tripLocs.length})
+        </h2>
+        <TripLocationPicker
+          tripId={trip.id}
+          allLocations={allLocations}
+          currentLocationIds={tripLocs.map((tl) => tl.location.id)}
+        />
+      </div>
 
       {tripLocs.length === 0 ? (
         <p className="text-sm text-muted-foreground">
-          No locations added to this trip yet. Browse{" "}
-          <Link href="/locations" className="underline">
-            locations
-          </Link>{" "}
-          to add some.
+          No locations added yet — use the button above to search and add locations.
         </p>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
@@ -116,11 +140,17 @@ export default async function TripDetailPage({
                     <CardTitle className="text-base">
                       {tl.location.name}
                     </CardTitle>
-                    {tl.location.category && (
-                      <Badge variant="secondary" className="text-xs">
-                        {tl.location.category}
-                      </Badge>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      {tl.location.category && (
+                        <Badge variant="secondary" className="text-xs">
+                          {tl.location.category}
+                        </Badge>
+                      )}
+                      <RemoveLocationButton
+                        tripId={trip.id}
+                        locationId={tl.location.id}
+                      />
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>

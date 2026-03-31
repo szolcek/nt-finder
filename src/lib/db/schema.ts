@@ -190,3 +190,15 @@ export const photos = pgTable("photos", {
   mimeType: text("mime_type"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
+
+export const userVisits = pgTable("user_visits", {
+  id: serial("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  locationId: integer("location_id")
+    .notNull()
+    .references(() => locations.id, { onDelete: "cascade" }),
+  visitedAt: timestamp("visited_at", { mode: "date" }).defaultNow().notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});

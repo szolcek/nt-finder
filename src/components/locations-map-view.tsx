@@ -9,11 +9,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { getCategoryConfig, CATEGORY_COLORS } from "@/lib/categories";
 import { LocationCard } from "./location-card";
+import { toggleVisit } from "@/actions/visits";
+import { syncLocalStorageVisits } from "@/actions/visits";
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 interface LocationsMapViewProps {
   locations: LocationData[];
+  dbVisits?: Record<number, { visitedAt: string }[]> | null;
+  isAuthenticated?: boolean;
 }
 
 type CategoryFilter = "all" | "house" | "garden" | "castle" | "countryside" | "coast";
@@ -230,7 +234,7 @@ function PropertyItem({
 
 // ─── Main Component ─────────────────────────────────────────────────────────
 
-export function LocationsMapView({ locations }: LocationsMapViewProps) {
+export function LocationsMapView({ locations, dbVisits, isAuthenticated }: LocationsMapViewProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -249,6 +253,7 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
   const [nearMe, setNearMe] = useState(false);
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = useState(false);
+  const [nearMeRadius, setNearMeRadius] = useState(25); // miles
   const [visited, setVisited] = useState<Record<string, { date: string }[]>>({});
   const [wishlist, setWishlist] = useState<Record<string, true>>({});
   const [mobileView, setMobileView] = useState<"map" | "list">("map");
@@ -294,11 +299,47 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
     return () => clearInterval(id);
   }, [search, categoryFilter, viewFilter, selectedId]);
 
-  // Load persisted state
+  // Build a locationId → name lookup
+  const idToName = useMemo(() => {
+    const map = new Map<number, string>();
+    for (const l of locations) map.set(l.id, l.name);
+    return map;
+  }, [locations]);
+
+  const nameToId = useMemo(() => {
+    const map = new Map<string, number>();
+    for (const l of locations) map.set(l.name, l.id);
+    return map;
+  }, [locations]);
+
+  // Load persisted state — DB visits for authenticated, localStorage for anonymous
   useEffect(() => {
-    setVisited(loadVisited());
+    if (isAuthenticated && dbVisits) {
+      // Convert DB visits (keyed by ID) to name-keyed format
+      const v: Record<string, { date: string }[]> = {};
+      for (const [locId, dates] of Object.entries(dbVisits)) {
+        const name = idToName.get(Number(locId));
+        if (name) v[name] = dates.map((d) => ({ date: d.visitedAt }));
+      }
+      setVisited(v);
+
+      // Sync any leftover localStorage visits to DB, then clear
+      const local = loadVisited();
+      const localEntries = Object.entries(local);
+      if (localEntries.length > 0) {
+        const visits = localEntries.map(([locationName, dates]) => ({
+          locationName,
+          dates: dates.map((d) => d.date),
+        }));
+        syncLocalStorageVisits({ visits }).then(() => {
+          localStorage.removeItem("nt_visited");
+        });
+      }
+    } else {
+      setVisited(loadVisited());
+    }
     setWishlist(loadWishlist());
-  }, []);
+  }, [isAuthenticated, dbVisits, idToName]);
 
   // Toggle wishlist
   const toggleWishlist = useCallback((name: string) => {
@@ -314,7 +355,7 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
     });
   }, []);
 
-  // Toggle visited (simple — adds today if not visited, removes if visited)
+  // Toggle visited — DB for authenticated, localStorage for anonymous
   const toggleVisited = useCallback((name: string) => {
     setVisited((prev) => {
       const next = { ...prev };
@@ -323,10 +364,16 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
       } else {
         next[name] = [{ date: new Date().toISOString() }];
       }
-      saveVisited(next);
+      if (!isAuthenticated) saveVisited(next);
       return next;
     });
-  }, []);
+
+    // Fire server action for authenticated users
+    if (isAuthenticated) {
+      const locId = nameToId.get(name);
+      if (locId) toggleVisit({ locationId: locId });
+    }
+  }, [isAuthenticated, nameToId]);
 
   // Near Me
   const handleNearMe = useCallback(() => {
@@ -361,9 +408,49 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
     saveVisited({});
   }, []);
 
+  // Apply search filter (shared base for all filter counts)
+  const searchFiltered = useMemo(() => {
+    if (!search) return locations;
+    const q = search.toLowerCase();
+    return locations.filter(
+      (l) =>
+        l.name.toLowerCase().includes(q) ||
+        l.shortDescription?.toLowerCase().includes(q) ||
+        l.region?.toLowerCase().includes(q)
+    );
+  }, [locations, search]);
+
+  // Count results per category option (with current search + viewFilter applied)
+  const categoryCounts = useMemo(() => {
+    let base = searchFiltered;
+    if (viewFilter === "visited") base = base.filter((l) => !!visited[l.name]);
+    else if (viewFilter === "unvisited") base = base.filter((l) => !visited[l.name]);
+    else if (viewFilter === "wishlist") base = base.filter((l) => !!wishlist[l.name]);
+
+    const counts: Record<string, number> = { all: base.length };
+    for (const f of CATEGORY_FILTERS) {
+      if (f.value === "all") continue;
+      counts[f.value] = base.filter((l) => l.category === f.value).length;
+    }
+    return counts;
+  }, [searchFiltered, viewFilter, visited, wishlist]);
+
+  // Count results per view option (with current search + categoryFilter applied)
+  const viewCounts = useMemo(() => {
+    let base = searchFiltered;
+    if (categoryFilter !== "all") base = base.filter((l) => l.category === categoryFilter);
+
+    return {
+      all: base.length,
+      visited: base.filter((l) => !!visited[l.name]).length,
+      unvisited: base.filter((l) => !visited[l.name]).length,
+      wishlist: base.filter((l) => !!wishlist[l.name]).length,
+    } as Record<string, number>;
+  }, [searchFiltered, categoryFilter, visited, wishlist]);
+
   // Compute filtered + sorted list
   const filtered = useMemo(() => {
-    let result = locations;
+    let result = searchFiltered;
 
     // Category filter
     if (categoryFilter !== "all") {
@@ -379,21 +466,10 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
       result = result.filter((l) => !!wishlist[l.name]);
     }
 
-    // Search
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(
-        (l) =>
-          l.name.toLowerCase().includes(q) ||
-          l.shortDescription?.toLowerCase().includes(q) ||
-          l.region?.toLowerCase().includes(q)
-      );
-    }
-
     return result;
-  }, [locations, categoryFilter, viewFilter, search, visited, wishlist]);
+  }, [searchFiltered, categoryFilter, viewFilter, visited, wishlist]);
 
-  // Near me sorted list
+  // Near me sorted list — filtered by radius
   const nearMeList = useMemo(() => {
     if (!nearMe || !userCoords) return null;
     return filtered
@@ -401,9 +477,9 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
         ...l,
         dist: haversine(userCoords.lat, userCoords.lng, Number(l.latitude), Number(l.longitude)),
       }))
-      .sort((a, b) => a.dist - b.dist)
-      .slice(0, 25);
-  }, [nearMe, userCoords, filtered]);
+      .filter((l) => l.dist <= nearMeRadius)
+      .sort((a, b) => a.dist - b.dist);
+  }, [nearMe, userCoords, filtered, nearMeRadius]);
 
   // Region-grouped list
   const grouped = useMemo(() => groupByRegion(filtered), [filtered]);
@@ -444,15 +520,15 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
   const sidebarContent = (
     <>
       {/* Header */}
-      <div className="bg-primary px-5 py-4 text-center text-primary-foreground">
+      <div className="glass-sidebar-header px-5 py-4 text-center text-white">
         <h1 className="text-lg font-bold tracking-wide">National Trust Finder</h1>
-        <p className="mt-0.5 text-xs opacity-85">
-          {locations.length} properties across England &amp; Wales
+        <p className="mt-0.5 text-xs text-white/75">
+          {locations.length} properties across England, Wales &amp; Northern Ireland
         </p>
       </div>
 
       {/* Progress bar */}
-      <div className="border-b border-primary/10 bg-nt-green-light px-5 py-3">
+      <div className="border-b border-primary/5 bg-primary/[0.04] px-5 py-3">
         <div className="mb-2 flex items-center justify-between text-[13px] font-medium text-foreground">
           <span>{visitedCount} of {locations.length} visited</span>
           <span>{progressPct}%</span>
@@ -481,20 +557,28 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
 
         {/* Category filters */}
         <div className="flex flex-wrap gap-1.5">
-          {CATEGORY_FILTERS.map((f) => (
-            <button
-              key={f.value}
-              onClick={() => setCategoryFilter(f.value)}
-              className={cn(
-                "rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors",
-                categoryFilter === f.value
-                  ? "border-primary bg-primary text-primary-foreground"
-                  : "border-border text-muted-foreground hover:border-primary hover:text-primary"
-              )}
-            >
-              {f.label}
-            </button>
-          ))}
+          {CATEGORY_FILTERS.map((f) => {
+            const count = categoryCounts[f.value] ?? 0;
+            const isActive = categoryFilter === f.value;
+            const isEmpty = f.value !== "all" && count === 0;
+            return (
+              <button
+                key={f.value}
+                onClick={() => !isEmpty && setCategoryFilter(f.value)}
+                disabled={isEmpty}
+                className={cn(
+                  "rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                  isActive
+                    ? "border-primary bg-primary text-primary-foreground"
+                    : isEmpty
+                      ? "border-border/50 text-muted-foreground/30 cursor-not-allowed"
+                      : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                )}
+              >
+                {f.label}
+              </button>
+            );
+          })}
         </div>
 
         {/* Near Me */}
@@ -513,28 +597,54 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
           {locating ? "Locating…" : nearMe ? "📍 Near Me" : "Use My Location"}
         </button>
 
+        {/* Radius slider — shown when Near Me is active */}
+        {nearMe && userCoords && (
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] font-medium text-muted-foreground shrink-0">Radius</span>
+            <input
+              type="range"
+              min={5}
+              max={100}
+              step={5}
+              value={nearMeRadius}
+              onChange={(e) => setNearMeRadius(Number(e.target.value))}
+              className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-sky-100 accent-sky-600 [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-sky-600 [&::-webkit-slider-thumb]:shadow"
+            />
+            <span className="text-[12px] font-semibold text-sky-600 shrink-0 w-12 text-right">{nearMeRadius} mi</span>
+          </div>
+        )}
+
         {/* View filters */}
         <div className="flex flex-wrap gap-1.5">
-          {VIEW_FILTERS.map((f) => (
+          {VIEW_FILTERS.map((f) => {
+            const count = viewCounts[f.value] ?? 0;
+            const isActive = viewFilter === f.value;
+            const isEmpty = f.value !== "all" && count === 0;
+            return (
             <button
               key={f.value}
               onClick={() => {
+                if (isEmpty) return;
                 setViewFilter(f.value);
                 if (nearMe) {
                   setNearMe(false);
                   setUserCoords(null);
                 }
               }}
+              disabled={isEmpty}
               className={cn(
                 "rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors",
-                viewFilter === f.value
+                isActive
                   ? "border-visited-gold bg-visited-gold text-white"
-                  : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                  : isEmpty
+                    ? "border-border/50 text-muted-foreground/30 cursor-not-allowed"
+                    : "border-border text-muted-foreground hover:border-primary hover:text-primary"
               )}
             >
               {f.label}
             </button>
-          ))}
+            );
+          })}
         </div>
       </div>
 
@@ -543,7 +653,7 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
         {nearMe && nearMeList ? (
           <>
             <div className="sticky top-0 z-10 border-b bg-muted/80 px-5 py-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground backdrop-blur-sm">
-              Nearest {nearMeList.length} properties to you
+              {nearMeList.length} {nearMeList.length === 1 ? "property" : "properties"} within {nearMeRadius} miles
             </div>
             {nearMeList.map((loc) => (
               <div key={loc.id} data-location-id={loc.id}>
@@ -589,7 +699,7 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between border-t bg-muted/40 px-5 py-2.5">
+      <div className="flex items-center justify-between border-t border-white/20 bg-white/30 backdrop-blur-sm px-5 py-2.5">
         <button
           onClick={handleReset}
           className="rounded-md border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-destructive hover:text-destructive"
@@ -652,14 +762,9 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
         </span>
       </div>
 
-      <div className="relative flex flex-1 overflow-hidden">
-        {/* Desktop sidebar */}
-        <div className="hidden w-[420px] shrink-0 flex-col border-r md:flex">
-          {sidebarContent}
-        </div>
-
-        {/* Map */}
-        <div className={cn("flex-1", mobileView !== "map" && "hidden md:block")}>
+      <div className="relative flex-1 overflow-hidden">
+        {/* Map — always rendered to preserve state, list overlays it on mobile */}
+        <div className="absolute inset-0">
           <LocationMap
             locations={filtered}
             selectedLocationId={selectedId}
@@ -671,75 +776,23 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
             initialCenter={mapCenter ?? undefined}
             initialZoom={mapZoom ?? undefined}
             onCameraChanged={handleCameraChanged}
+            userLocation={nearMe ? userCoords : null}
+            nearMeRadius={nearMe ? nearMeRadius : undefined}
             className="h-full"
           />
         </div>
 
-        {/* Mobile list view */}
-        <div className={cn("flex-1 flex-col md:hidden", mobileView === "list" ? "flex" : "hidden")}>
+        {/* Desktop sidebar — overlays the map */}
+        <div className="glass-panel absolute inset-y-0 left-0 z-10 hidden w-[420px] flex-col md:flex">
           {sidebarContent}
         </div>
 
-        {/* Mobile bottom sheet */}
-        {mobileView === "map" && selectedLocation && (
-          <div className="absolute inset-x-0 bottom-0 z-10 md:hidden">
-            <div className="mx-3 mb-3 overflow-hidden rounded-lg border bg-card shadow-lg">
-              {/* Hero image header */}
-              {selectedLocation.heroImageUrl ? (
-                <div
-                  className="relative h-28 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${selectedLocation.heroImageUrl})` }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                  <button
-                    onClick={() => setSelectedId(null)}
-                    className="absolute right-2 top-2 rounded-full bg-black/40 p-1 text-white backdrop-blur-sm hover:bg-black/60"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                  <div className="absolute bottom-0 left-0 right-0 px-3 pb-2">
-                    <div className="text-sm font-bold text-white drop-shadow-sm">
-                      {selectedLocation.name}
-                    </div>
-                    <div className="flex items-center gap-2 text-[11px] text-white/80">
-                      <span>{selectedLocation.region}</span>
-                      {selectedLocation.category && (
-                        <span className="rounded-full bg-white/20 px-1.5 py-px text-[10px] font-semibold backdrop-blur-sm">
-                          {getCategoryConfig(selectedLocation.category).label}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="flex items-center justify-between border-b px-3 py-2">
-                  <div className="flex items-center gap-2">
-                    <GripHorizontal className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-xs font-medium">
-                      {selectedLocation.name}
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setSelectedId(null)}
-                    className="rounded-full p-1 hover:bg-muted"
-                  >
-                    <X className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              )}
-              <div className="border-t px-3 py-2">
-                <Button
-                  render={<a href={`/locations/${selectedLocation.slug}`} />}
-                  nativeButton={false}
-                  size="sm"
-                  className="w-full"
-                >
-                  View Details
-                </Button>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Mobile list view — overlays map */}
+        <div className={cn("absolute inset-0 z-20 flex-col bg-background md:hidden", mobileView === "list" ? "flex" : "hidden")}>
+          {sidebarContent}
+        </div>
+
+        {/* Mobile bottom sheet removed — InfoWindow now shows on all devices */}
       </div>
     </div>
   );

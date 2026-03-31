@@ -4,6 +4,8 @@ import {
   locationPricing,
   reviews,
   users,
+  photos,
+  userVisits,
 } from "@/lib/db/schema";
 import { eq, and, or, sql, isNull, gte, lte } from "drizzle-orm";
 import { notFound } from "next/navigation";
@@ -14,6 +16,10 @@ import { MapPin, Globe, Clock } from "lucide-react";
 import { getCategoryConfig } from "@/lib/categories";
 import { PricingTable } from "@/components/pricing-table";
 import { ReviewList } from "@/components/review-list";
+import { ReviewForm } from "@/components/review-form";
+import { PhotoGallery } from "@/components/photo-gallery";
+import { PhotoUpload } from "@/components/photo-upload";
+import { VisitToggle } from "@/components/visit-toggle";
 import { BackToMap } from "@/components/back-to-map";
 import { auth } from "@/lib/auth";
 
@@ -67,7 +73,7 @@ export default async function LocationPage({
 
   const today = new Date().toISOString().split("T")[0];
 
-  const [pricing, locationReviews, session] = await Promise.all([
+  const [pricing, locationReviews, locationPhotos, session] = await Promise.all([
     db
       .select()
       .from(locationPricing)
@@ -87,6 +93,7 @@ export default async function LocationPage({
     db
       .select({
         id: reviews.id,
+        userId: reviews.userId,
         rating: reviews.rating,
         title: reviews.title,
         body: reviews.body,
@@ -107,8 +114,37 @@ export default async function LocationPage({
         )
       )
       .orderBy(sql`${reviews.createdAt} desc`),
+    db
+      .select({
+        id: photos.id,
+        url: photos.url,
+        caption: photos.caption,
+        user: { name: users.name },
+      })
+      .from(photos)
+      .innerJoin(users, eq(photos.userId, users.id))
+      .where(eq(photos.locationId, location.id))
+      .orderBy(sql`${photos.createdAt} desc`),
     auth(),
   ]);
+
+  // Check if current user has visited this location
+  let hasVisited = false;
+  let userReview: (typeof locationReviews)[number] | null = null;
+  if (session?.user?.id) {
+    const [visit] = await db
+      .select({ id: userVisits.id })
+      .from(userVisits)
+      .where(
+        and(
+          eq(userVisits.userId, session.user.id),
+          eq(userVisits.locationId, location.id)
+        )
+      )
+      .limit(1);
+    hasVisited = !!visit;
+    userReview = locationReviews.find((r) => r.userId === session.user.id) ?? null;
+  }
 
   const avgRating =
     locationReviews.length > 0
@@ -144,6 +180,14 @@ export default async function LocationPage({
                   </Badge>
                 );
               })()}
+              <div className="ml-auto shrink-0">
+                <VisitToggle
+                  locationId={location.id}
+                  locationName={location.name}
+                  initialVisited={hasVisited}
+                  isAuthenticated={!!session?.user?.id}
+                />
+              </div>
             </div>
 
             {avgRating && (
@@ -197,12 +241,41 @@ export default async function LocationPage({
             </div>
           )}
 
+          {/* Photos */}
+          {(locationPhotos.length > 0 || session?.user?.id) && (
+            <div>
+              <div className="mb-3 flex items-center justify-between">
+                <h2 className="text-xl font-semibold">
+                  Photos {locationPhotos.length > 0 && `(${locationPhotos.length})`}
+                </h2>
+                {session?.user?.id && <PhotoUpload locationId={location.id} />}
+              </div>
+              <PhotoGallery photos={locationPhotos} />
+            </div>
+          )}
+
           <Separator />
 
+          {/* Reviews */}
           <div>
             <h2 className="mb-4 text-xl font-semibold">
               Reviews & Tips ({locationReviews.length})
             </h2>
+            {session?.user?.id && (
+              <div className="mb-6">
+                <ReviewForm
+                  locationId={location.id}
+                  existingReview={userReview ? {
+                    id: userReview.id,
+                    rating: userReview.rating,
+                    title: userReview.title,
+                    body: userReview.body,
+                    tip: userReview.tip,
+                    visitDate: userReview.visitDate,
+                  } : null}
+                />
+              </div>
+            )}
             <ReviewList reviews={locationReviews} />
           </div>
         </div>

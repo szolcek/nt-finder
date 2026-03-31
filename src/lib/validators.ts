@@ -25,6 +25,19 @@ export const addTripLocationSchema = z.object({
   notes: z.string().max(1000).optional(),
 });
 
+export const toggleVisitSchema = z.object({
+  locationId: z.number().int().positive(),
+});
+
+export const syncVisitsSchema = z.object({
+  visits: z.array(
+    z.object({
+      locationName: z.string(),
+      dates: z.array(z.string()),
+    })
+  ),
+});
+
 export const confirmPhotoSchema = z.object({
   s3Key: z.string().min(1),
   url: z.string().url(),

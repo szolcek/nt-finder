@@ -12,6 +12,7 @@ interface SourceProperty {
   region: string;
   type: string;
   area: string;
+  heroImageUrl?: string;
 }
 
 const TYPE_TO_CATEGORY: Record<string, string> = {
@@ -62,6 +63,7 @@ async function seed() {
       longitude: p.lng.toFixed(7),
       region: p.region,
       category: TYPE_TO_CATEGORY[p.type] ?? p.type.toLowerCase(),
+      heroImageUrl: p.heroImageUrl ?? null,
     }));
 
     const inserted = await db
