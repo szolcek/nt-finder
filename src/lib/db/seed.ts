@@ -20,6 +20,7 @@ const TYPE_TO_CATEGORY: Record<string, string> = {
   Castle: "castle",
   Countryside: "countryside",
   Coast: "coast",
+  "Historic Site": "historic-site",
 };
 
 function slugify(name: string): string {

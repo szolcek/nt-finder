@@ -14,6 +14,7 @@ import { MapPin, Globe, Clock } from "lucide-react";
 import { getCategoryConfig } from "@/lib/categories";
 import { PricingTable } from "@/components/pricing-table";
 import { ReviewList } from "@/components/review-list";
+import { BackToMap } from "@/components/back-to-map";
 import { auth } from "@/lib/auth";
 
 export const revalidate = 3600;
@@ -119,6 +120,7 @@ export default async function LocationPage({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
+      <BackToMap />
       {location.heroImageUrl && (
         <div className="mb-8 aspect-[3/1] overflow-hidden rounded-xl">
           <img

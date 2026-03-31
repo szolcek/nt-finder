@@ -13,6 +13,11 @@ const CATEGORY_CONFIG: Record<
     text: "text-amber-700",
   },
   coast: { label: "Coast", bg: "bg-sky-50", text: "text-sky-700" },
+  "historic-site": {
+    label: "Historic Site",
+    bg: "bg-rose-50",
+    text: "text-rose-700",
+  },
 };
 
 export function getCategoryConfig(category: string) {
@@ -32,4 +37,5 @@ export const CATEGORY_COLORS: Record<string, { bg: string; text: string }> = {
   castle: { bg: "#f5f3ff", text: "#7c3aed" },
   countryside: { bg: "#fffbeb", text: "#b45309" },
   coast: { bg: "#f0f9ff", text: "#0284c7" },
+  "historic-site": { bg: "#fff1f2", text: "#be123c" },
 };

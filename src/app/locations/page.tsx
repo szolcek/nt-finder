@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { db } from "@/lib/db";
 import { locations } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
@@ -26,5 +27,9 @@ export default async function LocationsPage() {
     .from(locations)
     .where(eq(locations.isPublished, true));
 
-  return <LocationsMapView locations={allLocations} />;
+  return (
+    <Suspense>
+      <LocationsMapView locations={allLocations} />
+    </Suspense>
+  );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { LocationMap, type LocationData } from "./location-map";
 import Link from "next/link";
 import { Search, Navigation, MapPin, X, GripHorizontal } from "lucide-react";
@@ -230,10 +231,21 @@ function PropertyItem({
 // ─── Main Component ─────────────────────────────────────────────────────────
 
 export function LocationsMapView({ locations }: LocationsMapViewProps) {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>("all");
-  const [viewFilter, setViewFilter] = useState<ViewFilter>("all");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Initialise state from URL search params so browser-back restores position
+  const [selectedId, setSelectedId] = useState<number | null>(() => {
+    const v = searchParams.get("selected");
+    return v ? Number(v) : null;
+  });
+  const [search, setSearch] = useState(() => searchParams.get("q") ?? "");
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(
+    () => (searchParams.get("cat") as CategoryFilter) || "all"
+  );
+  const [viewFilter, setViewFilter] = useState<ViewFilter>(
+    () => (searchParams.get("view") as ViewFilter) || "all"
+  );
   const [nearMe, setNearMe] = useState(false);
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = useState(false);
@@ -241,6 +253,46 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
   const [wishlist, setWishlist] = useState<Record<string, true>>({});
   const [mobileView, setMobileView] = useState<"map" | "list">("map");
   const listRef = useRef<HTMLDivElement>(null);
+
+  // Map camera state — initialise from URL params if present
+  const [mapCenter, setMapCenter] = useState<{ lat: number; lng: number } | null>(() => {
+    const lat = searchParams.get("lat");
+    const lng = searchParams.get("lng");
+    return lat && lng ? { lat: Number(lat), lng: Number(lng) } : null;
+  });
+  const [mapZoom, setMapZoom] = useState<number | null>(() => {
+    const z = searchParams.get("z");
+    return z ? Number(z) : null;
+  });
+  const cameraRef = useRef({ center: mapCenter, zoom: mapZoom });
+
+  const handleCameraChanged = useCallback((center: { lat: number; lng: number }, zoom: number) => {
+    cameraRef.current = { center, zoom };
+  }, []);
+
+  // Sync state → URL search params (replaceState so it doesn't create history noise)
+  // Use an interval to batch camera updates instead of re-rendering on every pan
+  useEffect(() => {
+    const sync = () => {
+      const params = new URLSearchParams();
+      if (search) params.set("q", search);
+      if (categoryFilter !== "all") params.set("cat", categoryFilter);
+      if (viewFilter !== "all") params.set("view", viewFilter);
+      if (selectedId) params.set("selected", String(selectedId));
+      const cam = cameraRef.current;
+      if (cam.center && cam.zoom) {
+        params.set("lat", cam.center.lat.toFixed(4));
+        params.set("lng", cam.center.lng.toFixed(4));
+        params.set("z", cam.zoom.toFixed(1));
+      }
+      const qs = params.toString();
+      const url = qs ? `/locations?${qs}` : "/locations";
+      window.history.replaceState(null, "", url);
+    };
+    sync();
+    const id = setInterval(sync, 1000);
+    return () => clearInterval(id);
+  }, [search, categoryFilter, viewFilter, selectedId]);
 
   // Load persisted state
   useEffect(() => {
@@ -616,6 +668,9 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
             wishlist={wishlist}
             onToggleVisited={toggleVisited}
             onToggleWishlist={toggleWishlist}
+            initialCenter={mapCenter ?? undefined}
+            initialZoom={mapZoom ?? undefined}
+            onCameraChanged={handleCameraChanged}
             className="h-full"
           />
         </div>
@@ -628,27 +683,50 @@ export function LocationsMapView({ locations }: LocationsMapViewProps) {
         {/* Mobile bottom sheet */}
         {mobileView === "map" && selectedLocation && (
           <div className="absolute inset-x-0 bottom-0 z-10 md:hidden">
-            <div className="mx-3 mb-3 rounded-lg border bg-card shadow-lg">
-              <div className="flex items-center justify-between border-b px-3 py-2">
-                <div className="flex items-center gap-2">
-                  <GripHorizontal className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-xs font-medium text-muted-foreground">
-                    Selected location
-                  </span>
-                </div>
-                <button
-                  onClick={() => setSelectedId(null)}
-                  className="rounded-full p-1 hover:bg-muted"
+            <div className="mx-3 mb-3 overflow-hidden rounded-lg border bg-card shadow-lg">
+              {/* Hero image header */}
+              {selectedLocation.heroImageUrl ? (
+                <div
+                  className="relative h-28 bg-cover bg-center"
+                  style={{ backgroundImage: `url(${selectedLocation.heroImageUrl})` }}
                 >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              </div>
-              <LocationCard
-                location={selectedLocation}
-                isSelected
-                compact
-                onSelect={() => {}}
-              />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                  <button
+                    onClick={() => setSelectedId(null)}
+                    className="absolute right-2 top-2 rounded-full bg-black/40 p-1 text-white backdrop-blur-sm hover:bg-black/60"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                  <div className="absolute bottom-0 left-0 right-0 px-3 pb-2">
+                    <div className="text-sm font-bold text-white drop-shadow-sm">
+                      {selectedLocation.name}
+                    </div>
+                    <div className="flex items-center gap-2 text-[11px] text-white/80">
+                      <span>{selectedLocation.region}</span>
+                      {selectedLocation.category && (
+                        <span className="rounded-full bg-white/20 px-1.5 py-px text-[10px] font-semibold backdrop-blur-sm">
+                          {getCategoryConfig(selectedLocation.category).label}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between border-b px-3 py-2">
+                  <div className="flex items-center gap-2">
+                    <GripHorizontal className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-xs font-medium">
+                      {selectedLocation.name}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => setSelectedId(null)}
+                    className="rounded-full p-1 hover:bg-muted"
+                  >
+                    <X className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              )}
               <div className="border-t px-3 py-2">
                 <Button
                   render={<a href={`/locations/${selectedLocation.slug}`} />}

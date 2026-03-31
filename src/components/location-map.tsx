@@ -36,9 +36,22 @@ if (typeof document !== "undefined") {
     .nt-marker-select {
       animation: nt-marker-select 300ms ease-out;
     }
+    /* Tighten InfoWindow chrome */
+    .gm-style-iw-d { overflow: visible !important; padding: 0 !important; }
+    .gm-style .gm-style-iw { padding: 0 !important; }
+    .gm-style .gm-style-iw-tc::after { background: #fff; }
   `;
   document.head.appendChild(style);
 }
+
+const TYPE_ICONS: Record<string, string> = {
+  house: "🏠",
+  garden: "🌳",
+  castle: "🏰",
+  countryside: "🏞️",
+  coast: "🏖️",
+  "historic-site": "🏛️",
+};
 
 /** Marker color map matching the source project */
 const MARKER_TYPE_COLORS: Record<string, string> = {
@@ -47,6 +60,7 @@ const MARKER_TYPE_COLORS: Record<string, string> = {
   castle: "#7c3aed",
   countryside: "#b45309",
   coast: "#0284c7",
+  "historic-site": "#be123c",
 };
 
 function darkenHex(hex: string, pct: number): string {
@@ -56,23 +70,43 @@ function darkenHex(hex: string, pct: number): string {
   return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 }
 
+/** Marker size scales with zoom: small dots when zoomed out, larger with border when zoomed in */
+function markerSize(zoom: number, isSelected: boolean): { size: number; border: number } {
+  if (isSelected) {
+    const s = zoom <= 7 ? 18 : zoom <= 10 ? 22 : zoom <= 13 ? 26 : 30;
+    return { size: s, border: 3 };
+  }
+  //            z≤7  z8-10  z11-13  z14+
+  const s = zoom <= 7 ? 10 : zoom <= 10 ? 14 : zoom <= 13 ? 18 : 22;
+  const b = zoom <= 7 ? 1.5 : zoom <= 10 ? 2 : 2.5;
+  return { size: s, border: b };
+}
+
 /** Creates a DOM element for a location marker — type-colored dot, or special pin for visited/wishlisted */
 function createMarkerContent(
   category: string | null,
   isSelected: boolean,
   isVisited: boolean,
-  isWishlisted: boolean
+  isWishlisted: boolean,
+  zoom: number = 6
 ): HTMLDivElement {
   const wrapper = document.createElement("div");
   wrapper.className = "nt-marker-enter";
 
+  const { size, border } = markerSize(zoom, false);
+  // Scale pins proportionally with zoom
+  const pinScale = zoom <= 7 ? 0.7 : zoom <= 10 ? 0.85 : zoom <= 13 ? 1 : 1.15;
+  const pinW = Math.round(26 * pinScale);
+  const pinH = Math.round(34 * pinScale);
+  const fontSize = Math.round(11 * pinScale);
+
   // Visited → gold pin with ✓
   if (isVisited) {
     const [fill, stroke, symbol] = ["#D4A843", "#a07020", "✓"];
-    wrapper.style.cssText = "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));";
-    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="26" height="34">
+    wrapper.style.cssText = "filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));";
+    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="${pinW}" height="${pinH}">
       <path d="M13 0C7.477 0 3 4.477 3 10c0 7.5 10 24 10 24S23 17.5 23 10c0-5.523-4.477-10-10-10z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
-      <text x="13" y="14" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">${symbol}</text>
+      <text x="13" y="14" text-anchor="middle" dominant-baseline="middle" font-size="${fontSize}" fill="white" font-weight="bold" font-family="sans-serif">${symbol}</text>
     </svg>`;
     return wrapper;
   }
@@ -80,29 +114,27 @@ function createMarkerContent(
   // Wishlisted → cyan pin with ★
   if (isWishlisted) {
     const [fill, stroke, symbol] = ["#06b6d4", "#0891b2", "★"];
-    wrapper.style.cssText = "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.4));";
-    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="26" height="34">
+    wrapper.style.cssText = "filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));";
+    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="${pinW}" height="${pinH}">
       <path d="M13 0C7.477 0 3 4.477 3 10c0 7.5 10 24 10 24S23 17.5 23 10c0-5.523-4.477-10-10-10z" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
-      <text x="13" y="14" text-anchor="middle" dominant-baseline="middle" font-size="11" fill="white" font-weight="bold" font-family="sans-serif">${symbol}</text>
+      <text x="13" y="14" text-anchor="middle" dominant-baseline="middle" font-size="${fontSize}" fill="white" font-weight="bold" font-family="sans-serif">${symbol}</text>
     </svg>`;
     return wrapper;
   }
 
-  // Selected → larger green pin
+  // Selected → enlarged circle with white ring
   if (isSelected) {
-    wrapper.style.cssText = "filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));";
-    wrapper.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 34" width="30" height="40">
-      <path d="M13 0C7.477 0 3 4.477 3 10c0 7.5 10 24 10 24S23 17.5 23 10c0-5.523-4.477-10-10-10z" fill="#007A3D" stroke="#fff" stroke-width="2"/>
-      <circle cx="13" cy="10" r="4" fill="#fff"/>
-    </svg>`;
+    const { size: selSize } = markerSize(zoom, true);
+    const color = MARKER_TYPE_COLORS[category ?? ""] ?? "#3b71ca";
+    wrapper.style.cssText = "filter: drop-shadow(0 2px 6px rgba(0,0,0,0.45));";
+    wrapper.innerHTML = `<div style="width:${selSize}px;height:${selSize}px;background:${color};border:3px solid #fff;border-radius:50%;box-shadow:0 0 0 2px ${color};"></div>`;
     return wrapper;
   }
 
-  // Default → type-colored dot
+  // Default → type-colored dot with white border for visibility
   const color = MARKER_TYPE_COLORS[category ?? ""] ?? "#3b71ca";
-  const border = darkenHex(color, 20);
-  wrapper.style.cssText = "filter: drop-shadow(0 1px 3px rgba(0,0,0,0.35));";
-  wrapper.innerHTML = `<div style="width:16px;height:16px;background:${color};border:2.5px solid ${border};border-radius:50%;"></div>`;
+  wrapper.style.cssText = "filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));";
+  wrapper.innerHTML = `<div style="width:${size}px;height:${size}px;background:${color};border:${border}px solid rgba(255,255,255,0.9);border-radius:50%;"></div>`;
 
   return wrapper;
 }
@@ -150,19 +182,22 @@ export interface LocationMapProps {
   wishlist?: Record<string, true>;
   onToggleVisited?: (name: string) => void;
   onToggleWishlist?: (name: string) => void;
+  initialCenter?: { lat: number; lng: number };
+  initialZoom?: number;
+  onCameraChanged?: (center: { lat: number; lng: number }, zoom: number) => void;
   className?: string;
 }
 
 const UK_CENTER = { lat: 54.0, lng: -2.5 };
 const UK_ZOOM = 6;
 
-/** Fits map to show all locations on initial load */
-function MapController({ locations }: { locations: LocationData[] }) {
+/** Fits map to show all locations on initial load — skips if initial position was provided */
+function MapController({ locations, skipFit }: { locations: LocationData[]; skipFit?: boolean }) {
   const map = useMap();
   const fitted = useRef(false);
 
   useEffect(() => {
-    if (!map || fitted.current || locations.length === 0) return;
+    if (!map || fitted.current || locations.length === 0 || skipFit) return;
     fitted.current = true;
 
     if (locations.length === 1) {
@@ -182,7 +217,7 @@ function MapController({ locations }: { locations: LocationData[] }) {
       });
     });
     map.fitBounds(bounds, 50);
-  }, [map, locations]);
+  }, [map, locations, skipFit]);
 
   return null;
 }
@@ -211,6 +246,32 @@ function ClusteredMarkers({
   const markersRef = useRef<
     Map<number, google.maps.marker.AdvancedMarkerElement>
   >(new Map());
+  const zoomRef = useRef(6);
+
+  // Track zoom and re-render markers when zoom bracket changes
+  useEffect(() => {
+    if (!map) return;
+    const listener = map.addListener("zoom_changed", () => {
+      const newZoom = map.getZoom() || 6;
+      const oldBracket = zoomRef.current <= 7 ? 0 : zoomRef.current <= 10 ? 1 : zoomRef.current <= 13 ? 2 : 3;
+      const newBracket = newZoom <= 7 ? 0 : newZoom <= 10 ? 1 : newZoom <= 13 ? 2 : 3;
+      zoomRef.current = newZoom;
+      if (oldBracket !== newBracket) {
+        // Update all marker contents at new size
+        markersRef.current.forEach((marker, id) => {
+          const loc = locations.find((l) => l.id === id);
+          if (!loc) return;
+          const isSelected = id === selectedLocationId;
+          marker.content = createMarkerContent(
+            loc.category, isSelected,
+            !!visited?.[loc.name], !!wishlist?.[loc.name],
+            newZoom
+          );
+        });
+      }
+    });
+    return () => google.maps.event.removeListener(listener);
+  }, [map, locations, selectedLocationId, visited, wishlist]);
 
   // Create clusterer
   useEffect(() => {
@@ -271,7 +332,7 @@ function ClusteredMarkers({
           lat: Number(loc.latitude),
           lng: Number(loc.longitude),
         },
-        content: createMarkerContent(loc.category, false, !!visited?.[loc.name], !!wishlist?.[loc.name]),
+        content: createMarkerContent(loc.category, false, !!visited?.[loc.name], !!wishlist?.[loc.name], zoomRef.current),
         title: loc.name,
       });
 
@@ -310,7 +371,8 @@ function ClusteredMarkers({
         loc.category,
         isSelected,
         !!visited?.[loc.name],
-        !!wishlist?.[loc.name]
+        !!wishlist?.[loc.name],
+        zoomRef.current
       );
       if (isSelected) {
         content.className = "nt-marker-select";
@@ -344,6 +406,9 @@ function ClusteredMarkers({
   const w = !!wishlist?.[selectedLocation.name];
   const catConfig = selectedLocation.category ? getCategoryConfig(selectedLocation.category) : null;
 
+  const hasImage = !!selectedLocation.heroImageUrl;
+  const catColor = MARKER_TYPE_COLORS[selectedLocation.category ?? ""] ?? "#3b71ca";
+
   return (
     <InfoWindow
       position={{
@@ -351,111 +416,213 @@ function ClusteredMarkers({
         lng: Number(selectedLocation.longitude),
       }}
       onCloseClick={() => onLocationSelect?.(null)}
-      maxWidth={280}
+      headerDisabled
+      pixelOffset={[0, -10]}
+      maxWidth={320}
     >
-      <div style={{ padding: 2, fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
-        {/* Title */}
-        <div style={{ fontSize: 15, fontWeight: 600, color: "#222", marginBottom: 4 }}>
-          {selectedLocation.name}
-        </div>
-
-        {/* Region · Type */}
-        <div style={{ fontSize: 12, color: "#777", marginBottom: 6 }}>
-          {selectedLocation.region}
-          {catConfig && <> · {catConfig.label}</>}
-        </div>
-
-        {/* Badges */}
-        <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 6 }}>
-          {v && (
-            <span style={{
-              display: "inline-block", fontSize: 11, fontWeight: 600,
-              padding: "2px 7px", borderRadius: 10,
-              background: "#fdf3d8", color: "#a07020", border: "1px solid #e9c66f",
+      <div style={{ fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif", minWidth: 240 }}>
+        {/* ── Image hero ── */}
+        {hasImage && (
+          <div style={{
+            position: "relative", height: 150,
+            overflow: "hidden", marginBottom: 12,
+          }}>
+            <img
+              src={selectedLocation.heroImageUrl!}
+              alt=""
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+            <div style={{
+              position: "absolute", inset: 0,
+              background: "linear-gradient(to top, rgba(15,15,15,0.85) 0%, rgba(15,15,15,0.25) 45%, transparent 70%)",
+            }} />
+            {/* Top row: category pill (left) + close button (right) */}
+            <div style={{
+              position: "absolute", top: 8, left: 10, right: 10,
+              display: "flex", justifyContent: "space-between", alignItems: "flex-start",
             }}>
-              ✓ Visited
-            </span>
-          )}
-          {w && !v && (
-            <span style={{
-              display: "inline-block", fontSize: 11, fontWeight: 600,
-              padding: "2px 7px", borderRadius: 10,
-              background: "#ecfeff", color: "#0891b2", border: "1px solid #67e8f9",
-            }}>
-              ★ Wishlist
-            </span>
-          )}
-        </div>
-
-        {/* Visit dates */}
-        {v && v.length > 0 && v.map((entry, i) => (
-          <div key={i} style={{ fontSize: 12, color: "#007A3D", fontWeight: 500, marginBottom: 2 }}>
-            📅 {new Date(entry.date).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" })}
+              <div style={{ display: "flex", gap: 4, alignItems: "center" }}>
+                {catConfig && (
+                  <span style={{
+                    fontSize: 9, fontWeight: 700, letterSpacing: 0.6,
+                    padding: "3px 8px", borderRadius: 4,
+                    background: "rgba(0,0,0,0.45)", color: "#fff",
+                    backdropFilter: "blur(8px)",
+                    textTransform: "uppercase",
+                    borderLeft: `3px solid ${catColor}`,
+                  }}>
+                    {catConfig.label}
+                  </span>
+                )}
+                {v && (
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10,
+                    background: "rgba(212,168,67,0.92)", color: "#fff",
+                    backdropFilter: "blur(4px)",
+                  }}>✓ Visited</span>
+                )}
+                {w && !v && (
+                  <span style={{
+                    fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10,
+                    background: "rgba(13,148,136,0.92)", color: "#fff",
+                    backdropFilter: "blur(4px)",
+                  }}>★ Wishlist</span>
+                )}
+              </div>
+              {/* Custom close button */}
+              <button
+                onClick={() => onLocationSelect?.(null)}
+                style={{
+                  width: 26, height: 26, borderRadius: 6,
+                  border: "none", cursor: "pointer",
+                  background: "rgba(0,0,0,0.45)", color: "#fff",
+                  backdropFilter: "blur(8px)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 14, fontWeight: 400, lineHeight: 1,
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            {/* Name + region on image */}
+            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 12px 10px" }}>
+              <div style={{
+                fontSize: 18, fontWeight: 700, color: "#fff", lineHeight: 1.15,
+                letterSpacing: -0.4,
+              }}>
+                {selectedLocation.name}
+              </div>
+              <div style={{
+                fontSize: 11, color: "rgba(255,255,255,0.75)", marginTop: 3,
+                fontWeight: 500, letterSpacing: 0.1,
+              }}>
+                📍 {selectedLocation.region}
+              </div>
+            </div>
           </div>
-        ))}
+        )}
 
-        {/* Action buttons */}
-        <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 8 }}>
+        {/* ── No-image header ── */}
+        {!hasImage && (
+          <div style={{ marginBottom: 12, padding: "12px 12px 0" }}>
+            <div style={{
+              display: "flex", alignItems: "flex-start", gap: 10,
+              padding: "2px 0",
+            }}>
+              <div style={{
+                width: 4, alignSelf: "stretch", borderRadius: 2,
+                background: `linear-gradient(to bottom, ${catColor}, ${catColor}88)`,
+                flexShrink: 0,
+              }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                  <div style={{
+                    fontSize: 17, fontWeight: 700, color: "#1a1a1a",
+                    lineHeight: 1.2, letterSpacing: -0.3,
+                  }}>
+                    {selectedLocation.name}
+                  </div>
+                  <button
+                    onClick={() => onLocationSelect?.(null)}
+                    style={{
+                      width: 24, height: 24, borderRadius: 6, flexShrink: 0,
+                      border: "1px solid #e0e0e0", cursor: "pointer",
+                      background: "#f5f5f5", color: "#999",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      fontSize: 12, lineHeight: 1,
+                    }}
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div style={{ fontSize: 12, color: "#888", marginTop: 3 }}>
+                  📍 {selectedLocation.region}
+                  {catConfig && (
+                    <span style={{ color: catColor, fontWeight: 600 }}> · {catConfig.label}</span>
+                  )}
+                </div>
+                {(v || (w && !v)) && (
+                  <div style={{ display: "flex", gap: 4, marginTop: 6 }}>
+                    {v && (
+                      <span style={{
+                        fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10,
+                        background: "#fef9ee", color: "#92700c", border: "1px solid #e5cc6c",
+                      }}>✓ Visited</span>
+                    )}
+                    {w && !v && (
+                      <span style={{
+                        fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10,
+                        background: "#f0fdfa", color: "#0d9488", border: "1px solid #99f6e4",
+                      }}>★ Wishlist</span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ── Primary CTA: View Details ── */}
+        <div style={{ padding: "0 12px 12px" }}>
+        <Link
+          href={`/locations/${selectedLocation.slug}`}
+          style={{
+            display: "block", textAlign: "center",
+            padding: "9px 0", borderRadius: 8,
+            background: "#007A3D", color: "#fff",
+            fontSize: 13, fontWeight: 600, letterSpacing: 0.1,
+            textDecoration: "none",
+            boxShadow: "0 1px 3px rgba(0,122,61,0.25)",
+          }}
+        >
+          View Details
+        </Link>
+
+        {/* ── Secondary actions row ── */}
+        <div style={{
+          display: "flex", gap: 6, marginTop: 8,
+        }}>
           <button
             onClick={() => onToggleVisited?.(selectedLocation.name)}
             style={{
-              padding: "6px 14px", borderRadius: 5, border: "none",
-              fontSize: 12, fontWeight: 500, cursor: "pointer",
-              background: v ? "#D4A843" : "#007A3D", color: "#fff",
+              flex: 1, padding: "7px 0", borderRadius: 6,
+              border: v ? "1.5px solid #d4a843" : "1.5px solid #ddd",
+              fontSize: 12, fontWeight: 600, cursor: "pointer",
+              background: v ? "#fef9ee" : "#fff",
+              color: v ? "#92700c" : "#555",
             }}
           >
-            {v ? "✎ Edit visits" : "✓ Mark Visited"}
+            {v ? "✓ Visited" : "☐ Mark Visited"}
           </button>
           <button
             onClick={() => onToggleWishlist?.(selectedLocation.name)}
             style={{
-              padding: "6px 12px", borderRadius: 5,
-              border: `1.5px solid #06b6d4`,
-              fontSize: 12, fontWeight: 500, cursor: "pointer",
-              background: w ? "#06b6d4" : "#fff",
-              color: w ? "#fff" : "#06b6d4",
+              padding: "7px 12px", borderRadius: 6,
+              border: w ? "1.5px solid #0d9488" : "1.5px solid #ddd",
+              fontSize: 13, cursor: "pointer",
+              background: w ? "#f0fdfa" : "#fff",
+              color: w ? "#0d9488" : "#bbb",
             }}
+            title={w ? "Remove from wishlist" : "Add to wishlist"}
           >
-            {w ? "★ Wishlisted" : "☆ Wishlist"}
+            {w ? "★" : "☆"}
           </button>
+          <a
+            href={`https://www.google.com/maps/dir/?api=1&destination=${selectedLocation.latitude},${selectedLocation.longitude}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              padding: "7px 12px", borderRadius: 6,
+              border: "1.5px solid #ddd",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontSize: 13, background: "#fff", color: "#888",
+              textDecoration: "none",
+            }}
+            title="Get directions"
+          >
+            🧭
+          </a>
         </div>
-
-        {/* Parking & Directions */}
-        <div style={{ marginTop: 8, paddingTop: 8, borderTop: "1px solid #eee" }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "#999", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 4 }}>
-            🚗 Parking &amp; Directions
-          </div>
-          <div style={{ fontSize: 11, color: "#666", lineHeight: 1.5, marginBottom: 6 }}>
-            NT car park on site — free for members. Charges apply for non-members.
-          </div>
-          <div style={{ display: "flex", gap: 6 }}>
-            <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${selectedLocation.latitude},${selectedLocation.longitude}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                padding: "5px 11px", borderRadius: 5,
-                border: "1.5px solid #0284c7",
-                fontSize: 11, fontWeight: 500, cursor: "pointer",
-                background: "#fff", color: "#0284c7",
-                textDecoration: "none",
-              }}
-            >
-              📍 Get Directions
-            </a>
-            <Link
-              href={`/locations/${selectedLocation.slug}`}
-              style={{
-                padding: "5px 11px", borderRadius: 5,
-                border: "1.5px solid #007A3D",
-                fontSize: 11, fontWeight: 500,
-                background: "#007A3D", color: "#fff",
-                textDecoration: "none",
-              }}
-            >
-              View Details →
-            </Link>
-          </div>
         </div>
       </div>
     </InfoWindow>
@@ -470,8 +637,12 @@ export function LocationMap({
   wishlist,
   onToggleVisited,
   onToggleWishlist,
+  initialCenter,
+  initialZoom,
+  onCameraChanged,
   className,
 }: LocationMapProps) {
+  const hasInitialPosition = !!(initialCenter && initialZoom);
   const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "";
 
   const validLocations = useMemo(
@@ -503,19 +674,23 @@ export function LocationMap({
     <div className={cn("relative h-full w-full min-h-[400px]", className)}>
       <APIProvider apiKey={apiKey}>
         <GoogleMap
-          defaultCenter={UK_CENTER}
-          defaultZoom={UK_ZOOM}
+          defaultCenter={initialCenter ?? UK_CENTER}
+          defaultZoom={initialZoom ?? UK_ZOOM}
           gestureHandling="greedy"
           disableDefaultUI
           zoomControl
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID}
+          onCameraChanged={(ev) => {
+            const c = ev.detail.center;
+            onCameraChanged?.({ lat: c.lat, lng: c.lng }, ev.detail.zoom);
+          }}
           style={{
             width: "100%",
             height: "100%",
             borderRadius: "var(--radius-lg, 12px)",
           }}
         >
-          <MapController locations={validLocations} />
+          <MapController locations={validLocations} skipFit={hasInitialPosition} />
           <ClusteredMarkers
             locations={validLocations}
             selectedLocationId={selectedLocationId}

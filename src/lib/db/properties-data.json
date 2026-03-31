@@ -1518,5 +1518,269 @@
     "area": "Wales",
     "region": "Pembrokeshire",
     "type": "House & Garden"
+  },
+  {
+    "name": "Giant's Causeway",
+    "lat": 55.2408,
+    "lng": -6.5117,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Coast"
+  },
+  {
+    "name": "Carrick-a-Rede Rope Bridge",
+    "lat": 55.2374,
+    "lng": -6.3253,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Coast"
+  },
+  {
+    "name": "The Crown Bar",
+    "lat": 54.595,
+    "lng": -5.934,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Historic Site"
+  },
+  {
+    "name": "Divis and Black Mountain",
+    "lat": 54.6113,
+    "lng": -6.0185,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Countryside"
+  },
+  {
+    "name": "Dunseverick Castle",
+    "lat": 55.231,
+    "lng": -6.395,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Castle"
+  },
+  {
+    "name": "Fair Head",
+    "lat": 55.2211,
+    "lng": -6.1539,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Countryside"
+  },
+  {
+    "name": "Patterson's Spade Mill",
+    "lat": 54.7,
+    "lng": -6.04,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Historic Site"
+  },
+  {
+    "name": "White Park Bay",
+    "lat": 55.2322,
+    "lng": -6.4047,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Coast"
+  },
+  {
+    "name": "Cushendun",
+    "lat": 55.1253,
+    "lng": -6.0427,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Coast"
+  },
+  {
+    "name": "Islandmagee",
+    "lat": 54.7964,
+    "lng": -5.703,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Coast"
+  },
+  {
+    "name": "Templetown Mausoleum",
+    "lat": 54.704,
+    "lng": -6.091,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Historic Site"
+  },
+  {
+    "name": "Mount Stewart",
+    "lat": 54.555,
+    "lng": -5.608,
+    "area": "Northern Ireland",
+    "region": "County Down",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Castle Ward",
+    "lat": 54.373,
+    "lng": -5.579,
+    "area": "Northern Ireland",
+    "region": "County Down",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Murlough National Nature Reserve",
+    "lat": 54.245,
+    "lng": -5.848,
+    "area": "Northern Ireland",
+    "region": "County Down",
+    "type": "Countryside"
+  },
+  {
+    "name": "Rowallane Garden",
+    "lat": 54.447,
+    "lng": -5.828,
+    "area": "Northern Ireland",
+    "region": "County Down",
+    "type": "Garden"
+  },
+  {
+    "name": "Strangford Lough",
+    "lat": 54.483,
+    "lng": -5.583,
+    "area": "Northern Ireland",
+    "region": "County Down",
+    "type": "Countryside"
+  },
+  {
+    "name": "Castle Coole",
+    "lat": 54.3355,
+    "lng": -7.6013,
+    "area": "Northern Ireland",
+    "region": "County Fermanagh",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Florence Court",
+    "lat": 54.261,
+    "lng": -7.7273,
+    "area": "Northern Ireland",
+    "region": "County Fermanagh",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Crom Estate",
+    "lat": 54.1636,
+    "lng": -7.4489,
+    "area": "Northern Ireland",
+    "region": "County Fermanagh",
+    "type": "Countryside"
+  },
+  {
+    "name": "Downhill Demesne and Mussenden Temple",
+    "lat": 55.1678,
+    "lng": -6.8108,
+    "area": "Northern Ireland",
+    "region": "County Londonderry",
+    "type": "Historic Site"
+  },
+  {
+    "name": "Hezlett House",
+    "lat": 55.155,
+    "lng": -6.7899,
+    "area": "Northern Ireland",
+    "region": "County Londonderry",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Springhill",
+    "lat": 54.686,
+    "lng": -6.656,
+    "area": "Northern Ireland",
+    "region": "County Londonderry",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Portstewart Strand",
+    "lat": 55.168,
+    "lng": -6.745,
+    "area": "Northern Ireland",
+    "region": "County Londonderry",
+    "type": "Coast"
+  },
+  {
+    "name": "Roe Estuary",
+    "lat": 55.1066,
+    "lng": -6.988,
+    "area": "Northern Ireland",
+    "region": "County Londonderry",
+    "type": "Countryside"
+  },
+  {
+    "name": "The Argory",
+    "lat": 54.4467,
+    "lng": -6.7006,
+    "area": "Northern Ireland",
+    "region": "County Armagh",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Ardress House",
+    "lat": 54.4431,
+    "lng": -6.5931,
+    "area": "Northern Ireland",
+    "region": "County Armagh",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Derrymore House",
+    "lat": 54.187,
+    "lng": -6.378,
+    "area": "Northern Ireland",
+    "region": "County Armagh",
+    "type": "House & Garden"
+  },
+  {
+    "name": "Coney Island, Lough Neagh",
+    "lat": 54.517,
+    "lng": -6.551,
+    "area": "Northern Ireland",
+    "region": "County Armagh",
+    "type": "Countryside"
+  },
+  {
+    "name": "Gray's Printing Press",
+    "lat": 54.8256,
+    "lng": -7.4634,
+    "area": "Northern Ireland",
+    "region": "County Tyrone",
+    "type": "Historic Site"
+  },
+  {
+    "name": "Wellbrook Beetling Mill",
+    "lat": 54.655,
+    "lng": -6.8394,
+    "area": "Northern Ireland",
+    "region": "County Tyrone",
+    "type": "Historic Site"
+  },
+  {
+    "name": "Minnowburn",
+    "lat": 54.5537,
+    "lng": -5.9464,
+    "area": "Northern Ireland",
+    "region": "County Down",
+    "type": "Countryside"
+  },
+  {
+    "name": "Lisnabreeny and Cregagh Glen",
+    "lat": 54.5655,
+    "lng": -5.8861,
+    "area": "Northern Ireland",
+    "region": "County Down",
+    "type": "Countryside"
+  },
+  {
+    "name": "Glenoe Waterfall",
+    "lat": 54.8,
+    "lng": -5.833,
+    "area": "Northern Ireland",
+    "region": "County Antrim",
+    "type": "Countryside"
   }
 ]
