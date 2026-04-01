@@ -3,7 +3,7 @@ import { z } from "zod";
 export const createReviewSchema = z.object({
   locationId: z.number().int().positive(),
   rating: z.number().int().min(1).max(5),
-  title: z.string().max(200).optional(),
+  title: z.string().min(1, "Need title").max(200),
   body: z.string().max(5000).optional(),
   tip: z.string().max(1000).optional(),
   visitDate: z.string().date().optional(),

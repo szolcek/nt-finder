@@ -128,6 +128,7 @@ function PropertyItem({
   distance,
   onSelect,
   onLocate,
+  onToggleVisited,
   onToggleWishlist,
 }: {
   location: LocationData;
@@ -137,6 +138,7 @@ function PropertyItem({
   distance?: number;
   onSelect: (id: number) => void;
   onLocate: (id: number) => void;
+  onToggleVisited: (name: string) => void;
   onToggleWishlist: (name: string) => void;
 }) {
   const cat = location.category ? getCategoryConfig(location.category) : null;
@@ -156,16 +158,21 @@ function PropertyItem({
       onClick={() => onSelect(location.id)}
     >
       {/* Checkbox */}
-      <div
+      <button
         className={cn(
-          "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded border-2 text-sm",
+          "flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded border-2 text-sm cursor-pointer",
           visited
             ? "border-visited-gold bg-visited-gold text-white"
-            : "border-muted-foreground/30"
+            : "border-muted-foreground/30 hover:border-visited-gold/60"
         )}
+        onClick={(e) => {
+          e.stopPropagation();
+          onToggleVisited(location.name);
+        }}
+        title={visited ? "Mark as not visited" : "Mark as visited"}
       >
         {visited && "✓"}
-      </div>
+      </button>
 
       {/* Info */}
       <div className="min-w-0 flex-1">
@@ -312,31 +319,32 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
     return map;
   }, [locations]);
 
-  // Load persisted state — DB visits for authenticated, localStorage for anonymous
+  // Load persisted state — merge DB visits + localStorage for resilience
   useEffect(() => {
+    const local = loadVisited();
+
     if (isAuthenticated && dbVisits) {
       // Convert DB visits (keyed by ID) to name-keyed format
-      const v: Record<string, { date: string }[]> = {};
+      const v: Record<string, { date: string }[]> = { ...local };
       for (const [locId, dates] of Object.entries(dbVisits)) {
         const name = idToName.get(Number(locId));
         if (name) v[name] = dates.map((d) => ({ date: d.visitedAt }));
       }
       setVisited(v);
 
-      // Sync any leftover localStorage visits to DB, then clear
-      const local = loadVisited();
+      // Sync any localStorage-only visits to DB
       const localEntries = Object.entries(local);
       if (localEntries.length > 0) {
         const visits = localEntries.map(([locationName, dates]) => ({
           locationName,
           dates: dates.map((d) => d.date),
         }));
-        syncLocalStorageVisits({ visits }).then(() => {
-          localStorage.removeItem("nt_visited");
+        syncLocalStorageVisits({ visits }).catch((err) => {
+          console.error("Failed to sync visits:", err);
         });
       }
     } else {
-      setVisited(loadVisited());
+      setVisited(local);
     }
     setWishlist(loadWishlist());
   }, [isAuthenticated, dbVisits, idToName]);
@@ -364,14 +372,19 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
       } else {
         next[name] = [{ date: new Date().toISOString() }];
       }
-      if (!isAuthenticated) saveVisited(next);
+      // Always persist to localStorage as backup
+      saveVisited(next);
       return next;
     });
 
     // Fire server action for authenticated users
     if (isAuthenticated) {
       const locId = nameToId.get(name);
-      if (locId) toggleVisit({ locationId: locId });
+      if (locId) {
+        toggleVisit({ locationId: locId }).catch((err) => {
+          console.error("Failed to save visit:", err);
+        });
+      }
     }
   }, [isAuthenticated, nameToId]);
 
@@ -551,6 +564,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
             placeholder="Search properties or regions..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onFocus={() => setSelectedId(null)}
             className="w-full rounded-md border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none transition-colors focus:border-primary"
           />
         </div>
@@ -589,7 +603,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
             "flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-[13px] font-medium transition-colors",
             nearMe
               ? "bg-sky-600 text-white hover:bg-sky-700"
-              : "bg-[#1c1c2e] text-white hover:bg-[#2e2e4a]",
+              : "bg-[#0c2d3f] text-white hover:bg-[#164e63]",
             locating && "opacity-60"
           )}
         >
@@ -665,6 +679,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
                   distance={loc.dist}
                   onSelect={handleSelect}
                   onLocate={handleLocate}
+                  onToggleVisited={toggleVisited}
                   onToggleWishlist={toggleWishlist}
                 />
               </div>
@@ -689,6 +704,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
                     wishlisted={!!wishlist[loc.name]}
                     onSelect={handleSelect}
                     onLocate={handleLocate}
+                    onToggleVisited={toggleVisited}
                     onToggleWishlist={toggleWishlist}
                   />
                 </div>

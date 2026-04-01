@@ -47,10 +47,15 @@ export function ReviewForm({ locationId, existingReview }: ReviewFormProps) {
       return;
     }
 
+    if (!title.trim()) {
+      setError("Need title");
+      return;
+    }
+
     const payload = {
       locationId,
       rating,
-      title: title.trim() || null,
+      title: title.trim(),
       body: body.trim() || null,
       tip: tip.trim() || null,
       visitDate: visitDate || null,

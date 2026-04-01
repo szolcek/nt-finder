@@ -10,7 +10,7 @@ export const metadata = {
   description: "Browse National Trust locations across the UK.",
 };
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export default async function LocationsPage() {
   const [allLocations, session] = await Promise.all([

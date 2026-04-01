@@ -386,9 +386,12 @@ function ClusteredMarkers({
     });
   }, [selectedLocationId, locations, visited, wishlist]);
 
-  // Pan to selected location
+  // Pan to selected location — only when selection changes
+  const prevSelectedRef = useRef<number | null | undefined>(null);
   useEffect(() => {
     if (!map || !selectedLocationId) return;
+    if (prevSelectedRef.current === selectedLocationId) return;
+    prevSelectedRef.current = selectedLocationId;
     const loc = locations.find((l) => l.id === selectedLocationId);
     if (!loc) return;
     map.panTo({
@@ -571,7 +574,7 @@ function ClusteredMarkers({
           style={{
             display: "block", textAlign: "center",
             padding: "9px 0", borderRadius: 8,
-            background: "#007A3D", color: "#fff",
+            background: "#0d9488", color: "#fff",
             fontSize: 13, fontWeight: 600, letterSpacing: 0.1,
             textDecoration: "none",
             boxShadow: "0 1px 3px rgba(0,122,61,0.25)",

@@ -61,7 +61,7 @@ async function seed() {
       name: p.name,
       latitude: p.lat.toFixed(7),
       longitude: p.lng.toFixed(7),
-      region: p.region,
+      region: p.area,
       category: TYPE_TO_CATEGORY[p.type] ?? p.type.toLowerCase(),
       heroImageUrl: p.heroImageUrl ?? null,
     }));

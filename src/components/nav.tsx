@@ -13,7 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MapPin, Menu, X, Map, Route, LogIn, LogOut, User } from "lucide-react";
+import { TreePine, Menu, X, Map, Route, LogIn, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -31,7 +31,7 @@ export function Nav() {
       <header className="glass sticky top-0 z-50">
         <div className="mx-auto flex h-14 max-w-6xl items-center px-4">
           <Link href="/" className="mr-6 flex items-center gap-2 font-semibold">
-            <MapPin className="h-5 w-5 text-primary" />
+            <TreePine className="h-5 w-5 text-teal-600" />
             <span>NT Finder</span>
           </Link>
 
