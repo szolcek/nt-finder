@@ -14,12 +14,23 @@ import { Button } from "@/components/ui/button";
 interface PricingRow {
   id: number;
   pricingType: string;
+  pricingCategory: string;
   tier: string;
   memberPrice: string | null;
   nonMemberPrice: string;
   label: string | null;
   notes: string | null;
 }
+
+const CATEGORY_LABELS: Record<string, string> = {
+  "standard": "Entry",
+  "house-and-garden": "House & Garden",
+  "garden-only": "Garden only",
+  "grounds-only": "Grounds only",
+  "garden-and-woodland": "Garden & Woodland",
+  "house-garden-and-woodland": "House, Garden & Woodland",
+  "house-and-grounds": "House & Grounds",
+};
 
 function formatPrice(price: string | null): string {
   if (price === null) return "Free";
@@ -39,6 +50,18 @@ export function PricingTable({
 
   const entryPricing = pricing.filter((p) => p.pricingType === "entry");
   const parkingPricing = pricing.filter((p) => p.pricingType === "parking");
+
+  // Group entry pricing by pricingCategory
+  const entryCategories = new Map<string, PricingRow[]>();
+  for (const row of entryPricing) {
+    const cat = row.pricingCategory || "standard";
+    if (!entryCategories.has(cat)) entryCategories.set(cat, []);
+    entryCategories.get(cat)!.push(row);
+  }
+
+  // Check if all entry prices are free (for non-members)
+  const isFreeEntry = entryPricing.length > 0 &&
+    entryPricing.every((p) => parseFloat(p.nonMemberPrice) === 0);
 
   if (pricing.length === 0) return null;
 
@@ -61,12 +84,29 @@ export function PricingTable({
         </Button>
       </div>
 
-      {entryPricing.length > 0 && (
-        <PricingSection
-          title="Entry"
-          rows={entryPricing}
-          showMember={showMember}
-        />
+      {isFreeEntry ? (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-base">Entry</CardTitle>
+            <CardDescription>Free for everyone</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              {entryPricing[0]?.notes || "No entry fee required"}
+            </p>
+          </CardContent>
+        </Card>
+      ) : (
+        [...entryCategories.entries()].map(([category, rows]) => (
+          <PricingSection
+            key={category}
+            title={entryCategories.size > 1
+              ? (CATEGORY_LABELS[category] ?? category)
+              : "Entry"}
+            rows={rows}
+            showMember={showMember}
+          />
+        ))
       )}
 
       {parkingPricing.length > 0 && (
@@ -119,6 +159,15 @@ function PricingSection({
               </div>
             </div>
           ))}
+          {rows.some((r) => r.notes) && (
+            <div className="mt-2 space-y-1">
+              {rows.filter((r) => r.notes).map((r) => (
+                <p key={r.id} className="text-xs text-muted-foreground">
+                  {r.notes}
+                </p>
+              ))}
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

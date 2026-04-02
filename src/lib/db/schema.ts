@@ -101,6 +101,7 @@ export const locationPricing = pgTable(
       .notNull()
       .references(() => locations.id, { onDelete: "cascade" }),
     pricingType: text("pricing_type").notNull(), // 'entry' | 'parking'
+    pricingCategory: text("pricing_category").default("standard").notNull(), // 'standard' | 'house-and-garden' | 'garden-only' | 'grounds-only' etc.
     tier: text("tier").notNull(), // 'adult' | 'child' | 'family' | 'concession'
     memberPrice: decimal("member_price", { precision: 6, scale: 2 }),
     nonMemberPrice: decimal("non_member_price", {
@@ -114,7 +115,7 @@ export const locationPricing = pgTable(
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (table) => [
-    unique().on(table.locationId, table.pricingType, table.tier, table.validFrom),
+    unique().on(table.locationId, table.pricingType, table.pricingCategory, table.tier, table.validFrom),
   ]
 );
 

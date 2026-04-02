@@ -5,6 +5,16 @@ import { sql } from "drizzle-orm";
 import { readFileSync } from "fs";
 import { join } from "path";
 
+interface PricingEntry {
+  pricingType: string;
+  pricingCategory?: string;
+  tier: string;
+  nonMemberPrice: string;
+  memberPrice?: string | null;
+  label: string;
+  notes?: string;
+}
+
 interface SourceProperty {
   name: string;
   lat: number;
@@ -13,6 +23,10 @@ interface SourceProperty {
   type: string;
   area: string;
   heroImageUrl?: string;
+  description?: string;
+  shortDescription?: string;
+  websiteUrl?: string;
+  pricing?: PricingEntry[];
 }
 
 const TYPE_TO_CATEGORY: Record<string, string> = {
@@ -36,9 +50,9 @@ async function seed() {
   const client = postgres(process.env.DATABASE_URL!);
   const db = drizzle(client);
 
-  // Load all 190 properties from source data
+  // Load comprehensive location data
   const raw = readFileSync(
-    join(__dirname, "properties-data.json"),
+    join(__dirname, "locations-full-data.json"),
     "utf-8"
   );
   const sourceProperties: SourceProperty[] = JSON.parse(raw);
@@ -59,11 +73,14 @@ async function seed() {
     const values = batch.map((p) => ({
       slug: slugify(p.name),
       name: p.name,
+      description: p.description ?? null,
+      shortDescription: p.shortDescription ?? null,
       latitude: p.lat.toFixed(7),
       longitude: p.lng.toFixed(7),
       region: p.area,
       category: TYPE_TO_CATEGORY[p.type] ?? p.type.toLowerCase(),
       heroImageUrl: p.heroImageUrl ?? null,
+      websiteUrl: p.websiteUrl ?? null,
     }));
 
     const inserted = await db
@@ -76,216 +93,42 @@ async function seed() {
 
   console.log(`Created ${allInserted.length} locations`);
 
-  // Build lookup by slug for pricing
-  const bySlug = new Map(allInserted.map((l) => [l.slug, l.id]));
+  // Build lookup by name for pricing
+  const byName = new Map(allInserted.map((l) => [l.name, l.id]));
 
-  // Add representative pricing for well-known properties
+  // Insert pricing from the data file
   console.log("Seeding pricing...");
 
-  const pricingData: Array<{
-    slug: string;
-    entries: Array<{
-      pricingType: string;
-      tier: string;
-      nonMemberPrice: string;
-      label: string;
-      memberPrice?: string | null;
-      notes?: string;
-    }>;
-  }> = [
-    {
-      slug: "cliveden",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "17.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "8.50", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "42.50", label: "Family (2 adults + 3 children)" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "6.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "stourhead",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "19.50", label: "Adult (house & garden)" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "9.75", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "48.75", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "8.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "waddesdon-manor",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "22.00", label: "Adult (house & grounds)" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "11.00", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "55.00", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "5.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "chartwell",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "18.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "9.00", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "45.00", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "5.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "sissinghurst-castle-garden",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "16.50", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "8.25", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "41.25", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "0.00", label: "Included", notes: "Parking included with entry" },
-      ],
-    },
-    {
-      slug: "bodiam-castle",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "13.50", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "6.75", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "33.75", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "4.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "knole",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "17.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "8.50", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "42.50", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "5.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "scotney-castle",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "15.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "7.50", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "37.50", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "0.00", label: "Included", notes: "Parking included with entry" },
-      ],
-    },
-    {
-      slug: "corfe-castle",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "12.50", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "6.25", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "31.25", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "4.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "kingston-lacy",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "17.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "8.50", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "42.50", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "5.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "clumber-park",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "0.00", label: "Adult", notes: "Free entry to park" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "7.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "dinefwr",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "12.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "6.00", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "30.00", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "5.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "powis-castle-and-garden",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "18.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "9.00", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "45.00", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "5.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "fountains-abbey-and-studley-royal",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "16.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "8.00", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "40.00", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "0.00", label: "Included", notes: "Parking included with entry" },
-      ],
-    },
-    {
-      slug: "white-cliffs-of-dover",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "0.00", label: "Adult", notes: "Free entry" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "6.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "brownsea-island",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "12.50", label: "Adult (landing fee)" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "6.25", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "31.25", label: "Family" },
-      ],
-    },
-    {
-      slug: "glastonbury-tor",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "0.00", label: "Adult", notes: "Free entry" },
-      ],
-    },
-    {
-      slug: "brimham-rocks",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "0.00", label: "Adult", notes: "Free entry" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "7.00", label: "All day" },
-      ],
-    },
-    {
-      slug: "cragside",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "20.00", label: "Adult (house & estate)" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "10.00", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "50.00", label: "Family" },
-        { pricingType: "parking", tier: "adult", nonMemberPrice: "0.00", label: "Included", notes: "Parking included with entry" },
-      ],
-    },
-    {
-      slug: "hill-top",
-      entries: [
-        { pricingType: "entry", tier: "adult", nonMemberPrice: "14.00", label: "Adult" },
-        { pricingType: "entry", tier: "child", nonMemberPrice: "7.00", label: "Child (5-17)" },
-        { pricingType: "entry", tier: "family", nonMemberPrice: "35.00", label: "Family" },
-      ],
-    },
-  ];
-
-  const pricingValues = pricingData.flatMap((p) => {
-    const locationId = bySlug.get(p.slug);
+  const pricingValues = sourceProperties.flatMap((p) => {
+    if (!p.pricing || p.pricing.length === 0) return [];
+    const locationId = byName.get(p.name);
     if (!locationId) {
-      console.warn(`  Skipping pricing for unknown slug: ${p.slug}`);
+      console.warn(`  Skipping pricing for unknown location: ${p.name}`);
       return [];
     }
-    return p.entries.map((e) => ({
+    return p.pricing.map((e) => ({
       locationId,
       pricingType: e.pricingType,
+      pricingCategory: e.pricingCategory ?? "standard",
       tier: e.tier,
       nonMemberPrice: e.nonMemberPrice,
       memberPrice: e.memberPrice ?? null,
       label: e.label,
-      notes: e.notes,
+      notes: e.notes ?? null,
     }));
   });
 
-  if (pricingValues.length > 0) {
-    await db.insert(locationPricing).values(pricingValues);
+  // Insert pricing in batches
+  const pricingBatchSize = 100;
+  let pricingCount = 0;
+  for (let i = 0; i < pricingValues.length; i += pricingBatchSize) {
+    const batch = pricingValues.slice(i, i + pricingBatchSize);
+    await db.insert(locationPricing).values(batch);
+    pricingCount += batch.length;
   }
 
-  console.log(`Created pricing for ${pricingData.length} locations`);
+  const locationsWithPricing = new Set(pricingValues.map(p => p.locationId)).size;
+  console.log(`Created ${pricingCount} pricing entries for ${locationsWithPricing} locations`);
   console.log("Seeding complete!");
   await client.end();
 }
