@@ -61,7 +61,7 @@
     "lat": 51.8387,
     "lng": -0.936,
     "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d7/Waddesdon_Manor_north_west_2016.jpg",
-    "description": "Waddesdon Manor is a French Renaissance-style chateau built by Baron Ferdinand de Rothschild in the 1870s. The house contains one of the finest collections of French decorative arts in the world, alongside Old Master paintings and S\u00e8vres porcelain. The grounds include a parterre, aviary, and seasonal art exhibitions.",
+    "description": "Waddesdon Manor is a French Renaissance-style chateau built by Baron Ferdinand de Rothschild in the 1870s. The house contains one of the finest collections of French decorative arts in the world, alongside Old Master paintings and Sèvres porcelain. The grounds include a parterre, aviary, and seasonal art exhibitions.",
     "shortDescription": "A Rothschild-built French Renaissance chateau with world-class decorative arts and beautiful gardens.",
     "websiteUrl": "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/waddesdon-manor",
     "pricing": [
@@ -920,7 +920,7 @@
     "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/84/Petworth_House_from_the_west.jpg",
     "description": "Petworth House is a magnificent late 17th-century mansion housing one of the finest art collections in the care of the National Trust, including paintings by Turner, Van Dyck, and Reynolds. The 700-acre deer park, landscaped by Capability Brown, is one of the best surviving examples of his work. The Servants' Quarters offer a fascinating glimpse below stairs.",
     "shortDescription": "A grand mansion with an outstanding art collection and a 700-acre Capability Brown deer park.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/sussex/petworth-house-and-park",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/sussex/petworth",
     "pricing": [
       {
         "pricingType": "entry",
@@ -2251,7 +2251,7 @@
     "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/46/Oxburgh_Hall%2C_2017.jpg",
     "description": "Oxburgh Hall is a stunning moated manor house built by the Bedingfeld family in 1482, who have lived here for over 500 years. The imposing Tudor gatehouse is one of the finest in England, and the house contains needlework by Mary, Queen of Scots. After a major conservation project, the house showcases both its medieval origins and later alterations.",
     "shortDescription": "A moated Tudor manor with a magnificent gatehouse and needlework by Mary, Queen of Scots.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/norfolk/oxburgh-hall",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/norfolk/oxburgh-estate",
     "pricing": [
       {
         "pricingType": "entry",
@@ -2765,7 +2765,7 @@
     "area": "Peak District & Derbyshire",
     "lat": 53.17,
     "lng": -1.313,
-    "description": "Hardwick Hall is an Elizabethan masterpiece built in the 1590s by Bess of Hardwick, one of the richest women in England. Famous for its vast windows \u2014 inspiring the rhyme 'Hardwick Hall, more glass than wall' \u2014 the house contains outstanding tapestries and embroideries. The estate includes formal gardens, an Elizabethan herb garden, and the ruins of the adjacent Old Hall.",
+    "description": "Hardwick Hall is an Elizabethan masterpiece built in the 1590s by Bess of Hardwick, one of the richest women in England. Famous for its vast windows — inspiring the rhyme 'Hardwick Hall, more glass than wall' — the house contains outstanding tapestries and embroideries. The estate includes formal gardens, an Elizabethan herb garden, and the ruins of the adjacent Old Hall.",
     "shortDescription": "A spectacular Elizabethan prodigy house famous for its vast windows and outstanding tapestries.",
     "websiteUrl": "https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/hardwick-hall",
     "region": "Peak District & Derbyshire",
@@ -3619,7 +3619,7 @@
     "lng": -1.729,
     "description": "Hidcote is one of England's great Arts and Crafts gardens, created in the early 20th century by the American-born horticulturalist Lawrence Johnston. The garden is a masterful sequence of outdoor 'rooms,' each with a distinct character, separated by tall hedges and walls. Rare and unusual plants from Johnston's global expeditions fill the borders, and the design has influenced gardens worldwide.",
     "shortDescription": "One of England's most influential Arts and Crafts gardens, designed as a series of outdoor rooms.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/gloucestershire-the-cotswolds/hidcote",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/hidcote",
     "region": "Gloucestershire & the Cotswolds",
     "pricing": [
       {
@@ -3712,7 +3712,7 @@
     "lng": -1.874,
     "description": "Chedworth Roman Villa is one of the largest and best-preserved Romano-British villas in England, discovered by a gamekeeper in 1864. The remains include outstanding mosaic floors, two bath suites, a water shrine, and underfloor heating systems dating from the 2nd to 4th centuries AD. A modern conservation shelter protects the mosaics while allowing visitors to walk among the ancient rooms.",
     "shortDescription": "One of Britain's finest Roman villas with outstanding mosaic floors in a Cotswold woodland setting.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/gloucestershire-the-cotswolds/chedworth-roman-villa",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/chedworth-roman-villa",
     "region": "Gloucestershire & the Cotswolds",
     "pricing": [
       {
@@ -3759,7 +3759,7 @@
     "lng": -2.313,
     "description": "Newark Park is a Tudor hunting lodge dramatically sited on the Cotswold escarpment, later converted into a country house with Georgian and Victorian additions. The house was rescued from near-dereliction in the 1970s by the architect and craftsman Michael Claydon, whose personal collection fills the rooms. The garden and estate offer spectacular views over the Ozleworth Valley towards the Severn Estuary and Wales.",
     "shortDescription": "A Tudor hunting lodge perched on the Cotswold escarpment with spectacular valley views.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/gloucestershire-the-cotswolds/newark-park",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/newark-park",
     "region": "Gloucestershire & the Cotswolds",
     "pricing": [
       {
@@ -3858,7 +3858,7 @@
     "area": "Somerset",
     "lat": 50.95,
     "lng": -2.723,
-    "description": "Montacute House is one of the finest Elizabethan mansions in England, built in the 1590s from local Ham Hill stone with a magnificent Long Gallery \u2014 the longest in the country. The house displays an outstanding collection of Tudor and Elizabethan portraits on loan from the National Portrait Gallery. The formal gardens include mixed borders, a raised walkway, and an 18th-century landscape park.",
+    "description": "Montacute House is one of the finest Elizabethan mansions in England, built in the 1590s from local Ham Hill stone with a magnificent Long Gallery — the longest in the country. The house displays an outstanding collection of Tudor and Elizabethan portraits on loan from the National Portrait Gallery. The formal gardens include mixed borders, a raised walkway, and an 18th-century landscape park.",
     "shortDescription": "A masterpiece of Elizabethan architecture with England's longest Long Gallery and Tudor portraits.",
     "websiteUrl": "https://www.nationaltrust.org.uk/visit/somerset/montacute-house",
     "region": "Somerset",
@@ -3996,7 +3996,7 @@
     "area": "Somerset",
     "lat": 51.144,
     "lng": -2.699,
-    "description": "Glastonbury Tor is an iconic conical hill rising 158 metres above the Somerset Levels, crowned by the roofless tower of the medieval St Michael's Church. Steeped in legend and myth \u2014 linked to King Arthur, the Holy Grail, and the Isle of Avalon \u2014 the Tor has been a place of spiritual significance for thousands of years. The summit offers breathtaking 360-degree views across Somerset to the Mendip Hills, Quantocks, and beyond.",
+    "description": "Glastonbury Tor is an iconic conical hill rising 158 metres above the Somerset Levels, crowned by the roofless tower of the medieval St Michael's Church. Steeped in legend and myth — linked to King Arthur, the Holy Grail, and the Isle of Avalon — the Tor has been a place of spiritual significance for thousands of years. The summit offers breathtaking 360-degree views across Somerset to the Mendip Hills, Quantocks, and beyond.",
     "shortDescription": "An iconic hilltop tower steeped in Arthurian legend with panoramic views across the Somerset Levels.",
     "websiteUrl": "https://www.nationaltrust.org.uk/visit/somerset/glastonbury-tor",
     "region": "Somerset",
@@ -4298,7 +4298,7 @@
     "area": "Dorset",
     "lat": 50.7152,
     "lng": -2.2147,
-    "description": "Clouds Hill is the tiny isolated cottage that was the rural retreat of T. E. Lawrence \u2014 Lawrence of Arabia \u2014 where he sought solitude after his wartime adventures. The spartan rooms remain much as Lawrence left them, filled with his books, gramophone, and personal effects. Lawrence died in a motorcycle accident nearby in 1935, and the cottage offers a uniquely intimate portrait of one of the 20th century's most enigmatic figures.",
+    "description": "Clouds Hill is the tiny isolated cottage that was the rural retreat of T. E. Lawrence — Lawrence of Arabia — where he sought solitude after his wartime adventures. The spartan rooms remain much as Lawrence left them, filled with his books, gramophone, and personal effects. Lawrence died in a motorcycle accident nearby in 1935, and the cottage offers a uniquely intimate portrait of one of the 20th century's most enigmatic figures.",
     "shortDescription": "The tiny rural retreat of T. E. Lawrence, preserved as he left it before his tragic death.",
     "websiteUrl": "https://www.nationaltrust.org.uk/visit/dorset/clouds-hill",
     "region": "Dorset",
@@ -4367,7 +4367,7 @@
     "area": "Dorset",
     "lat": 50.9478,
     "lng": -2.2378,
-    "description": "Fontmell and Melbury Downs are sweeping chalk downlands on the edge of Cranborne Chase, forming one of the finest stretches of unimproved chalk grassland in Dorset. The steep escarpment and rolling hilltops support a remarkable diversity of wildflowers, butterflies \u2014 including chalkhill blue and Adonis blue \u2014 and ground-nesting birds. Circular walks offer panoramic views across the Blackmore Vale and surrounding Dorset countryside.",
+    "description": "Fontmell and Melbury Downs are sweeping chalk downlands on the edge of Cranborne Chase, forming one of the finest stretches of unimproved chalk grassland in Dorset. The steep escarpment and rolling hilltops support a remarkable diversity of wildflowers, butterflies — including chalkhill blue and Adonis blue — and ground-nesting birds. Circular walks offer panoramic views across the Blackmore Vale and surrounding Dorset countryside.",
     "shortDescription": "Pristine chalk downlands rich in rare butterflies and wildflowers with panoramic Blackmore Vale views.",
     "websiteUrl": "https://www.nationaltrust.org.uk/visit/dorset/fontmell-and-melbury-downs",
     "region": "Dorset",
@@ -4430,7 +4430,7 @@
     "area": "Dorset",
     "lat": 50.916,
     "lng": -2.2291,
-    "description": "Hambledon Hill is a prominent chalk hill crowned by a massive Neolithic causewayed enclosure and Iron Age hill fort, with earthworks spanning over 5,000 years of human activity. The site saw dramatic conflict during the English Civil War when Clubmen \u2014 local people opposing both sides \u2014 were routed by Oliver Cromwell's forces. The steep slopes support species-rich chalk grassland with orchids, butterflies, and commanding views over the Blackmore Vale.",
+    "description": "Hambledon Hill is a prominent chalk hill crowned by a massive Neolithic causewayed enclosure and Iron Age hill fort, with earthworks spanning over 5,000 years of human activity. The site saw dramatic conflict during the English Civil War when Clubmen — local people opposing both sides — were routed by Oliver Cromwell's forces. The steep slopes support species-rich chalk grassland with orchids, butterflies, and commanding views over the Blackmore Vale.",
     "shortDescription": "A Neolithic and Iron Age hilltop site with Civil War history and species-rich chalk grasslands.",
     "websiteUrl": "https://www.nationaltrust.org.uk/visit/dorset/hambledon-hill",
     "region": "Dorset",
@@ -4590,7 +4590,7 @@
     "area": "Dorset",
     "lat": 50.692,
     "lng": -2.7196,
-    "description": "Hive Beach is a dramatic shingle beach at Burton Bradstock on the Jurassic Coast, backed by towering golden sandstone cliffs that glow in the sunlight. The beach is popular for swimming, fossil hunting, and fishing, with views east along Chesil Beach towards Portland. The clifftop caf\u00e9 is well known locally, and coastal footpaths lead to neighbouring bays and the Golden Cap estate.",
+    "description": "Hive Beach is a dramatic shingle beach at Burton Bradstock on the Jurassic Coast, backed by towering golden sandstone cliffs that glow in the sunlight. The beach is popular for swimming, fossil hunting, and fishing, with views east along Chesil Beach towards Portland. The clifftop café is well known locally, and coastal footpaths lead to neighbouring bays and the Golden Cap estate.",
     "shortDescription": "A dramatic Jurassic Coast shingle beach beneath golden sandstone cliffs at Burton Bradstock.",
     "websiteUrl": "https://www.nationaltrust.org.uk/visit/dorset/hive-beach",
     "region": "Dorset",
@@ -5904,7 +5904,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Dunham Massey is a Georgian house set in a magnificent deer park on the outskirts of Altrincham. The house contains outstanding collections of Huguenot silver, paintings and furniture amassed by the Booth and Grey families. The ancient deer park is home to one of England's largest herds of fallow deer, and the winter garden is celebrated for its bark, berries and scented flowers.",
     "shortDescription": "Georgian house in a deer park near Altrincham with Huguenot silver and a famous winter garden.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/dunham-massey",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/dunham-massey",
     "pricing": [
       {
         "pricingType": "entry",
@@ -5950,7 +5950,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Quarry Bank is one of Britain's greatest industrial heritage sites, centred on a Georgian cotton mill in the wooded Bollin Valley at Styal. Founded by Samuel Greg in 1784, the mill retains working textile machinery powered by Europe's most powerful waterwheel. The Apprentice House reveals the harsh lives of child workers, while the surrounding estate includes gardens and riverside walks.",
     "shortDescription": "Georgian cotton mill at Styal with working machinery, Apprentice House and riverside walks.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/quarry-bank",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/quarry-bank",
     "pricing": [
       {
         "pricingType": "entry",
@@ -5997,7 +5997,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Lyme is a grand Elizabethan mansion set in a medieval deer park on the edge of the Peak District near Stockport. Home to the Legh family for over 600 years, the house contains Mortlake tapestries and an important collection of English clocks. The park's ancient herd of red deer, Edwardian rose garden, and moorland walks make it a major visitor attraction.",
     "shortDescription": "Elizabethan mansion in a medieval deer park on the edge of the Peak District.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/lyme",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/lyme",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6043,7 +6043,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Tatton Park is a grand neo-classical mansion set in 1,000 acres of deer park near Knutsford. The opulent Egerton family home contains Gillow furniture, a picture gallery and servants' quarters. The gardens are among the most important in England, featuring a Japanese garden, Italian garden, glasshouses and the national collection of tree ferns.",
     "shortDescription": "Neo-classical mansion near Knutsford with opulent interiors and nationally important gardens.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/tatton-park",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/tatton-park",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6089,7 +6089,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Little Moreton Hall is one of the finest examples of a timber-framed moated manor house in England, dating from the mid-15th century. The wonky black-and-white building, with its elaborate carved gables and long gallery, appears to defy gravity. A knot garden based on a 17th-century design and a small border garden surround the moat.",
     "shortDescription": "Iconic wonky timber-framed moated manor house, one of England's finest medieval buildings.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/little-moreton-hall",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/little-moreton-hall",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6136,7 +6136,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Alderley Edge is a dramatic sandstone escarpment rising above the Cheshire Plain, steeped in legend and mining history dating back to the Bronze Age. Woodland walks thread through beech, pine and oak, passing old copper mines and the Wizard's Well. From the Edge, views stretch across the plain to Manchester and the Peak District hills.",
     "shortDescription": "Legendary sandstone escarpment above the Cheshire Plain with ancient mines and woodland walks.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/alderley-edge-and-cheshire-countryside",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/alderley-edge-and-cheshire-countryside",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6167,7 +6167,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Castlefield Viaduct is a Victorian railway viaduct in the heart of Manchester, reimagined as an elevated park and green space. Inspired by New York's High Line, the viaduct features planters with trees, grasses and wildflowers creating an urban oasis. It offers a unique elevated perspective over the historic Castlefield Basin and the city's canal network.",
     "shortDescription": "Victorian railway viaduct in central Manchester transformed into an elevated urban park.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/castlefield-viaduct",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/castlefield-viaduct",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6190,7 +6190,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Hare Hill is an intimate woodland garden near Macclesfield, celebrated for its spectacular display of rhododendrons and azaleas in late spring. A walled garden at the heart of the property provides a sheltered haven with year-round interest. Surrounding parkland and woodland offer peaceful walks with views towards the Peak District.",
     "shortDescription": "Intimate woodland garden near Macclesfield famed for its spectacular rhododendron displays.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/hare-hill",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/hare-hill",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6237,7 +6237,7 @@
     "region": "Cheshire & Greater Manchester",
     "description": "Nether Alderley Mill is a rare 16th-century watermill hidden beneath the sandstone ridge of Alderley Edge. The mill, powered by an overshot waterwheel, still grinds flour on demonstration days using its original stone mechanisms. The atmospheric interior and woodland setting provide a glimpse into centuries of rural Cheshire life.",
     "shortDescription": "Rare 16th-century watermill beneath Alderley Edge, still grinding flour on demonstration days.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-and-greater-manchester/nether-alderley-mill",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cheshire-greater-manchester/nether-alderley-mill",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6275,7 +6275,7 @@
     "region": "Liverpool & Lancashire",
     "description": "Speke Hall is one of England's finest surviving Tudor timber-framed houses, set in tranquil gardens and woodland on the banks of the Mersey near Liverpool Airport. Built over a century from 1530, the house features priest holes, elaborate plasterwork, and a great hall. The restored Victorian gardens include the Adam and Eve topiaries and a kitchen garden.",
     "shortDescription": "Magnificent Tudor timber-framed house on the Mersey with priest holes and Victorian gardens.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/liverpool-and-lancashire/speke-hall",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/liverpool-lancashire/speke-hall",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6322,7 +6322,7 @@
     "region": "Liverpool & Lancashire",
     "description": "The Beatles' Childhood Homes are two houses in Liverpool where John Lennon and Paul McCartney grew up. Mendips, John's childhood home with Aunt Mimi, is a 1930s semi-detached where he wrote early songs. 20 Forthlin Road, Paul's terraced council house, is where many of the earliest Lennon-McCartney songs were composed. Both can only be visited on guided minibus tours from the city centre.",
     "shortDescription": "John Lennon's and Paul McCartney's childhood homes, accessible by guided minibus tour only.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/liverpool-and-lancashire/the-beatles-childhood-homes",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/liverpool-lancashire/the-beatles-childhood-homes",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6360,7 +6360,7 @@
     "region": "Liverpool & Lancashire",
     "description": "Rufford Old Hall is one of Lancashire's finest Tudor buildings, famous for its extravagant Great Hall with an intricately carved movable wooden screen. A young William Shakespeare is said to have performed here in the 1580s. The Victorian wing houses the Hesketh family's eclectic collections, and the gardens include a topiary avenue and seasonal herbaceous borders.",
     "shortDescription": "Fine Tudor hall in Lancashire where Shakespeare may have performed, with a famous carved screen.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/liverpool-and-lancashire/rufford-old-hall",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/liverpool-lancashire/rufford-old-hall",
     "pricing": [
       {
         "pricingType": "entry",
@@ -6407,7 +6407,7 @@
     "region": "Liverpool & Lancashire",
     "description": "Gawthorpe Hall is an Elizabethan gem set on the banks of the River Calder near Burnley, restored in the 1850s by Sir Charles Barry of Houses of Parliament fame. The house contains the Rachel Kay-Shuttleworth textile collection, one of the most important in Europe. The grounds include a formal parterre garden and woodland walks along the river.",
     "shortDescription": "Elizabethan hall near Burnley with Barry interiors and a world-class textile collection.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/liverpool-and-lancashire/gawthorpe-hall",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/liverpool-lancashire/gawthorpe-hall",
     "pricing": [
       {
         "pricingType": "entry",
