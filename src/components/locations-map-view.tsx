@@ -794,6 +794,8 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
             onCameraChanged={handleCameraChanged}
             userLocation={nearMe ? userCoords : null}
             nearMeRadius={nearMe ? nearMeRadius : undefined}
+            categoryFilter={categoryFilter}
+            onCategoryFilter={(cat) => setCategoryFilter(cat as CategoryFilter)}
             className="h-full"
           />
         </div>

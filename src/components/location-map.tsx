@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useCallback } from "react";
+import { useEffect, useMemo, useRef, useCallback, useState } from "react";
 import {
   APIProvider,
   Map as GoogleMap,
@@ -189,6 +189,8 @@ export interface LocationMapProps {
   onCameraChanged?: (center: { lat: number; lng: number }, zoom: number) => void;
   userLocation?: { lat: number; lng: number } | null;
   nearMeRadius?: number; // miles
+  categoryFilter?: string;
+  onCategoryFilter?: (category: string) => void;
   className?: string;
 }
 
@@ -714,6 +716,88 @@ function UserLocationOverlay({
   return null;
 }
 
+const LEGEND_ITEMS: { key: string; color: string; label: string }[] = [
+  { key: "house", color: "#3b71ca", label: "House & Garden" },
+  { key: "garden", color: "#007a3d", label: "Garden" },
+  { key: "castle", color: "#7c3aed", label: "Castle" },
+  { key: "countryside", color: "#b45309", label: "Countryside" },
+  { key: "coast", color: "#0284c7", label: "Coast" },
+];
+
+function MapLegend({
+  categoryFilter,
+  onCategoryFilter,
+}: {
+  categoryFilter?: string;
+  onCategoryFilter?: (category: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="absolute bottom-8 left-3 z-10 rounded-lg bg-white text-xs shadow-lg">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between gap-2 px-4 py-2.5 font-semibold text-muted-foreground md:hidden"
+      >
+        <span>Key</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="12"
+          height="12"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className={cn("transition-transform", open ? "rotate-180" : "")}
+        >
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+      <div className={cn(
+        "px-4 pb-3 md:block",
+        open ? "block" : "hidden",
+      )}>
+        <h4 className="mb-2 font-semibold text-muted-foreground hidden md:block pt-3">Property Types</h4>
+        {LEGEND_ITEMS.map(({ key, color, label }) => {
+          const isActive = !categoryFilter || categoryFilter === "all" || categoryFilter === key;
+          return (
+            <button
+              key={key}
+              onClick={() => onCategoryFilter?.(categoryFilter === key ? "all" : key)}
+              className={cn(
+                "mb-1 flex w-full items-center gap-2 rounded px-1 -mx-1 py-0.5 transition-opacity",
+                isActive ? "opacity-100" : "opacity-30",
+                onCategoryFilter && "hover:bg-muted cursor-pointer",
+              )}
+            >
+              <div className="h-3.5 w-3.5 shrink-0 rounded-full" style={{ background: color }} />
+              <span className="whitespace-nowrap">{label}</span>
+            </button>
+          );
+        })}
+        <div className="mt-1.5 border-t pt-1.5">
+          <div className="mb-1 flex items-center gap-2 px-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 21" width="14" height="18" className="shrink-0">
+              <path d="M8 0C4.686 0 2 2.686 2 6c0 4.5 6 15 6 15s6-10.5 6-15c0-3.314-2.686-6-6-6z" fill="#D4A843" stroke="#a07020" strokeWidth="1"/>
+              <text x="8" y="8" textAnchor="middle" dominantBaseline="middle" fontSize="7" fill="white" fontWeight="bold" fontFamily="sans-serif">✓</text>
+            </svg>
+            <span>Visited</span>
+          </div>
+          <div className="flex items-center gap-2 px-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 21" width="14" height="18" className="shrink-0">
+              <path d="M8 0C4.686 0 2 2.686 2 6c0 4.5 6 15 6 15s6-10.5 6-15c0-3.314-2.686-6-6-6z" fill="#06b6d4" stroke="#0891b2" strokeWidth="1"/>
+              <text x="8" y="8" textAnchor="middle" dominantBaseline="middle" fontSize="7" fill="white" fontWeight="bold" fontFamily="sans-serif">★</text>
+            </svg>
+            <span>Wishlist</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function LocationMap({
   locations,
   selectedLocationId,
@@ -727,6 +811,8 @@ export function LocationMap({
   onCameraChanged,
   userLocation,
   nearMeRadius,
+  categoryFilter,
+  onCategoryFilter,
   className,
 }: LocationMapProps) {
   const hasInitialPosition = !!(initialCenter && initialZoom);
@@ -767,6 +853,8 @@ export function LocationMap({
           disableDefaultUI
           zoomControl
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID}
+          onClick={() => onLocationSelect?.(null)}
+          onDragstart={() => onLocationSelect?.(null)}
           onCameraChanged={(ev) => {
             const c = ev.detail.center;
             onCameraChanged?.({ lat: c.lat, lng: c.lng }, ev.detail.zoom);
@@ -794,35 +882,7 @@ export function LocationMap({
       </APIProvider>
 
       {/* Map Legend */}
-      <div className="absolute bottom-8 right-3 z-10 rounded-lg bg-white px-4 py-3 text-xs shadow-lg">
-        <h4 className="mb-2 font-semibold text-muted-foreground">Property Types</h4>
-        {([
-          ["#3b71ca", "House & Garden"],
-          ["#007a3d", "Garden"],
-          ["#7c3aed", "Castle"],
-          ["#b45309", "Countryside"],
-          ["#0284c7", "Coast"],
-        ] as const).map(([color, label]) => (
-          <div key={label} className="mb-1 flex items-center gap-2">
-            <div className="h-3.5 w-3.5 shrink-0 rounded-full" style={{ background: color }} />
-            <span>{label}</span>
-          </div>
-        ))}
-        <div className="mb-1 mt-1.5 flex items-center gap-2 border-t pt-1.5">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 21" width="14" height="18" className="shrink-0">
-            <path d="M8 0C4.686 0 2 2.686 2 6c0 4.5 6 15 6 15s6-10.5 6-15c0-3.314-2.686-6-6-6z" fill="#D4A843" stroke="#a07020" strokeWidth="1"/>
-            <text x="8" y="8" textAnchor="middle" dominantBaseline="middle" fontSize="7" fill="white" fontWeight="bold" fontFamily="sans-serif">✓</text>
-          </svg>
-          <span>Visited</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 21" width="14" height="18" className="shrink-0">
-            <path d="M8 0C4.686 0 2 2.686 2 6c0 4.5 6 15 6 15s6-10.5 6-15c0-3.314-2.686-6-6-6z" fill="#06b6d4" stroke="#0891b2" strokeWidth="1"/>
-            <text x="8" y="8" textAnchor="middle" dominantBaseline="middle" fontSize="7" fill="white" fontWeight="bold" fontFamily="sans-serif">★</text>
-          </svg>
-          <span>Wishlist</span>
-        </div>
-      </div>
+      <MapLegend categoryFilter={categoryFilter} onCategoryFilter={onCategoryFilter} />
     </div>
   );
 }
