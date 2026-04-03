@@ -6,6 +6,7 @@ import { photos } from "@/lib/db/schema";
 import { confirmPhotoSchema } from "@/lib/validators";
 import { verifyObjectExists } from "@/lib/s3";
 import { eq, and } from "drizzle-orm";
+import { isAdmin } from "@/lib/admin";
 
 export async function confirmPhotoUpload(input: unknown) {
   const session = await auth();
@@ -29,6 +30,7 @@ export async function confirmPhotoUpload(input: unknown) {
       height: data.height,
       sizeBytes: data.sizeBytes,
       mimeType: data.mimeType,
+      isApproved: isAdmin(session),
     })
     .returning();
 

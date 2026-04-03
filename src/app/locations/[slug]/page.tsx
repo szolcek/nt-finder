@@ -98,6 +98,7 @@ export default async function LocationPage({
         body: reviews.body,
         tip: reviews.tip,
         visitDate: reviews.visitDate,
+        isPublished: reviews.isPublished,
         createdAt: reviews.createdAt,
         user: {
           name: users.name,
@@ -106,18 +107,15 @@ export default async function LocationPage({
       })
       .from(reviews)
       .innerJoin(users, eq(reviews.userId, users.id))
-      .where(
-        and(
-          eq(reviews.locationId, location.id),
-          eq(reviews.isPublished, true)
-        )
-      )
+      .where(eq(reviews.locationId, location.id))
       .orderBy(sql`${reviews.createdAt} desc`),
     db
       .select({
         id: photos.id,
+        userId: photos.userId,
         url: photos.url,
         caption: photos.caption,
+        isApproved: photos.isApproved,
         user: { name: users.name },
       })
       .from(photos)
@@ -127,28 +125,39 @@ export default async function LocationPage({
     auth(),
   ]);
 
+  // Filter to approved + current user's own content
+  const userId = session?.user?.id;
+  const visibleReviews = locationReviews.filter(
+    (r) => r.isPublished || r.userId === userId
+  );
+  const visiblePhotos = locationPhotos.filter(
+    (p) => p.isApproved || p.userId === userId
+  );
+
   // Check if current user has visited this location
   let hasVisited = false;
-  let userReview: (typeof locationReviews)[number] | null = null;
-  if (session?.user?.id) {
+  let userReview: (typeof visibleReviews)[number] | null = null;
+  if (userId) {
     const [visit] = await db
       .select({ id: userVisits.id })
       .from(userVisits)
       .where(
         and(
-          eq(userVisits.userId, session.user.id),
+          eq(userVisits.userId, userId),
           eq(userVisits.locationId, location.id)
         )
       )
       .limit(1);
     hasVisited = !!visit;
-    userReview = locationReviews.find((r) => r.userId === session.user.id) ?? null;
+    userReview = visibleReviews.find((r) => r.userId === userId) ?? null;
   }
 
+  // Only count published reviews for public stats
+  const publishedReviews = visibleReviews.filter((r) => r.isPublished);
   const avgRating =
-    locationReviews.length > 0
-      ? locationReviews.reduce((sum, r) => sum + r.rating, 0) /
-        locationReviews.length
+    publishedReviews.length > 0
+      ? publishedReviews.reduce((sum, r) => sum + r.rating, 0) /
+        publishedReviews.length
       : null;
 
   const facilities = (location.facilities as string[]) ?? [];
@@ -202,7 +211,7 @@ export default async function LocationPage({
               </div>
               <span className="text-sm font-semibold text-slate-700">{avgRating.toFixed(1)}</span>
               <span className="text-xs text-slate-400">
-                ({locationReviews.length} {locationReviews.length === 1 ? "review" : "reviews"})
+                ({publishedReviews.length} {publishedReviews.length === 1 ? "review" : "reviews"})
               </span>
             </div>
           )}
@@ -267,17 +276,17 @@ export default async function LocationPage({
             )}
 
             {/* Photos */}
-            {(locationPhotos.length > 0 || session?.user?.id) && (
+            {(visiblePhotos.length > 0 || session?.user?.id) && (
               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-50 via-blue-50/40 to-teal-50/30 p-6 sm:p-8">
                 <div className="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-sky-200/30 blur-3xl" />
                 <div className="relative">
                   <div className="mb-3 flex items-center justify-between">
                     <h2 className="text-lg font-semibold text-slate-900">
-                      Photos {locationPhotos.length > 0 && `(${locationPhotos.length})`}
+                      Photos {visiblePhotos.length > 0 && `(${visiblePhotos.length})`}
                     </h2>
                     {session?.user?.id && <PhotoUpload locationId={location.id} />}
                   </div>
-                  <PhotoGallery photos={locationPhotos} />
+                  <PhotoGallery photos={visiblePhotos} />
                 </div>
               </div>
             )}
@@ -287,7 +296,7 @@ export default async function LocationPage({
               <div className="absolute -left-8 -top-8 h-36 w-36 rounded-full bg-amber-200/30 blur-3xl" />
               <div className="relative">
                 <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                  Reviews & Tips ({locationReviews.length})
+                  Reviews & Tips ({publishedReviews.length})
                 </h2>
                 {session?.user?.id && (
                   <div className="mb-3 rounded-xl bg-white p-4 shadow-sm">
@@ -304,7 +313,7 @@ export default async function LocationPage({
                     />
                   </div>
                 )}
-                <ReviewList reviews={locationReviews} />
+                <ReviewList reviews={visibleReviews} />
               </div>
             </div>
           </div>

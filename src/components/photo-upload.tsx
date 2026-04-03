@@ -18,6 +18,7 @@ export function PhotoUpload({ locationId }: { locationId: number }) {
   const [caption, setCaption] = useState("");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
 
   function reset() {
     setShowForm(false);
@@ -87,6 +88,7 @@ export function PhotoUpload({ locationId }: { locationId: number }) {
 
       // Step 4: Refresh and reset
       reset();
+      setSubmitted(true);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Upload failed");
@@ -97,10 +99,17 @@ export function PhotoUpload({ locationId }: { locationId: number }) {
 
   if (!showForm) {
     return (
-      <Button variant="outline" onClick={() => setShowForm(true)}>
-        <Camera data-icon="inline-start" />
-        Add Photo
-      </Button>
+      <div className="flex items-center gap-3">
+        {submitted && (
+          <p className="text-xs text-teal-600">
+            Photo uploaded! It will be visible to others once approved.
+          </p>
+        )}
+        <Button variant="outline" onClick={() => { setShowForm(true); setSubmitted(false); }}>
+          <Camera data-icon="inline-start" />
+          Add Photo
+        </Button>
+      </div>
     );
   }
 

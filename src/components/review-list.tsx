@@ -8,6 +8,7 @@ interface Review {
   body: string | null;
   tip: string | null;
   visitDate: string | null;
+  isPublished: boolean;
   createdAt: Date;
   user: {
     name: string | null;
@@ -44,7 +45,12 @@ export function ReviewList({ reviews }: { reviews: Review[] }) {
   return (
     <div className="space-y-3">
       {reviews.map((review) => (
-        <div key={review.id} className="rounded-xl bg-white p-4 shadow-sm">
+        <div key={review.id} className="relative rounded-xl bg-white p-4 shadow-sm">
+          {!review.isPublished && (
+            <span className="absolute right-3 top-3 rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+              Pending approval
+            </span>
+          )}
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-3">
               <Avatar className="h-8 w-8">

@@ -7,6 +7,7 @@ interface Photo {
   id: number;
   url: string;
   caption: string | null;
+  isApproved: boolean;
   user: { name: string | null };
 }
 
@@ -28,7 +29,7 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
           <div key={photo.id} className="group">
             <button
               type="button"
-              className="w-full overflow-hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="relative w-full overflow-hidden rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               onClick={() => setSelectedPhoto(photo)}
             >
               <img
@@ -36,6 +37,13 @@ export function PhotoGallery({ photos }: { photos: Photo[] }) {
                 alt={photo.caption ?? "Location photo"}
                 className="aspect-square w-full object-cover transition-transform group-hover:scale-105"
               />
+              {!photo.isApproved && (
+                <div className="absolute inset-0 flex items-end justify-center bg-black/10 pb-2">
+                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-700">
+                    Pending
+                  </span>
+                </div>
+              )}
             </button>
             <div className="mt-1.5 space-y-0.5 px-0.5">
               {photo.caption && (

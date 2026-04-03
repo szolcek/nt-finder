@@ -36,6 +36,7 @@ export function ReviewForm({ locationId, existingReview }: ReviewFormProps) {
   const [visitDate, setVisitDate] = useState(existingReview?.visitDate ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState(false);
   const [isOpen, setIsOpen] = useState(isEditing);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -69,6 +70,7 @@ export function ReviewForm({ locationId, existingReview }: ReviewFormProps) {
       } else {
         await createReview(payload);
       }
+      setSubmitted(true);
       router.refresh();
     } catch (err: unknown) {
       const message =
@@ -183,6 +185,11 @@ export function ReviewForm({ locationId, existingReview }: ReviewFormProps) {
       </div>
 
       {error && <p className="text-xs text-red-500">{error}</p>}
+      {submitted && (
+        <p className="text-xs text-teal-600">
+          Your review has been submitted and will be visible to others once approved.
+        </p>
+      )}
     </form>
   );
 }

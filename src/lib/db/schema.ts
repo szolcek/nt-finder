@@ -134,7 +134,7 @@ export const reviews = pgTable(
     body: text("body"),
     tip: text("tip"),
     visitDate: date("visit_date"),
-    isPublished: boolean("is_published").default(true).notNull(),
+    isPublished: boolean("is_published").default(false).notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
     updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
   },
@@ -189,6 +189,7 @@ export const photos = pgTable("photos", {
   height: integer("height"),
   sizeBytes: integer("size_bytes"),
   mimeType: text("mime_type"),
+  isApproved: boolean("is_approved").default(false).notNull(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 

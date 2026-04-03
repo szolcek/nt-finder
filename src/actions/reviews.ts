@@ -6,6 +6,7 @@ import { reviews, locations } from "@/lib/db/schema";
 import { createReviewSchema } from "@/lib/validators";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { isAdmin } from "@/lib/admin";
 
 export async function createReview(input: unknown) {
   const session = await auth();
@@ -23,6 +24,7 @@ export async function createReview(input: unknown) {
       body: data.body,
       tip: data.tip,
       visitDate: data.visitDate,
+      isPublished: isAdmin(session),
     })
     .returning();
 
@@ -50,6 +52,7 @@ export async function updateReview(reviewId: number, input: unknown) {
       body: data.body,
       tip: data.tip,
       visitDate: data.visitDate,
+      isPublished: isAdmin(session),
       updatedAt: new Date(),
     })
     .where(and(eq(reviews.id, reviewId), eq(reviews.userId, session.user.id)))

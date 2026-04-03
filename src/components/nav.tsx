@@ -13,8 +13,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { TreePine, Menu, X, Map, Route, LogIn, LogOut, User } from "lucide-react";
+import { TreePine, Menu, X, Map, Route, LogIn, LogOut, User, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ADMIN_EMAIL } from "@/lib/admin";
 
 const navLinks = [
   { href: "/locations", label: "Locations", icon: Map },
@@ -50,6 +51,19 @@ export function Nav() {
                 {link.label}
               </Link>
             ))}
+            {session?.user?.email === ADMIN_EMAIL && (
+              <Link
+                href="/admin"
+                className={cn(
+                  "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+                  pathname.startsWith("/admin")
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                )}
+              >
+                Admin
+              </Link>
+            )}
           </nav>
 
           <div className="ml-auto flex items-center gap-2">
@@ -168,19 +182,36 @@ export function Nav() {
                 );
               })}
               {session?.user && (
-                <Link
-                  href="/account"
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors",
-                    pathname === "/account"
-                      ? "bg-primary/10 text-primary"
-                      : "text-foreground hover:bg-muted"
+                <>
+                  <Link
+                    href="/account"
+                    onClick={() => setMobileOpen(false)}
+                    className={cn(
+                      "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors",
+                      pathname === "/account"
+                        ? "bg-primary/10 text-primary"
+                        : "text-foreground hover:bg-muted"
+                    )}
+                  >
+                    <User className="h-4.5 w-4.5" />
+                    My Account
+                  </Link>
+                  {session.user.email === ADMIN_EMAIL && (
+                    <Link
+                      href="/admin"
+                      onClick={() => setMobileOpen(false)}
+                      className={cn(
+                        "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors",
+                        pathname.startsWith("/admin")
+                          ? "bg-primary/10 text-primary"
+                          : "text-foreground hover:bg-muted"
+                      )}
+                    >
+                      <Shield className="h-4.5 w-4.5" />
+                      Admin
+                    </Link>
                   )}
-                >
-                  <User className="h-4.5 w-4.5" />
-                  My Account
-                </Link>
+                </>
               )}
             </nav>
 
