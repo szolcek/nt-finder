@@ -2,12 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Star } from "lucide-react";
+import { Star, MessageCircle, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { createReview, updateReview } from "@/actions/reviews";
 
@@ -37,6 +36,7 @@ export function ReviewForm({ locationId, existingReview }: ReviewFormProps) {
   const [visitDate, setVisitDate] = useState(existingReview?.visitDate ?? "");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(isEditing);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -89,132 +89,100 @@ export function ReviewForm({ locationId, existingReview }: ReviewFormProps) {
 
   const displayRating = hoveredRating || rating;
 
+  if (!isOpen) {
+    return (
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="flex w-full items-center gap-2 text-sm text-slate-500 transition-colors hover:text-slate-700"
+      >
+        <MessageCircle className="h-3.5 w-3.5" />
+        <span>{isEditing ? "Edit your review" : "Write a review"}</span>
+        <ChevronDown className="ml-auto h-3.5 w-3.5" />
+      </button>
+    );
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{isEditing ? "Edit Your Review" : "Write a Review"}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Star Rating */}
-          <div className="space-y-1.5">
-            <Label>Rating</Label>
-            <div
-              className="flex gap-1"
-              onMouseLeave={() => setHoveredRating(0)}
-            >
-              {Array.from({ length: 5 }).map((_, i) => {
-                const starValue = i + 1;
-                return (
-                  <button
-                    key={starValue}
-                    type="button"
-                    onClick={() => setRating(starValue)}
-                    onMouseEnter={() => setHoveredRating(starValue)}
-                    className="rounded p-0.5 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                    aria-label={`Rate ${starValue} star${starValue > 1 ? "s" : ""}`}
-                  >
-                    <Star
-                      className={cn(
-                        "h-6 w-6 transition-colors",
-                        starValue <= displayRating
-                          ? "fill-yellow-400 text-yellow-400"
-                          : "text-muted-foreground/30"
-                      )}
-                    />
-                  </button>
-                );
-              })}
-            </div>
-            {rating > 0 && (
-              <p className="text-xs text-muted-foreground">
-                {rating} out of 5 stars
-              </p>
-            )}
-          </div>
+    <form onSubmit={handleSubmit} className="space-y-3">
+      {/* Stars inline */}
+      <div className="flex items-center gap-3">
+        <div
+          className="flex gap-0.5"
+          onMouseLeave={() => setHoveredRating(0)}
+        >
+          {Array.from({ length: 5 }).map((_, i) => {
+            const starValue = i + 1;
+            return (
+              <button
+                key={starValue}
+                type="button"
+                onClick={() => setRating(starValue)}
+                onMouseEnter={() => setHoveredRating(starValue)}
+                className="transition-transform hover:scale-110 focus-visible:outline-none"
+                aria-label={`Rate ${starValue} star${starValue > 1 ? "s" : ""}`}
+              >
+                <Star
+                  className={cn(
+                    "h-5 w-5 transition-colors",
+                    starValue <= displayRating
+                      ? "fill-amber-400 text-amber-400"
+                      : "text-slate-200"
+                  )}
+                />
+              </button>
+            );
+          })}
+        </div>
+        {rating > 0 && <span className="text-xs text-slate-400">{rating}/5</span>}
+      </div>
 
-          {/* Title */}
-          <div className="space-y-1.5">
-            <Label htmlFor="review-title">Title</Label>
-            <Input
-              id="review-title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Summarise your visit"
-              maxLength={200}
-            />
-            {title.length > 150 && (
-              <p className="text-xs text-muted-foreground">
-                {title.length}/200 characters
-              </p>
-            )}
-          </div>
+      {/* Single text area for the review */}
+      <Input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Title your review..."
+        maxLength={200}
+        className="border-0 bg-transparent px-0 text-sm font-medium text-slate-800 placeholder:text-slate-400 shadow-none focus-visible:ring-0"
+      />
+      <Textarea
+        value={body}
+        onChange={(e) => setBody(e.target.value)}
+        placeholder="How was your visit?"
+        maxLength={5000}
+        rows={2}
+        className="min-h-0 resize-none border-0 bg-transparent px-0 text-sm text-slate-600 placeholder:text-slate-400 shadow-none focus-visible:ring-0"
+      />
 
-          {/* Body */}
-          <div className="space-y-1.5">
-            <Label htmlFor="review-body">Review</Label>
-            <Textarea
-              id="review-body"
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-              placeholder="Share your experience..."
-              maxLength={5000}
-              rows={4}
-            />
-            {body.length > 4500 && (
-              <p className="text-xs text-muted-foreground">
-                {body.length}/5000 characters
-              </p>
-            )}
-          </div>
+      {/* Tip & date row — compact */}
+      <div className="flex flex-wrap items-end gap-3">
+        <div className="flex-1 min-w-[180px]">
+          <Textarea
+            value={tip}
+            onChange={(e) => setTip(e.target.value)}
+            placeholder="Got a tip? (optional)"
+            maxLength={1000}
+            rows={1}
+            className="min-h-0 resize-none rounded-lg border-slate-200 bg-teal-50/50 px-3 py-2 text-xs text-slate-600 placeholder:text-slate-400"
+          />
+        </div>
+        <Input
+          type="date"
+          value={visitDate}
+          onChange={(e) => setVisitDate(e.target.value)}
+          className="h-8 w-auto rounded-lg border-slate-200 px-3 text-xs text-slate-500"
+        />
+        <Button
+          type="submit"
+          disabled={isSubmitting || rating === 0}
+          size="sm"
+          className="h-8 rounded-lg bg-teal-600 px-4 text-xs font-medium hover:bg-teal-700"
+        >
+          {isSubmitting ? "Posting..." : isEditing ? "Update" : "Post"}
+        </Button>
+      </div>
 
-          {/* Tip */}
-          <div className="space-y-1.5">
-            <Label htmlFor="review-tip">Tip</Label>
-            <Textarea
-              id="review-tip"
-              value={tip}
-              onChange={(e) => setTip(e.target.value)}
-              placeholder="Any tips for future visitors?"
-              maxLength={1000}
-              rows={2}
-              className="bg-nt-green-light"
-            />
-            {tip.length > 800 && (
-              <p className="text-xs text-muted-foreground">
-                {tip.length}/1000 characters
-              </p>
-            )}
-          </div>
-
-          {/* Visit Date */}
-          <div className="space-y-1.5">
-            <Label htmlFor="review-visit-date">Visit Date</Label>
-            <Input
-              id="review-visit-date"
-              type="date"
-              value={visitDate}
-              onChange={(e) => setVisitDate(e.target.value)}
-            />
-          </div>
-
-          {/* Error */}
-          {error && (
-            <p className="text-sm text-destructive">{error}</p>
-          )}
-
-          {/* Submit */}
-          <Button type="submit" disabled={isSubmitting || rating === 0}>
-            {isSubmitting
-              ? isEditing
-                ? "Updating..."
-                : "Submitting..."
-              : isEditing
-                ? "Update Review"
-                : "Submit Review"}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+      {error && <p className="text-xs text-red-500">{error}</p>}
+    </form>
   );
 }

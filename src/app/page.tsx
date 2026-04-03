@@ -38,7 +38,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="absolute left-20 top-[52%] w-52 rotate-[-1deg] rounded-xl bg-white p-3.5 shadow-lg shadow-slate-200/50 ring-1 ring-slate-100">
+          <div className="absolute left-6 top-[52%] w-52 rotate-[-1deg] rounded-xl bg-white p-3.5 shadow-lg shadow-slate-200/50 ring-1 ring-slate-100">
             <div className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-teal-500">Tip</div>
             <div className="text-sm text-slate-600">Arrive early for the best parking spots</div>
           </div>
@@ -190,8 +190,8 @@ export default async function HomePage() {
 
               <div className="ml-4 rounded-xl bg-white p-3 shadow-sm sm:ml-8">
                 <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-amber-100">
-                    <Image src="/hero.jpg" alt="Property" width={48} height={48} className="h-full w-full object-cover" />
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-amber-100">
+                    <Mountain className="h-5 w-5 text-amber-600" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold text-slate-800">Stourhead</div>
@@ -206,8 +206,8 @@ export default async function HomePage() {
 
               <div className="ml-4 rounded-xl bg-white p-3 shadow-sm sm:ml-8">
                 <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
-                    <Image src="https://upload.wikimedia.org/wikipedia/commons/5/50/Bodiam-castle-10My8-1197.jpg" alt="Bodiam Castle" width={48} height={48} className="h-full w-full object-cover" />
+                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-sky-100">
+                    <Mountain className="h-5 w-5 text-sky-600" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold text-slate-800">Bodiam Castle</div>

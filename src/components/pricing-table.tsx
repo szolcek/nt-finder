@@ -1,13 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -67,35 +60,29 @@ export function PricingTable({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <Button
-          variant={showMember ? "default" : "outline"}
-          size="sm"
+      <div className="inline-flex items-center rounded-lg bg-white p-1 shadow-sm">
+        <button
           onClick={() => setShowMember(true)}
+          className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${showMember ? "bg-teal-500 text-white shadow-sm" : "text-slate-600 hover:text-slate-900"}`}
         >
           Member
-        </Button>
-        <Button
-          variant={!showMember ? "default" : "outline"}
-          size="sm"
+        </button>
+        <button
           onClick={() => setShowMember(false)}
+          className={`rounded-md px-3 py-1.5 text-xs font-medium transition-colors ${!showMember ? "bg-teal-500 text-white shadow-sm" : "text-slate-600 hover:text-slate-900"}`}
         >
           Non-member
-        </Button>
+        </button>
       </div>
 
       {isFreeEntry ? (
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Entry</CardTitle>
-            <CardDescription>Free for everyone</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              {entryPricing[0]?.notes || "No entry fee required"}
-            </p>
-          </CardContent>
-        </Card>
+        <div className="rounded-xl bg-white p-4 shadow-sm">
+          <div className="text-sm font-semibold text-slate-800">Entry</div>
+          <div className="mt-0.5 text-xs text-slate-500">Free for everyone</div>
+          <p className="mt-2 text-sm text-slate-600">
+            {entryPricing[0]?.notes || "No entry fee required"}
+          </p>
+        </div>
       ) : (
         [...entryCategories.entries()].map(([category, rows]) => (
           <PricingSection
@@ -130,46 +117,42 @@ function PricingSection({
   showMember: boolean;
 }) {
   return (
-    <Card>
-      <CardHeader className="pb-3">
-        <CardTitle className="text-base">{title}</CardTitle>
-        <CardDescription>
-          {showMember ? "Member prices" : "Non-member prices"}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-2">
-          {rows.map((row) => (
-            <div
-              key={row.id}
-              className="flex items-center justify-between text-sm"
-            >
-              <span>{row.label ?? row.tier}</span>
-              <div className="flex items-center gap-2">
-                <span className="font-medium">
-                  {showMember
-                    ? formatPrice(row.memberPrice)
-                    : formatPrice(row.nonMemberPrice)}
-                </span>
-                {showMember && row.memberPrice === null && (
-                  <Badge variant="secondary" className="text-xs">
-                    Member benefit
-                  </Badge>
-                )}
-              </div>
+    <div className="rounded-xl bg-white p-4 shadow-sm">
+      <div className="text-sm font-semibold text-slate-800">{title}</div>
+      <div className="mt-0.5 text-xs text-slate-500">
+        {showMember ? "Member prices" : "Non-member prices"}
+      </div>
+      <div className="mt-3 space-y-2.5">
+        {rows.map((row) => (
+          <div
+            key={row.id}
+            className="flex items-center justify-between text-sm"
+          >
+            <span className="text-slate-600">{row.label ?? row.tier}</span>
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-slate-800">
+                {showMember
+                  ? formatPrice(row.memberPrice)
+                  : formatPrice(row.nonMemberPrice)}
+              </span>
+              {showMember && row.memberPrice === null && (
+                <Badge variant="secondary" className="text-xs">
+                  Member benefit
+                </Badge>
+              )}
             </div>
-          ))}
-          {rows.some((r) => r.notes) && (
-            <div className="mt-2 space-y-1">
-              {rows.filter((r) => r.notes).map((r) => (
-                <p key={r.id} className="text-xs text-muted-foreground">
-                  {r.notes}
-                </p>
-              ))}
-            </div>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+          </div>
+        ))}
+        {rows.some((r) => r.notes) && (
+          <div className="mt-2 space-y-1">
+            {rows.filter((r) => r.notes).map((r) => (
+              <p key={r.id} className="text-xs text-slate-400">
+                {r.notes}
+              </p>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

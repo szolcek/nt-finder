@@ -1,6 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
 
 interface Review {
@@ -23,10 +21,10 @@ function StarRating({ rating }: { rating: number }) {
       {Array.from({ length: 5 }).map((_, i) => (
         <Star
           key={i}
-          className={`h-4 w-4 ${
+          className={`h-3.5 w-3.5 ${
             i < rating
-              ? "fill-yellow-400 text-yellow-400"
-              : "text-muted-foreground/30"
+              ? "fill-amber-400 text-amber-400"
+              : "text-slate-200"
           }`}
         />
       ))}
@@ -37,60 +35,56 @@ function StarRating({ rating }: { rating: number }) {
 export function ReviewList({ reviews }: { reviews: Review[] }) {
   if (reviews.length === 0) {
     return (
-      <p className="text-sm text-muted-foreground">
+      <p className="text-sm text-slate-500">
         No reviews yet. Be the first to share your experience!
       </p>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {reviews.map((review) => (
-        <Card key={review.id}>
-          <CardHeader className="pb-3">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-3">
-                <Avatar className="h-8 w-8">
-                  <AvatarImage src={review.user.image ?? undefined} />
-                  <AvatarFallback>
-                    {review.user.name?.charAt(0)?.toUpperCase() ?? "?"}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-medium">
-                    {review.user.name ?? "Anonymous"}
+        <div key={review.id} className="rounded-xl bg-white p-4 shadow-sm">
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={review.user.image ?? undefined} />
+                <AvatarFallback className="bg-amber-100 text-xs font-bold text-amber-700">
+                  {review.user.name?.charAt(0)?.toUpperCase() ?? "?"}
+                </AvatarFallback>
+              </Avatar>
+              <div>
+                <p className="text-sm font-semibold text-slate-800">
+                  {review.user.name ?? "Anonymous"}
+                </p>
+                {review.visitDate && (
+                  <p className="text-xs text-slate-400">
+                    Visited{" "}
+                    {new Date(review.visitDate).toLocaleDateString("en-GB", {
+                      month: "long",
+                      year: "numeric",
+                    })}
                   </p>
-                  {review.visitDate && (
-                    <p className="text-xs text-muted-foreground">
-                      Visited{" "}
-                      {new Date(review.visitDate).toLocaleDateString("en-GB", {
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </p>
-                  )}
-                </div>
+                )}
               </div>
-              <StarRating rating={review.rating} />
             </div>
-          </CardHeader>
-          <CardContent className="space-y-2">
+            <StarRating rating={review.rating} />
+          </div>
+          <div className="mt-3 space-y-2">
             {review.title && (
-              <p className="font-medium">{review.title}</p>
+              <p className="text-sm font-semibold text-slate-800">{review.title}</p>
             )}
             {review.body && (
-              <p className="text-sm text-muted-foreground">{review.body}</p>
+              <p className="text-sm leading-relaxed text-slate-600">{review.body}</p>
             )}
             {review.tip && (
-              <div className="mt-2 rounded-md bg-nt-green-light p-3">
-                <p className="text-sm">
-                  <span className="font-medium text-nt-green-dark">Tip: </span>
-                  <span className="text-primary">{review.tip}</span>
-                </p>
+              <div className="mt-2 rounded-lg border-l-[3px] border-l-teal-400 bg-teal-50/50 p-3">
+                <div className="mb-0.5 text-[10px] font-semibold uppercase tracking-wider text-teal-600">Visitor tip</div>
+                <p className="text-sm text-slate-600">{review.tip}</p>
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ))}
     </div>
   );

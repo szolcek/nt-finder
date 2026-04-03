@@ -36,6 +36,15 @@ if (typeof document !== "undefined") {
     .nt-marker-select {
       animation: nt-marker-select 300ms ease-out;
     }
+    @keyframes nt-marker-drop {
+      0% { opacity: 0; transform: translateY(-30px) scale(0.6); }
+      60% { opacity: 1; transform: translateY(4px) scale(1.05); }
+      80% { transform: translateY(-2px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .nt-marker-drop {
+      animation: nt-marker-drop 500ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    }
     /* Tighten InfoWindow chrome */
     .gm-style-iw-d { overflow: visible !important; padding: 0 !important; }
     .gm-style .gm-style-iw { padding: 0 !important; }
@@ -191,11 +200,39 @@ export interface LocationMapProps {
   nearMeRadius?: number; // miles
   categoryFilter?: string;
   onCategoryFilter?: (category: string) => void;
+  viewFilter?: string;
   className?: string;
 }
 
 const UK_CENTER = { lat: 54.0, lng: -2.5 };
 const UK_ZOOM = 6;
+
+/** When the view filter changes (e.g. "Visited"), fit the map to the new set of markers with a bounce */
+function FitBoundsOnFilter({ locations, viewFilter }: { locations: LocationData[]; viewFilter?: string }) {
+  const map = useMap();
+  const prevFilter = useRef(viewFilter);
+
+  useEffect(() => {
+    if (!map || prevFilter.current === viewFilter) return;
+    prevFilter.current = viewFilter;
+
+    if (!viewFilter || viewFilter === "all" || locations.length === 0) return;
+
+    const bounds = new google.maps.LatLngBounds();
+    locations.forEach((loc) => {
+      bounds.extend({ lat: Number(loc.latitude), lng: Number(loc.longitude) });
+    });
+
+    if (locations.length === 1) {
+      map.panTo({ lat: Number(locations[0].latitude), lng: Number(locations[0].longitude) });
+      map.setZoom(12);
+    } else {
+      map.fitBounds(bounds, 80);
+    }
+  }, [map, locations, viewFilter]);
+
+  return null;
+}
 
 /** Fits map to show all locations on initial load — skips if initial position was provided */
 function MapController({ locations, skipFit }: { locations: LocationData[]; skipFit?: boolean }) {
@@ -237,6 +274,7 @@ function ClusteredMarkers({
   wishlist,
   onToggleVisited,
   onToggleWishlist,
+  viewFilter,
 }: {
   locations: LocationData[];
   selectedLocationId?: number | null;
@@ -245,6 +283,7 @@ function ClusteredMarkers({
   wishlist?: Record<string, true>;
   onToggleVisited?: (name: string) => void;
   onToggleWishlist?: (name: string) => void;
+  viewFilter?: string;
 }) {
   const map = useMap();
   const markerLib = useMapsLibrary("marker");
@@ -253,6 +292,7 @@ function ClusteredMarkers({
     Map<number, google.maps.marker.AdvancedMarkerElement>
   >(new Map());
   const zoomRef = useRef(6);
+  const prevViewFilter = useRef(viewFilter);
 
   // Track zoom and re-render markers when zoom bracket changes
   useEffect(() => {
@@ -356,6 +396,28 @@ function ClusteredMarkers({
       }
     });
 
+    // Staggered drop animation when view filter changes
+    const filterChanged = prevViewFilter.current !== viewFilter;
+    if (filterChanged && viewFilter && viewFilter !== "all") {
+      prevViewFilter.current = viewFilter;
+      let i = 0;
+      newMarkers.forEach((marker) => {
+        const el = marker.content as HTMLElement;
+        if (el) {
+          el.className = "";
+          el.style.opacity = "0";
+          const delay = Math.min(i * 40, 800);
+          setTimeout(() => {
+            el.style.opacity = "";
+            el.className = "nt-marker-drop";
+          }, delay);
+          i++;
+        }
+      });
+    } else if (filterChanged) {
+      prevViewFilter.current = viewFilter;
+    }
+
     markersRef.current = newMarkers;
     clustererRef.current.clearMarkers();
     clustererRef.current.addMarkers(Array.from(newMarkers.values()));
@@ -365,7 +427,7 @@ function ClusteredMarkers({
         m.map = null;
       });
     };
-  }, [map, markerLib, locations, onLocationSelect]);
+  }, [map, markerLib, locations, onLocationSelect, viewFilter]);
 
   // Update marker styles when selection, visited, or wishlist state changes
   useEffect(() => {
@@ -813,6 +875,7 @@ export function LocationMap({
   nearMeRadius,
   categoryFilter,
   onCategoryFilter,
+  viewFilter,
   className,
 }: LocationMapProps) {
   const hasInitialPosition = !!(initialCenter && initialZoom);
@@ -866,6 +929,7 @@ export function LocationMap({
           }}
         >
           <MapController locations={validLocations} skipFit={hasInitialPosition || !!userLocation} />
+          <FitBoundsOnFilter locations={validLocations} viewFilter={viewFilter} />
           {userLocation && nearMeRadius && (
             <UserLocationOverlay position={userLocation} radiusMiles={nearMeRadius} />
           )}
@@ -877,6 +941,7 @@ export function LocationMap({
             wishlist={wishlist}
             onToggleVisited={onToggleVisited}
             onToggleWishlist={onToggleWishlist}
+            viewFilter={viewFilter}
           />
         </GoogleMap>
       </APIProvider>
