@@ -9,6 +9,9 @@ import Image from "next/image";
 import { db } from "@/lib/db";
 import { locations } from "@/lib/db/schema";
 import { AnimatedCounter } from "@/components/animated-counter";
+import { ScrollReveal } from "@/components/scroll-reveal";
+import { AnimatedStar } from "@/components/animated-star";
+import { AnimatedProgress } from "@/components/animated-progress";
 import { auth } from "@/lib/auth";
 
 export default async function HomePage() {
@@ -164,10 +167,10 @@ export default async function HomePage() {
         </div>
 
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 text-center">
+          <ScrollReveal className="mb-8 text-center">
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">See what you can do</h2>
             <p className="mx-auto mt-2 max-w-md text-sm text-slate-500">Explore the map, track visits, plan trips, and share tips — all in one place.</p>
-          </div>
+          </ScrollReveal>
         </div>
         <div className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-2">
           {/* Left — Map preview */}
@@ -176,6 +179,7 @@ export default async function HomePage() {
             <div className="absolute -bottom-10 -left-10 h-32 w-32 rounded-full bg-sky-200/30 blur-3xl" />
 
             <div className="relative space-y-3">
+              <ScrollReveal>
               <div className="rounded-xl bg-white p-3.5 shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal-500 text-white">
@@ -187,8 +191,10 @@ export default async function HomePage() {
                   </div>
                 </div>
               </div>
+              </ScrollReveal>
 
-              <div className="ml-4 rounded-xl bg-white p-3 shadow-sm sm:ml-8">
+              <ScrollReveal delay={200} className="ml-4 sm:ml-8">
+              <div className="rounded-xl bg-white p-3 shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-amber-100">
                     <Mountain className="h-5 w-5 text-amber-600" />
@@ -200,11 +206,13 @@ export default async function HomePage() {
                       <CheckCircle2 className="h-3 w-3" /> Visited
                     </div>
                   </div>
-                  <Star className="h-4 w-4 flex-shrink-0 fill-amber-400 text-amber-400" />
+                  <AnimatedStar delay={900} />
                 </div>
               </div>
+              </ScrollReveal>
 
-              <div className="ml-4 rounded-xl bg-white p-3 shadow-sm sm:ml-8">
+              <ScrollReveal delay={400} className="ml-4 sm:ml-8">
+              <div className="rounded-xl bg-white p-3 shadow-sm">
                 <div className="flex items-center gap-3">
                   <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-sky-100">
                     <Mountain className="h-5 w-5 text-sky-600" />
@@ -219,7 +227,9 @@ export default async function HomePage() {
                   <Star className="h-4 w-4 flex-shrink-0 text-slate-200" />
                 </div>
               </div>
+              </ScrollReveal>
 
+              <ScrollReveal delay={600}>
               <div className="rounded-xl bg-white p-3 shadow-sm">
                 <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
                   <MapPin className="h-4 w-4 text-slate-400" />
@@ -229,10 +239,12 @@ export default async function HomePage() {
                   </div>
                 </div>
               </div>
+              </ScrollReveal>
             </div>
           </div>
 
           {/* Right — Features grid */}
+          <ScrollReveal delay={150}>
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-50 via-teal-50/40 to-white p-6 sm:p-8">
             <div className="absolute -right-10 top-8 h-36 w-36 rounded-full bg-sky-200/30 blur-3xl" />
 
@@ -270,27 +282,20 @@ export default async function HomePage() {
               </p>
             </div>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* ── Track Your Progress ── */}
       <section className="bg-white px-6 py-10">
         <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-2">
+          <ScrollReveal>
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-50 via-teal-50/60 to-sky-50/40 p-6 sm:p-8">
             <div className="absolute -left-8 -top-8 h-36 w-36 rounded-full bg-emerald-200/30 blur-3xl" />
             <div className="absolute -bottom-8 -right-8 h-32 w-32 rounded-full bg-teal-200/20 blur-3xl" />
 
             <div className="relative space-y-3">
-              <div className="rounded-xl bg-white p-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div className="text-sm font-semibold text-slate-800">Your Progress</div>
-                  <div className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-700">12%</div>
-                </div>
-                <div className="mt-2.5 h-2.5 w-full overflow-hidden rounded-full bg-emerald-100">
-                  <div className="h-full w-[12%] rounded-full bg-gradient-to-r from-emerald-400 to-teal-500" />
-                </div>
-                <div className="mt-1.5 text-xs text-slate-500">27 of {count} properties visited</div>
-              </div>
+              <AnimatedProgress percent={12} visited={27} total={count} />
 
               <div className="ml-4 rounded-xl bg-white p-3.5 shadow-sm sm:ml-8">
                 <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">Recent visits</div>
@@ -314,7 +319,9 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
 
+          <ScrollReveal delay={150}>
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Track every visit.</h2>
             <p className="mt-3 text-base leading-relaxed text-slate-500">
@@ -333,13 +340,15 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* ── Plan Your Trips ── */}
       <section className="px-6 py-10">
         <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-2">
-          <div className="order-2 lg:order-1">
+          <ScrollReveal className="order-2 lg:order-1">
+          <div>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Plan the perfect day out.</h2>
             <p className="mt-3 text-base leading-relaxed text-slate-500">
               Group properties into trips, set dates, add notes, and organise your route before you set off.
@@ -357,8 +366,10 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
+          </ScrollReveal>
 
-          <div className="relative order-1 overflow-hidden rounded-2xl bg-gradient-to-br from-sky-50 via-blue-50/40 to-teal-50/30 p-6 sm:p-8 lg:order-2">
+          <ScrollReveal delay={150} className="order-1 lg:order-2">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-50 via-blue-50/40 to-teal-50/30 p-6 sm:p-8">
             <div className="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-sky-200/30 blur-3xl" />
 
             <div className="relative space-y-3">
@@ -400,12 +411,14 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* ── Reviews & Tips ── */}
       <section className="bg-white px-6 py-10">
         <div className="mx-auto grid max-w-6xl items-center gap-8 lg:grid-cols-2">
+          <ScrollReveal>
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50/80 via-orange-50/30 to-rose-50/40 p-6 sm:p-8">
             <div className="absolute -left-8 -top-8 h-36 w-36 rounded-full bg-amber-200/30 blur-3xl" />
 
@@ -445,7 +458,9 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
+          </ScrollReveal>
 
+          <ScrollReveal delay={150}>
           <div>
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">Real tips from real visitors.</h2>
             <p className="mt-3 text-base leading-relaxed text-slate-500">
@@ -464,12 +479,13 @@ export default async function HomePage() {
               ))}
             </div>
           </div>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* ── Bottom CTA + Footer ── */}
       <section className="bg-gradient-to-b from-slate-50 to-slate-100 px-6 py-16">
-        <div className="mx-auto max-w-2xl text-center">
+        <ScrollReveal className="mx-auto max-w-2xl text-center">
           <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-50">
             <MapPin className="h-6 w-6 text-teal-600" />
           </div>
@@ -490,7 +506,7 @@ export default async function HomePage() {
               <ArrowRight className="ml-1.5 h-4 w-4" />
             </Button>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* Footer */}
