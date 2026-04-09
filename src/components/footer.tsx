@@ -6,7 +6,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-6">
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <MapPin className="h-4 w-4" />
-          <span>NT Finder</span>
+          <span>TrustQuest</span>
         </div>
         <p className="text-xs text-muted-foreground">
           Not affiliated with the National Trust. Community-built.

@@ -95,7 +95,7 @@ export default async function HomePage() {
           <div className="text-center">
             <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-teal-50 px-4 py-1.5 text-sm font-medium text-teal-700 ring-1 ring-teal-100">
               <TreePine className="h-4 w-4" />
-              Your NT Tracker
+              TrustQuest
             </div>
 
             <h1 className="text-4xl font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
@@ -514,7 +514,7 @@ export default async function HomePage() {
         <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 sm:flex-row">
           <div className="flex items-center gap-2 text-sm font-medium text-slate-400">
             <TreePine className="h-3.5 w-3.5" />
-            NT Finder
+            TrustQuest
           </div>
           <div className="text-xs text-slate-300">
             Not affiliated with the National Trust

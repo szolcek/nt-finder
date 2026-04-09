@@ -489,7 +489,12 @@ function ClusteredMarkers({
       pixelOffset={[0, -10]}
       maxWidth={320}
     >
-      <div style={{ fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif", minWidth: 240 }}>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        onPointerDown={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        style={{ fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif", minWidth: 240 }}
+      >
         {/* ── Image hero ── */}
         {hasImage && (
           <div style={{
@@ -635,6 +640,7 @@ function ClusteredMarkers({
         <div style={{ padding: "0 12px 12px" }}>
         <Link
           href={`/locations/${selectedLocation.slug}`}
+          className="info-window-cta"
           style={{
             display: "block", textAlign: "center",
             padding: "9px 0", borderRadius: 8,

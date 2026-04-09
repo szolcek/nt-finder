@@ -324,7 +324,7 @@ export default async function LocationPage({
               <div className="absolute -right-10 top-8 h-36 w-36 rounded-full bg-sky-200/30 blur-3xl" />
               <div className="relative">
                 <h2 className="mb-3 text-lg font-semibold text-slate-900">Pricing</h2>
-                <PricingTable pricing={pricing} isMember={false} />
+                <PricingTable pricing={pricing} isMember={session?.user?.isMember ?? false} />
               </div>
             </div>
           </div>

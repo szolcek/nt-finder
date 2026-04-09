@@ -20,7 +20,7 @@ Start the dev server before opening in browser.
 
 ## Architecture
 
-**NT Finder** - a Next.js 16 app for discovering, tracking, and reviewing National Trust properties. Uses App Router with React Server Components.
+**TrustQuest** - a Next.js 16 app for discovering, tracking, and reviewing National Trust properties. Uses App Router with React Server Components.
 
 ### Stack
 - **Framework**: Next.js 16.2.1 / React 19 / TypeScript

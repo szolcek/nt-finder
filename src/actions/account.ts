@@ -25,6 +25,36 @@ export async function updateProfile(input: unknown) {
   return user;
 }
 
+export async function updateAvatar(imageUrl: string) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  await db
+    .update(users)
+    .set({ image: imageUrl, updatedAt: new Date() })
+    .where(eq(users.id, session.user.id));
+}
+
+export async function removeAvatar() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  await db
+    .update(users)
+    .set({ image: null, updatedAt: new Date() })
+    .where(eq(users.id, session.user.id));
+}
+
+export async function updateMembership(isMember: boolean) {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+
+  await db
+    .update(users)
+    .set({ isMember, updatedAt: new Date() })
+    .where(eq(users.id, session.user.id));
+}
+
 export async function deleteAccount() {
   const session = await auth();
   if (!session?.user?.id) throw new Error("Unauthorized");

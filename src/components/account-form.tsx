@@ -1,15 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { signOut } from "next-auth/react";
-import { updateProfile, deleteAccount } from "@/actions/account";
+import { signOut, useSession } from "next-auth/react";
+import { updateProfile, updateAvatar, removeAvatar, updateMembership, deleteAccount } from "@/actions/account";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
-import { Check, AlertTriangle } from "lucide-react";
+import { Check, AlertTriangle, Loader2, Camera, X } from "lucide-react";
 
 interface AccountFormProps {
   user: {
@@ -24,10 +24,16 @@ interface AccountFormProps {
 
 export function AccountForm({ user }: AccountFormProps) {
   const router = useRouter();
+  const { update: updateSession } = useSession();
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [name, setName] = useState(user.name ?? "");
+  const [avatarUrl, setAvatarUrl] = useState(user.image);
+  const [avatarUploading, setAvatarUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isMember, setIsMember] = useState(user.isMember);
+  const [memberSaving, setMemberSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -44,6 +50,65 @@ export function AccountForm({ user }: AccountFormProps) {
       setError(e instanceof Error ? e.message : "Failed to save");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function handleAvatarUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setAvatarUploading(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ filename: file.name, contentType: file.type }),
+      });
+      if (!res.ok) throw new Error("Failed to get upload URL");
+      const { presignedUrl, publicUrl } = await res.json();
+
+      await fetch(presignedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+
+      await updateAvatar(publicUrl);
+      setAvatarUrl(publicUrl);
+      router.refresh();
+    } catch {
+      setError("Failed to upload photo");
+    } finally {
+      setAvatarUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  }
+
+  async function handleRemoveAvatar() {
+    setAvatarUploading(true);
+    try {
+      await removeAvatar();
+      setAvatarUrl(null);
+      router.refresh();
+    } catch {
+      setError("Failed to remove photo");
+    } finally {
+      setAvatarUploading(false);
+    }
+  }
+
+  async function handleToggleMember() {
+    setMemberSaving(true);
+    try {
+      const next = !isMember;
+      await updateMembership(next);
+      setIsMember(next);
+      await updateSession();
+      router.refresh();
+    } catch {
+      // revert on failure
+    } finally {
+      setMemberSaving(false);
     }
   }
 
@@ -68,16 +133,48 @@ export function AccountForm({ user }: AccountFormProps) {
         </p>
 
         <div className="mt-6 flex items-center gap-4">
-          <Avatar className="h-16 w-16">
-            <AvatarImage src={user.image ?? undefined} alt={user.name ?? "User"} />
-            <AvatarFallback className="text-lg">
-              {user.name?.charAt(0)?.toUpperCase() ?? "U"}
-            </AvatarFallback>
-          </Avatar>
-          <div>
+          <button
+            type="button"
+            className="group relative h-16 w-16 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={avatarUploading}
+          >
+            <Avatar className="h-16 w-16">
+              <AvatarImage src={avatarUrl ?? undefined} alt={user.name ?? "User"} />
+              <AvatarFallback className="text-lg">
+                {user.name?.charAt(0)?.toUpperCase() ?? "U"}
+              </AvatarFallback>
+            </Avatar>
+            <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+              {avatarUploading ? (
+                <Loader2 className="h-5 w-5 animate-spin text-white" />
+              ) : (
+                <Camera className="h-5 w-5 text-white" />
+              )}
+            </div>
+          </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/heic"
+            className="hidden"
+            onChange={handleAvatarUpload}
+          />
+          <div className="space-y-1">
             <p className="text-sm text-muted-foreground">
-              Photo synced from your Google account
+              Click photo to change
             </p>
+            {avatarUrl && (
+              <button
+                type="button"
+                onClick={handleRemoveAvatar}
+                disabled={avatarUploading}
+                className="flex items-center gap-1 text-xs text-muted-foreground hover:text-destructive transition-colors"
+              >
+                <X className="h-3 w-3" />
+                Remove photo
+              </button>
+            )}
           </div>
         </div>
 
@@ -111,20 +208,41 @@ export function AccountForm({ user }: AccountFormProps) {
           </div>
 
           <div className="space-y-2">
-            <Label>NT Membership</Label>
-            <p className="text-sm text-muted-foreground">
-              {user.isMember ? "Active member" : "Not a member"}
-            </p>
-          </div>
-
-          <div className="space-y-2">
-            <Label>Member Since</Label>
+            <Label>Joined</Label>
             <p className="text-sm text-muted-foreground">
               {new Date(user.createdAt).toLocaleDateString("en-GB", {
                 day: "numeric",
                 month: "long",
                 year: "numeric",
               })}
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label>NT Membership</Label>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                role="switch"
+                aria-checked={isMember}
+                disabled={memberSaving}
+                onClick={handleToggleMember}
+                className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ backgroundColor: isMember ? "#0d9488" : "#d1d5db" }}
+              >
+                <span
+                  className="pointer-events-none block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform"
+                  style={{ transform: isMember ? "translateX(20px)" : "translateX(0)" }}
+                />
+              </button>
+              <span className="text-sm text-muted-foreground">
+                {memberSaving ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : isMember ? "Active member" : "Not a member"}
+              </span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Toggle this to see member pricing by default on location pages.
             </p>
           </div>
         </div>

@@ -534,7 +534,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
     <>
       {/* Header */}
       <div className="glass-sidebar-header px-5 py-4 text-center text-white">
-        <h1 className="text-lg font-bold tracking-wide">National Trust Finder</h1>
+        <h1 className="text-lg font-bold tracking-wide">TrustQuest</h1>
         <p className="mt-0.5 text-xs text-white/75">
           {locations.length} properties across England, Wales &amp; Northern Ireland
         </p>
@@ -740,7 +740,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
               });
             }
             if (navigator.share) {
-              navigator.share({ title: "My National Trust Progress", text });
+              navigator.share({ title: "My TrustQuest Progress", text });
             } else {
               navigator.clipboard.writeText(text).then(() => alert("Progress copied to clipboard!"));
             }

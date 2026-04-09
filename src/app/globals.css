@@ -148,8 +148,17 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans scroll-smooth;
+    @apply font-sans;
   }
+}
+
+/* ─── Press effect for info-window CTA ───────────────────────────────────── */
+.info-window-cta {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.info-window-cta:active {
+  transform: scale(0.95);
+  box-shadow: 0 0 0 rgba(0, 122, 61, 0.25) !important;
 }
 
 /* ─── Liquid glass effect ─────────────────────────────────────────────────── */

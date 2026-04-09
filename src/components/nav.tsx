@@ -33,7 +33,7 @@ export function Nav() {
         <div className="mx-auto flex h-14 max-w-6xl items-center px-4">
           <Link href="/" className="mr-6 flex items-center gap-2 font-semibold">
             <TreePine className="h-5 w-5 text-teal-600" />
-            <span>NT Finder</span>
+            <span>TrustQuest</span>
           </Link>
 
           <nav className="hidden items-center gap-1 md:flex">

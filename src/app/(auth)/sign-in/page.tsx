@@ -13,7 +13,7 @@ export default function SignInPage() {
     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Welcome to NT Finder</CardTitle>
+          <CardTitle className="text-2xl">Welcome to TrustQuest</CardTitle>
           <CardDescription>
             Sign in to save trips, upload photos, and leave reviews.
           </CardDescription>
