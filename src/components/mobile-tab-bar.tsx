@@ -28,11 +28,9 @@ export function MobileTabBar() {
     <nav
       className="fixed bottom-0 left-0 right-0 z-40 md:hidden"
       style={{
-        background: "rgba(255, 255, 255, 0.75)",
-        backdropFilter: "blur(24px) saturate(1.8)",
-        WebkitBackdropFilter: "blur(24px) saturate(1.8)",
-        borderTop: "1px solid rgba(0, 0, 0, 0.06)",
-        boxShadow: "0 -2px 12px rgba(0, 0, 0, 0.04)",
+        background: "#ffffff",
+        borderTop: "1px solid rgba(0, 0, 0, 0.08)",
+        boxShadow: "0 -1px 4px rgba(0, 0, 0, 0.04)",
       }}
     >
       {/* Sliding indicator */}

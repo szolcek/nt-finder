@@ -152,16 +152,6 @@
   }
 }
 
-/* ─── Page slide transitions ─────────────────────────────────────────────── */
-@keyframes slide-in-from-left {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes slide-in-from-right {
-  from { opacity: 0; transform: translateX(-40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
 /* ─── Explore button transition ──────────────────────────────────────────── */
 @keyframes map-reveal {
   0%   { width: 20px; height: 20px; opacity: 1; }
