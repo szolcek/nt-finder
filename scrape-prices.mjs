@@ -1,13 +1,22 @@
 import { chromium } from 'playwright';
 
 const url = process.argv[2] || 'https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/ashridge-estate';
+const screenshotPath = process.argv[3] || '/tmp/nt-prices.png';
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage();
 
 console.log('Loading:', url);
 await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-await page.waitForTimeout(5000);
+
+// Wait for the page to fully render (NT site is heavy JS)
+try {
+  await page.waitForSelector('table', { timeout: 15000 });
+  console.log('Tables detected');
+} catch {
+  console.log('No tables found after 15s, waiting more...');
+  await page.waitForTimeout(10000);
+}
 
 // Try to dismiss cookie banner
 try {
@@ -59,7 +68,7 @@ if (prices) {
   console.log([...new Set(prices)].join(', '));
 }
 
-await page.screenshot({ path: '/tmp/nt-prices.png', fullPage: true });
-console.log('\nScreenshot saved to /tmp/nt-prices.png');
+await page.screenshot({ path: screenshotPath, fullPage: true });
+console.log(`\nScreenshot saved to ${screenshotPath}`);
 
 await browser.close();
