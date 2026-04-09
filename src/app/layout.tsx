@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Providers } from "@/components/providers";
 import { Nav } from "@/components/nav";
 import { MobileTabBar } from "@/components/mobile-tab-bar";
+import { PageTransition } from "@/components/page-transition";
 
 export const metadata: Metadata = {
   title: {
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body className="flex min-h-full flex-col">
         <Providers>
           <Nav />
-          <main className="flex-1 pb-16 md:pb-0">{children}</main>
+          <main className="flex-1 pb-16 md:pb-0">
+            <PageTransition>{children}</PageTransition>
+          </main>
           <MobileTabBar />
           <Analytics />
         </Providers>

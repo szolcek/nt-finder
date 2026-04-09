@@ -86,8 +86,8 @@ function markerSize(zoom: number, isSelected: boolean): { size: number; border: 
     return { size: s, border: 3 };
   }
   //            z≤7  z8-10  z11-13  z14+
-  const s = zoom <= 7 ? 10 : zoom <= 10 ? 14 : zoom <= 13 ? 18 : 22;
-  const b = zoom <= 7 ? 1.5 : zoom <= 10 ? 2 : 2.5;
+  const s = zoom <= 7 ? 18 : zoom <= 10 ? 24 : zoom <= 13 ? 28 : 32;
+  const b = zoom <= 7 ? 2.5 : zoom <= 10 ? 3 : 3.5;
   return { size: s, border: b };
 }
 
@@ -142,9 +142,10 @@ function createMarkerContent(
     return wrapper;
   }
 
-  // Default → type-colored dot with white border for visibility
+  // Default → type-colored dot with white border for visibility + 44px touch target
   const color = MARKER_TYPE_COLORS[category ?? ""] ?? "#3b71ca";
-  wrapper.style.cssText = "filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45));";
+  const tapSize = Math.max(44, size);
+  wrapper.style.cssText = `filter: drop-shadow(0 1px 3px rgba(0,0,0,0.45)); display:flex; align-items:center; justify-content:center; width:${tapSize}px; height:${tapSize}px;`;
   wrapper.innerHTML = `<div style="width:${size}px;height:${size}px;background:${color};border:${border}px solid rgba(255,255,255,0.9);border-radius:50%;"></div>`;
 
   return wrapper;
@@ -242,6 +243,9 @@ function MapController({ locations, skipFit }: { locations: LocationData[]; skip
   useEffect(() => {
     if (!map || fitted.current || locations.length === 0 || skipFit) return;
     fitted.current = true;
+
+    // On mobile, the default UK_CENTER/UK_ZOOM is already a good fit — skip fitBounds to avoid jarring zoom
+    if (window.innerWidth < 768) return;
 
     if (locations.length === 1) {
       map.setCenter({
@@ -344,6 +348,7 @@ function ClusteredMarkers({
       algorithm: new SuperClusterAlgorithm({ radius: 80, maxZoom: 15 }),
       renderer,
       onClusterClick: (_event, cluster, map) => {
+        onLocationSelect?.(null);
         const currentZoom = map.getZoom() || 0;
         map.panTo(cluster.position);
         map.setZoom(Math.min(currentZoom + 3, 18));
@@ -924,6 +929,10 @@ export function LocationMap({
           mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID}
           onClick={() => onLocationSelect?.(null)}
           onDragstart={() => onLocationSelect?.(null)}
+          onTilesLoaded={() => {
+            console.log("[Map] tilesloaded event fired", Date.now());
+            window.dispatchEvent(new Event("map-tiles-loaded"));
+          }}
           onCameraChanged={(ev) => {
             const c = ev.detail.center;
             onCameraChanged?.({ lat: c.lat, lng: c.lng }, ev.detail.zoom);

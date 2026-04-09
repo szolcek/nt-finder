@@ -12,6 +12,9 @@ import { AnimatedCounter } from "@/components/animated-counter";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { AnimatedStar } from "@/components/animated-star";
 import { AnimatedProgress } from "@/components/animated-progress";
+import { AnimatedVisits } from "@/components/animated-visits";
+import { AnimatedTrip } from "@/components/animated-trip";
+import { ExploreButton } from "@/components/explore-button";
 import { auth } from "@/lib/auth";
 
 export default async function HomePage() {
@@ -24,7 +27,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* ── Hero — light, centered, with floating cards ── */}
-      <section className="relative flex min-h-[calc(100vh-4rem)] flex-col overflow-hidden md:min-h-[calc(100vh-3.5rem)]">
+      <section className="relative flex min-h-[calc(100dvh-4rem)] flex-col overflow-hidden md:min-h-[calc(100vh-3.5rem)]">
         {/* Mobile: hero images */}
         <div className="absolute inset-0 md:hidden">
           <Image
@@ -129,13 +132,14 @@ export default async function HomePage() {
 
         {/* Mobile: CTAs pinned to bottom */}
         <div className="relative z-10 mt-auto px-5 pb-6 md:hidden">
-          <Link
-            href={exploreHref}
-            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-500 px-7 text-[15px] font-semibold text-white shadow-lg transition-all hover:bg-teal-600"
+          <ExploreButton href={exploreHref} />
+          <a
+            href="#features"
+            className="mt-3 inline-flex h-10 w-full items-center justify-center gap-1.5 text-sm font-medium text-white/80"
           >
-            <Compass className="h-4 w-4" />
-            Start Exploring
-          </Link>
+            See How It Works
+            <ArrowRight className="h-3.5 w-3.5" />
+          </a>
           <div className="mt-3 flex items-center justify-center gap-4 text-xs text-white/50">
             <div className="flex items-center gap-1.5">
               <Map className="h-3.5 w-3.5" />
@@ -226,10 +230,13 @@ export default async function HomePage() {
         <div className="absolute inset-x-0 -bottom-1 h-16 bg-gradient-to-t from-slate-50 to-transparent hidden md:block" />
       </section>
 
+      {/* Mobile: dark-to-white transition */}
+      <div className="h-20 bg-gradient-to-b from-slate-900 to-white md:hidden" />
+
       {/* ── Two-panel showcase ── */}
-      <section id="features" className="relative scroll-mt-4 bg-white pt-16 pb-10 px-6">
-        {/* Curved top edge */}
-        <div className="absolute inset-x-0 -top-10 h-12">
+      <section id="features" className="relative scroll-mt-4 bg-white pt-16 pb-10 px-6 md:scroll-mt-4">
+        {/* Curved top edge — desktop only */}
+        <div className="absolute inset-x-0 -top-10 h-12 hidden md:block">
           <svg viewBox="0 0 1440 48" className="w-full h-full" preserveAspectRatio="none">
             <path d="M0,48 C480,0 960,0 1440,48 L1440,48 L0,48Z" fill="white" />
           </svg>
@@ -364,23 +371,9 @@ export default async function HomePage() {
             <div className="absolute -bottom-8 -right-8 h-32 w-32 rounded-full bg-teal-200/20 blur-3xl" />
 
             <div className="relative space-y-3">
-              <AnimatedProgress percent={12} visited={27} total={count} />
+              <AnimatedProgress percent={57} visited={127} total={count} />
 
-              <div className="ml-4 rounded-xl bg-white p-3.5 shadow-sm sm:ml-8">
-                <div className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400">Recent visits</div>
-                {[
-                  { name: "Stourhead", date: "28 Mar", emoji: "\uD83C\uDFE0" },
-                  { name: "Corfe Castle", date: "15 Mar", emoji: "\uD83C\uDFF0" },
-                  { name: "White Cliffs", date: "2 Mar", emoji: "\uD83C\uDFD6\uFE0F" },
-                ].map((v) => (
-                  <div key={v.name} className="flex items-center gap-2.5 border-b border-slate-100 py-1.5 last:border-0">
-                    <span className="text-base">{v.emoji}</span>
-                    <span className="flex-1 text-sm font-medium text-slate-700">{v.name}</span>
-                    <span className="text-xs text-slate-400">{v.date}</span>
-                    <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
-                  </div>
-                ))}
-              </div>
+              <AnimatedVisits />
 
               <div className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 shadow-sm">
                 <Trophy className="h-3.5 w-3.5 text-amber-500" />
@@ -441,44 +434,7 @@ export default async function HomePage() {
           <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-50 via-blue-50/40 to-teal-50/30 p-6 sm:p-8">
             <div className="absolute -right-8 -top-8 h-36 w-36 rounded-full bg-sky-200/30 blur-3xl" />
 
-            <div className="relative space-y-3">
-              <div className="rounded-xl bg-white p-4 shadow-sm">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-sm font-semibold text-slate-800">Dorset Weekend</div>
-                    <div className="mt-0.5 text-xs text-slate-500">3 properties &middot; 2 days</div>
-                  </div>
-                  <div className="rounded-full bg-sky-100 px-2.5 py-1 text-xs font-semibold text-sky-700">
-                    <Calendar className="mr-1 inline h-3 w-3" />
-                    Apr 12-13
-                  </div>
-                </div>
-              </div>
-
-              <div className="ml-4 space-y-2 sm:ml-8">
-                {[
-                  { num: "1", name: "Corfe Castle", type: "Castle", color: "border-l-violet-400" },
-                  { num: "2", name: "Brownsea Island", type: "Coast", color: "border-l-sky-400" },
-                  { num: "3", name: "Kingston Lacy", type: "House & Garden", color: "border-l-blue-400" },
-                ].map((stop) => (
-                  <div key={stop.name} className={`flex items-center gap-2.5 rounded-lg border-l-[3px] bg-white p-2.5 shadow-sm ${stop.color}`}>
-                    <div className="flex h-6 w-6 items-center justify-center rounded-md bg-slate-100 text-xs font-bold text-slate-600">
-                      {stop.num}
-                    </div>
-                    <div className="flex-1">
-                      <div className="text-sm font-medium text-slate-800">{stop.name}</div>
-                      <div className="text-xs text-slate-400">{stop.type}</div>
-                    </div>
-                    <Compass className="h-3.5 w-3.5 text-slate-300" />
-                  </div>
-                ))}
-              </div>
-
-              <div className="ml-2 inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1.5 text-xs font-medium text-slate-600 shadow-sm sm:ml-4">
-                <MessageCircle className="h-3 w-3 text-sky-500" />
-                Remember to book parking at Corfe!
-              </div>
-            </div>
+            <AnimatedTrip />
           </div>
           </ScrollReveal>
         </div>

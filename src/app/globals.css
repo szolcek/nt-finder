@@ -148,8 +148,34 @@
     @apply bg-background text-foreground;
   }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
   }
+}
+
+/* ─── Page slide transitions ─────────────────────────────────────────────── */
+@keyframes slide-in-from-left {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-from-right {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── Explore button transition ──────────────────────────────────────────── */
+@keyframes map-reveal {
+  0%   { width: 20px; height: 20px; opacity: 1; }
+  100% { width: 300vmax; height: 300vmax; opacity: 1; }
+}
+@keyframes pin-drop {
+  0%   { opacity: 0; transform: translate(-50%, -200%); }
+  60%  { opacity: 1; transform: translate(-50%, -45%); }
+  80%  { transform: translate(-50%, -55%); }
+  100% { opacity: 1; transform: translate(-50%, -50%); }
+}
+@keyframes spin-compass {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* ─── Press effect for info-window CTA ───────────────────────────────────── */

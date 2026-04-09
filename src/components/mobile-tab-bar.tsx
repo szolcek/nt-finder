@@ -17,27 +17,44 @@ export function MobileTabBar() {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  // Don't show on sign-in page
   if (pathname === "/sign-in") return null;
 
+  const activeIndex = tabs.findIndex((tab) => {
+    if (tab.auth && !session?.user) return false;
+    return tab.exact ? pathname === tab.href : pathname.startsWith(tab.href);
+  });
+
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t bg-white/90 backdrop-blur-xl md:hidden">
-      <div className="flex items-stretch">
+    <nav
+      className="fixed bottom-0 left-0 right-0 z-40 md:hidden"
+      style={{
+        background: "rgba(255, 255, 255, 0.75)",
+        backdropFilter: "blur(24px) saturate(1.8)",
+        WebkitBackdropFilter: "blur(24px) saturate(1.8)",
+        borderTop: "1px solid rgba(0, 0, 0, 0.06)",
+        boxShadow: "0 -2px 12px rgba(0, 0, 0, 0.04)",
+      }}
+    >
+      {/* Sliding indicator */}
+      <div
+        className="absolute top-0 h-[2px] rounded-full bg-teal-500"
+        style={{
+          width: `${100 / tabs.length}%`,
+          left: `${(Math.max(0, activeIndex) * 100) / tabs.length}%`,
+          transition: "left 200ms ease-out",
+        }}
+      />
+
+      <div className="flex">
         {tabs.map((tab) => {
-          // Show sign-in instead of account when not logged in
           if (tab.auth && !session?.user) {
-            const Icon = LogIn;
-            const active = pathname === "/sign-in";
             return (
               <Link
                 key="sign-in"
                 href="/sign-in"
-                className={cn(
-                  "flex flex-1 flex-col items-center gap-0.5 pb-[env(safe-area-inset-bottom,8px)] pt-2 text-[10px] font-medium transition-colors",
-                  active ? "text-teal-600" : "text-muted-foreground"
-                )}
+                className="flex flex-1 flex-col items-center gap-0.5 pb-[env(safe-area-inset-bottom,6px)] pt-2 text-[10px] font-medium text-slate-400"
               >
-                <Icon className="h-5 w-5" />
+                <LogIn className="h-5 w-5" />
                 <span>Sign in</span>
               </Link>
             );
@@ -53,8 +70,8 @@ export function MobileTabBar() {
               key={tab.href}
               href={tab.href}
               className={cn(
-                "flex flex-1 flex-col items-center gap-0.5 pb-[env(safe-area-inset-bottom,8px)] pt-2 text-[10px] font-medium transition-colors",
-                active ? "text-teal-600" : "text-muted-foreground"
+                "flex flex-1 flex-col items-center gap-0.5 pb-[env(safe-area-inset-bottom,6px)] pt-2 text-[10px] font-medium",
+                active ? "text-teal-600" : "text-slate-400"
               )}
             >
               <Icon className={cn("h-5 w-5", active && "stroke-[2.5]")} />

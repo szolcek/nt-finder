@@ -23,20 +23,20 @@ interface LocationsMapViewProps {
 type CategoryFilter = "all" | "house" | "garden" | "castle" | "countryside" | "coast";
 type ViewFilter = "all" | "visited" | "unvisited" | "wishlist";
 
-const CATEGORY_FILTERS: { value: CategoryFilter; label: string }[] = [
-  { value: "all", label: "All" },
-  { value: "house", label: "Houses" },
-  { value: "garden", label: "Gardens" },
-  { value: "castle", label: "Castles" },
-  { value: "countryside", label: "Country" },
-  { value: "coast", label: "Coast" },
+const CATEGORY_FILTERS: { value: CategoryFilter; label: string; emoji: string }[] = [
+  { value: "all", label: "All", emoji: "📍" },
+  { value: "house", label: "Houses", emoji: "🏠" },
+  { value: "garden", label: "Gardens", emoji: "🌳" },
+  { value: "castle", label: "Castles", emoji: "🏰" },
+  { value: "countryside", label: "Country", emoji: "🌾" },
+  { value: "coast", label: "Coast", emoji: "🏖️" },
 ];
 
-const VIEW_FILTERS: { value: ViewFilter; label: string }[] = [
-  { value: "all", label: "Show All" },
-  { value: "visited", label: "Visited" },
-  { value: "unvisited", label: "Not Visited" },
-  { value: "wishlist", label: "★ Wishlist" },
+const VIEW_FILTERS: { value: ViewFilter; label: string; emoji: string }[] = [
+  { value: "all", label: "Show All", emoji: "🔍" },
+  { value: "visited", label: "Visited", emoji: "✅" },
+  { value: "unvisited", label: "Not Visited", emoji: "⬜" },
+  { value: "wishlist", label: "Wishlist", emoji: "⭐" },
 ];
 
 const TYPE_ICONS: Record<string, string> = {
@@ -193,7 +193,7 @@ function PropertyItem({
               className="rounded px-1.5 py-px font-medium"
               style={{ background: catColors.bg, color: catColors.text }}
             >
-              {icon} {cat.label}
+              {icon}<span className="hidden md:inline"> {cat.label}</span>
             </span>
           )}
           {visited && visited.length > 0 && (
@@ -226,14 +226,14 @@ function PropertyItem({
 
       {/* Locate button */}
       <button
-        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-base text-muted-foreground/40 transition-colors hover:bg-nt-green-light hover:text-primary"
+        className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-base transition-colors hover:bg-nt-green-light"
         onClick={(e) => {
           e.stopPropagation();
           onLocate(location.id);
         }}
         title="Show on map"
       >
-        🌍
+        🧭
       </button>
     </div>
   );
@@ -264,6 +264,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
   const [visited, setVisited] = useState<Record<string, { date: string }[]>>({});
   const [wishlist, setWishlist] = useState<Record<string, true>>({});
   const [mobileView, setMobileView] = useState<"map" | "list">("map");
+  const [filtersOpen, setFiltersOpen] = useState(true);
   const listRef = useRef<HTMLDivElement>(null);
 
   // Map camera state — initialise from URL params if present
@@ -532,16 +533,16 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
   // ── Sidebar content (shared between desktop and mobile list) ────────────
   const sidebarContent = (
     <>
-      {/* Header */}
-      <div className="glass-sidebar-header px-5 py-4 text-center text-white">
+      {/* Header — desktop only */}
+      <div className="glass-sidebar-header hidden px-5 py-4 text-center text-white md:block">
         <h1 className="text-lg font-bold tracking-wide">TrustQuest</h1>
         <p className="mt-0.5 text-xs text-white/75">
           {locations.length} properties across England, Wales &amp; Northern Ireland
         </p>
       </div>
 
-      {/* Progress bar */}
-      <div className="border-b border-primary/5 bg-primary/[0.04] px-5 py-3">
+      {/* Progress bar — desktop only */}
+      <div className="hidden border-b border-primary/5 bg-primary/[0.04] px-5 py-3 md:block">
         <div className="mb-2 flex items-center justify-between text-[13px] font-medium text-foreground">
           <span>{visitedCount} of {locations.length} visited</span>
           <span>{progressPct}%</span>
@@ -556,20 +557,36 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
 
       {/* Controls */}
       <div className="flex flex-col gap-2 border-b px-4 py-3">
-        {/* Search */}
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <input
-            type="text"
-            placeholder="Search properties or regions..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onFocus={() => setSelectedId(null)}
-            className="w-full rounded-md border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none transition-colors focus:border-primary"
-          />
+        {/* Search + filter toggle */}
+        <div className="flex gap-2">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input
+              type="text"
+              placeholder="Search properties or regions..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => setSelectedId(null)}
+              className="w-full rounded-md border border-input bg-background py-2 pl-9 pr-3 text-sm outline-none transition-colors focus:border-primary"
+            />
+          </div>
+          <button
+            onClick={() => setFiltersOpen((v) => !v)}
+            className={cn(
+              "md:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-md border transition-colors",
+              filtersOpen
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-input text-muted-foreground"
+            )}
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="4" y1="6" x2="20" y2="6" /><line x1="8" y1="12" x2="20" y2="12" /><line x1="12" y1="18" x2="20" y2="18" />
+            </svg>
+          </button>
         </div>
 
-        {/* Category filters */}
+        {/* Collapsible filters */}
+        <div className={cn("flex flex-col gap-2 overflow-hidden transition-all duration-200 md:!max-h-none md:!opacity-100", filtersOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0")}>
         <div className="flex flex-wrap gap-1.5">
           {CATEGORY_FILTERS.map((f) => {
             const count = categoryCounts[f.value] ?? 0;
@@ -581,7 +598,8 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
                 onClick={() => !isEmpty && setCategoryFilter(f.value)}
                 disabled={isEmpty}
                 className={cn(
-                  "rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                  "rounded-full border font-medium transition-colors",
+                  "h-9 min-w-[2.25rem] px-2.5 text-base md:h-auto md:min-w-0 md:px-2.5 md:py-1 md:text-[11px]",
                   isActive
                     ? "border-primary bg-primary text-primary-foreground"
                     : isEmpty
@@ -589,31 +607,32 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
                       : "border-border text-muted-foreground hover:border-primary hover:text-primary"
                 )}
               >
-                {f.label}
+                <span className="md:hidden">{f.emoji}</span>
+                <span className="hidden md:inline">{f.label}</span>
               </button>
             );
           })}
         </div>
 
-        {/* Near Me */}
+        {/* Near Me — desktop full button */}
         <button
           onClick={handleNearMe}
           disabled={locating}
           className={cn(
-            "flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-[13px] font-medium transition-colors",
+            "hidden md:flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-[13px] font-medium transition-colors",
             nearMe
               ? "bg-sky-600 text-white hover:bg-sky-700"
               : "bg-[#0c2d3f] text-white hover:bg-[#164e63]",
             locating && "opacity-60"
           )}
         >
-          <Navigation className="h-3.5 w-3.5" />
+          <Navigation className={cn("h-3.5 w-3.5 shrink-0", locating && "animate-pulse")} />
           {locating ? "Locating…" : nearMe ? "📍 Near Me" : "Use My Location"}
         </button>
 
-        {/* Radius slider — shown when Near Me is active */}
+        {/* Radius slider — desktop only */}
         {nearMe && userCoords && (
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <span className="text-[11px] font-medium text-muted-foreground shrink-0">Radius</span>
             <input
               type="range"
@@ -628,8 +647,8 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
           </div>
         )}
 
-        {/* View filters */}
-        <div className="flex flex-wrap gap-1.5">
+        {/* View filters + location button inline on mobile */}
+        <div className="flex flex-wrap gap-1.5 items-center">
           {VIEW_FILTERS.map((f) => {
             const count = viewCounts[f.value] ?? 0;
             const isActive = viewFilter === f.value;
@@ -647,7 +666,8 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
               }}
               disabled={isEmpty}
               className={cn(
-                "rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors",
+                "rounded-full border font-medium transition-colors",
+                "h-9 min-w-[2.25rem] px-2.5 text-base md:h-auto md:min-w-0 md:px-2.5 md:py-1 md:text-[11px]",
                 isActive
                   ? "border-visited-gold bg-visited-gold text-white"
                   : isEmpty
@@ -655,11 +675,27 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
                     : "border-border text-muted-foreground hover:border-primary hover:text-primary"
               )}
             >
-              {f.label}
+              <span className="md:hidden">{f.emoji}</span>
+              <span className="hidden md:inline">{f.label}</span>
             </button>
             );
           })}
+          {/* Near Me — inline icon on mobile */}
+          <button
+            onClick={handleNearMe}
+            disabled={locating}
+            className={cn(
+              "md:hidden flex h-9 w-9 items-center justify-center rounded-full border font-medium transition-colors",
+              nearMe
+                ? "border-sky-600 bg-sky-600 text-white"
+                : "border-border text-muted-foreground hover:border-primary hover:text-primary",
+              locating && "opacity-60"
+            )}
+          >
+            <Navigation className={cn("h-4 w-4", locating && "animate-pulse")} />
+          </button>
         </div>
+        </div>{/* end collapsible filters */}
       </div>
 
       {/* Property list */}
@@ -754,7 +790,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
   );
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] flex-col md:h-[calc(100vh-3.5rem)]">
+    <div className="flex h-[calc(100dvh-4rem)] flex-col md:h-[calc(100vh-3.5rem)]">
       {/* Mobile toggle */}
       <div className="flex items-center gap-2 border-b px-4 py-2 md:hidden">
         <Button
@@ -800,6 +836,23 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
             className="h-full"
           />
         </div>
+
+        {/* Mobile locate button */}
+        {mobileView === "map" && (
+          <button
+            onClick={handleNearMe}
+            disabled={locating}
+            className={cn(
+              "absolute top-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full shadow-lg transition-all md:hidden",
+              nearMe
+                ? "bg-sky-600 text-white"
+                : "bg-white text-slate-700",
+              locating && "opacity-60"
+            )}
+          >
+            <Navigation className={cn("h-5 w-5", locating && "animate-pulse")} />
+          </button>
+        )}
 
         {/* Desktop sidebar — overlays the map */}
         <div className="glass-panel absolute inset-y-0 left-0 z-10 hidden w-[420px] flex-col md:flex">
