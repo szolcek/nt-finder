@@ -30,7 +30,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_left,rgba(20,184,166,0.06),transparent_50%),radial-gradient(ellipse_at_right,rgba(14,165,233,0.05),transparent_50%)]" />
 
         {/* Floating cards — left side */}
-        <div className="pointer-events-none absolute inset-y-0 left-[18%] hidden w-[260px] xl:block">
+        <div className="pointer-events-none absolute inset-y-0 left-[2%] hidden w-[260px] lg:block xl:left-[18%]">
           <div className="absolute left-0 top-[10%] w-60 rotate-[-4deg] rounded-2xl bg-white p-2 shadow-xl shadow-slate-200/60 ring-1 ring-slate-100">
             <div className="relative h-40 overflow-hidden rounded-xl">
               <Image src="/hero.jpg" alt="Stately home" fill className="object-cover" sizes="240px" />
@@ -196,8 +196,8 @@ export default async function HomePage() {
               <ScrollReveal delay={200} className="ml-4 sm:ml-8">
               <div className="rounded-xl bg-white p-3 shadow-sm">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-amber-100">
-                    <Mountain className="h-5 w-5 text-amber-600" />
+                  <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-amber-100">
+                    <Image src="/hero.jpg" alt="Stourhead" width={48} height={48} className="h-full w-full object-cover" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold text-slate-800">Stourhead</div>
@@ -214,8 +214,8 @@ export default async function HomePage() {
               <ScrollReveal delay={400} className="ml-4 sm:ml-8">
               <div className="rounded-xl bg-white p-3 shadow-sm">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg bg-sky-100">
-                    <Mountain className="h-5 w-5 text-sky-600" />
+                  <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
+                    <Image src="/bodiam.jpg" alt="Bodiam Castle" width={48} height={48} className="h-full w-full object-cover" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-semibold text-slate-800">Bodiam Castle</div>
