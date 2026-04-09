@@ -754,7 +754,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
   );
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] flex-col">
+    <div className="flex h-[calc(100vh-4rem)] flex-col md:h-[calc(100vh-3.5rem)]">
       {/* Mobile toggle */}
       <div className="flex items-center gap-2 border-b px-4 py-2 md:hidden">
         <Button

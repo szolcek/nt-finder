@@ -24,10 +24,22 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* ── Hero — light, centered, with floating cards ── */}
-      <section className="relative flex min-h-[calc(100vh-3.5rem)] flex-col overflow-hidden">
-        {/* Soft gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white via-white to-teal-50/40" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_left,rgba(20,184,166,0.06),transparent_50%),radial-gradient(ellipse_at_right,rgba(14,165,233,0.05),transparent_50%)]" />
+      <section className="relative flex min-h-[calc(100vh-4rem)] flex-col overflow-hidden md:min-h-[calc(100vh-3.5rem)]">
+        {/* Mobile: hero images */}
+        <div className="absolute inset-0 md:hidden">
+          <Image
+            src="/hero-mobile.png"
+            alt=""
+            fill
+            className="object-cover object-center"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-slate-900/40 to-slate-900/70" />
+        </div>
+        {/* Desktop: soft gradient background */}
+        <div className="absolute inset-0 hidden bg-gradient-to-b from-white via-white to-teal-50/40 md:block" />
+        <div className="absolute inset-0 hidden md:block bg-[radial-gradient(ellipse_at_left,rgba(20,184,166,0.06),transparent_50%),radial-gradient(ellipse_at_right,rgba(14,165,233,0.05),transparent_50%)]" />
 
         {/* Floating cards — left side */}
         <div className="pointer-events-none absolute inset-y-0 left-[2%] hidden w-[260px] lg:block xl:left-[18%]">
@@ -90,31 +102,88 @@ export default async function HomePage() {
           </div>
         </div>
 
-        {/* Center content */}
-        <div className="relative z-10 mx-auto flex flex-1 max-w-lg items-center justify-center px-6 py-12">
-          <div className="text-center">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-teal-50 px-4 py-1.5 text-sm font-medium text-teal-700 ring-1 ring-teal-100">
-              <TreePine className="h-4 w-4" />
-              TrustQuest
-            </div>
+        {/* Mobile: logo at top */}
+        <div className="relative z-10 mx-auto w-full px-4 pt-6 md:hidden">
+          <Image
+            src="/tq-logo.png"
+            alt="TrustQuest"
+            width={400}
+            height={400}
+            className="w-full h-auto drop-shadow-2xl"
+            priority
+          />
+        </div>
 
-            <h1 className="text-4xl font-bold leading-[1.15] tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
-              The{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10 px-3 text-teal-600">
-                  <AnimatedCounter target={count} />
-                </span>
-                <span className="absolute inset-0 rounded-2xl bg-teal-100/60 ring-1 ring-teal-200/50" />
-              </span>
-              {" "}places<br />
+        {/* Mobile: title at true screen centre */}
+        <div className="absolute inset-0 z-10 flex items-center justify-center md:hidden">
+          <div className="text-center px-5">
+            <h1 className="text-2xl font-bold leading-[1.2] tracking-tight text-white [text-shadow:0_2px_12px_rgba(0,0,0,0.5),0_1px_3px_rgba(0,0,0,0.4)]">
+              <span className="text-teal-300 [text-shadow:0_2px_12px_rgba(0,0,0,0.6)]"><AnimatedCounter target={count} /></span> places<br />
               waiting for you
             </h1>
-
-            <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-slate-500 sm:text-lg">
-              From grand country houses to rugged coastlines — discover, track, and plan your National Trust adventures.
+            <p className="mx-auto mt-2 max-w-xs text-sm leading-relaxed text-white/90 [text-shadow:0_1px_8px_rgba(0,0,0,0.5)]">
+              Discover, track, and plan your National Trust adventures.
             </p>
+          </div>
+        </div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        {/* Mobile: CTAs pinned to bottom */}
+        <div className="relative z-10 mt-auto px-5 pb-6 md:hidden">
+          <Link
+            href={exploreHref}
+            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-teal-500 px-7 text-[15px] font-semibold text-white shadow-lg transition-all hover:bg-teal-600"
+          >
+            <Compass className="h-4 w-4" />
+            Start Exploring
+          </Link>
+          <div className="mt-3 flex items-center justify-center gap-4 text-xs text-white/50">
+            <div className="flex items-center gap-1.5">
+              <Map className="h-3.5 w-3.5" />
+              <span>{count} properties</span>
+            </div>
+            <div className="h-3.5 w-px bg-white/30" />
+            <div className="flex items-center gap-1.5">
+              <MapPin className="h-3.5 w-3.5" />
+              <span>32 regions</span>
+            </div>
+            <div className="h-3.5 w-px bg-white/30" />
+            <div className="flex items-center gap-1.5">
+              <Star className="h-3.5 w-3.5" />
+              <span>Free</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop: center content */}
+        <div className="relative z-10 mx-auto hidden flex-1 max-w-lg items-center justify-center px-6 py-12 md:flex">
+          <div className="text-center">
+
+            {/* Desktop title — original with counter badge */}
+            <div className="hidden md:block">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-teal-50 px-4 py-1.5 text-sm font-medium text-teal-700 ring-1 ring-teal-100">
+                <TreePine className="h-4 w-4" />
+                TrustQuest
+              </div>
+
+              <h1 className="text-5xl font-bold leading-[1.15] tracking-tight text-slate-900 lg:text-6xl">
+                The{" "}
+                <span className="relative inline-block">
+                  <span className="relative z-10 px-3 text-teal-600">
+                    <AnimatedCounter target={count} />
+                  </span>
+                  <span className="absolute inset-0 rounded-2xl bg-teal-100/60 ring-1 ring-teal-200/50" />
+                </span>
+                {" "}places<br />
+                waiting for you
+              </h1>
+
+              <p className="mx-auto mt-5 max-w-md text-lg leading-relaxed text-slate-500">
+                From grand country houses to rugged coastlines — discover, track, and plan your National Trust adventures.
+              </p>
+            </div>
+
+            {/* Desktop CTAs */}
+            <div className="mt-8 flex items-center justify-center gap-3">
               <a
                 href="#features"
                 className="inline-flex h-12 items-center gap-2 rounded-xl bg-[#0c2d3f] px-7 text-[15px] font-semibold text-white shadow-lg shadow-slate-900/10 transition-all hover:bg-[#164e63] hover:shadow-xl"
@@ -154,7 +223,7 @@ export default async function HomePage() {
         </div>
 
         {/* Bottom fade into next section */}
-        <div className="absolute inset-x-0 -bottom-1 h-16 bg-gradient-to-t from-slate-50 to-transparent" />
+        <div className="absolute inset-x-0 -bottom-1 h-16 bg-gradient-to-t from-slate-50 to-transparent hidden md:block" />
       </section>
 
       {/* ── Two-panel showcase ── */}
