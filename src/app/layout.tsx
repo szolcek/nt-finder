@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { Providers } from "@/components/providers";
@@ -29,6 +30,20 @@ export default function RootLayout({
       className="h-full antialiased"
       data-scroll-behavior="smooth"
     >
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-72R7XYJYS8"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-72R7XYJYS8');
+          `}
+        </Script>
+      </head>
       <body className="flex min-h-full flex-col">
         <Providers>
           <Nav />
