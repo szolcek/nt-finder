@@ -320,6 +320,19 @@
     ]
   },
   {
+    "name": "Allen Banks and Staward Gorge",
+    "slug": "allen-banks-and-staward-gorge",
+    "description": "Allen Banks and Staward Gorge is the largest area of ancient semi-natural woodland in Northumberland, set in a dramatic gorge carved by the River Allen. Victorian paths wind through the steep wooded valley past a medieval pele tower ruin at Staward. The site is rich in wildlife, including red squirrels, dippers and otters, and is carpeted with bluebells and wild garlic in spring.",
+    "shortDescription": "Northumberland's largest ancient woodland in a dramatic river gorge with Victorian paths and red squirrels.",
+    "latitude": "54.9703290",
+    "longitude": "-2.3169672",
+    "region": "Northumberland",
+    "category": "countryside",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/north-east/allen-banks-and-staward-gorge",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Autumn_at_Staward_Gorge_-_geograph.org.uk_-_614916.jpg",
+    "pricing": []
+  },
+  {
     "name": "Anglesey Abbey",
     "slug": "anglesey-abbey",
     "description": "Anglesey Abbey is a Jacobean-style house built on the site of a 12th-century Augustinian priory, transformed by the 1st Lord Fairhaven into a treasure house. The house contains an outstanding collection of paintings, furniture, and clocks. The 114-acre garden is famous for its winter garden, one of the finest in England, along with its dahlia garden and sweeping avenues.",
@@ -560,6 +573,44 @@
         "nonMemberPrice": 3.75,
         "memberPrice": null,
         "label": "Child (5-17) - House & Collection (add-on)"
+      }
+    ]
+  },
+  {
+    "name": "Ashdown House",
+    "slug": "ashdown-house",
+    "description": "Ashdown House is a striking 17th-century Dutch-style hunting lodge built by the 1st Baron Craven as a retreat for Elizabeth of Bohemia, the Winter Queen. The tall, compact chalk-block house stands dramatically on the Berkshire Downs, flanked by two pavilions and surrounded by ancient woodland. The rooftop platform offers sweeping views across the downland landscape.",
+    "shortDescription": "17th-century Dutch-style hunting lodge on the Berkshire Downs built for the Winter Queen.",
+    "latitude": "51.5361819",
+    "longitude": "-1.5944852",
+    "region": "Berkshire",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/ashdown",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Parterre_garden%2C_Ashdown_House%2C_Lambourn_-_geograph.org.uk_-_3439250.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 7.5,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 4,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 18,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
       }
     ]
   },
@@ -964,6 +1015,32 @@
     ]
   },
   {
+    "name": "Bath Assembly Rooms",
+    "slug": "bath-assembly-rooms",
+    "description": "The Bath Assembly Rooms are a magnificent suite of 18th-century public rooms designed by John Wood the Younger and opened in 1771 as the social heart of Georgian Bath. The rooms include the grand Ball Room, Tea Room and Octagon, with their original chandeliers and fine neoclassical interiors. Featured in Jane Austen's novels Northanger Abbey and Persuasion, the building was restored after World War II bomb damage.",
+    "shortDescription": "Georgian social venue designed by John Wood the Younger in 1771, featured in Jane Austen's novels.",
+    "latitude": "51.3862040",
+    "longitude": "-2.3628429",
+    "region": "Somerset",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/bath-bristol/bath-assembly-rooms",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Fashion_Museum_and_Assembly_Rooms_Bath.jpg",
+    "pricing": []
+  },
+  {
+    "name": "Beatrix Potter Gallery",
+    "slug": "beatrix-potter-gallery",
+    "description": "The Beatrix Potter Gallery is housed in a 17th-century building in Hawkshead that was once the office of Potter's husband, the solicitor William Heelis. The gallery displays a rotating selection of Beatrix Potter's original illustrations and watercolours, alongside personal items and memorabilia. The building itself retains its original interior layout as a working solicitor's office.",
+    "shortDescription": "Gallery of Beatrix Potter's original illustrations in her husband's former Hawkshead office.",
+    "latitude": "54.3750538",
+    "longitude": "-2.9988061",
+    "region": "Cumbria",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/lake-district/beatrix-potter-gallery-and-hawkshead",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f2/The_Gallery_-_geograph.org.uk_-_510315.jpg",
+    "pricing": []
+  },
+  {
     "name": "Belton House",
     "slug": "belton-house",
     "description": "Belton House is a grand country house built in 1685-88 for Sir John Brownlow in the graceful style of the English Baroque. The interiors feature exquisite wood carvings, fine porcelain, and silverware collections spanning three centuries. Set within 1,300 acres of parkland and formal gardens, the estate includes an orangery, Italian and Dutch gardens, and an adventure playground.",
@@ -1038,6 +1115,44 @@
         "nonMemberPrice": 27,
         "memberPrice": null,
         "label": "1 adult, 2 children"
+      }
+    ]
+  },
+  {
+    "name": "Bembridge Windmill",
+    "slug": "bembridge-windmill",
+    "description": "Bembridge Windmill is the only surviving windmill on the Isle of Wight, built around 1700 and last used for grinding grain in 1913. The stone tower mill retains much of its original wooden machinery across four floors, offering a fascinating insight into historic milling technology. From the top, there are fine views across Bembridge and out to sea.",
+    "shortDescription": "The Isle of Wight's last surviving windmill, dating from around 1700 with original wooden machinery.",
+    "latitude": "50.6833812",
+    "longitude": "-1.0956535",
+    "region": "Isle of Wight",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/isle-of-wight/bembridge-windmill",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/93/Bembridge_Windmill_-_Isle_of_Wight.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 7.5,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 3.75,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 18.75,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
       }
     ]
   },
@@ -1250,6 +1365,19 @@
     ]
   },
   {
+    "name": "Birling Gap",
+    "slug": "birling-gap",
+    "description": "Birling Gap is a coastal beauty spot at the foot of the Seven Sisters chalk cliffs in East Sussex, offering direct beach access via a flight of steps cut into the cliff face. The dramatic chalk cliffs are among the fastest-eroding coastline in Europe, revealing millions of years of geological history. The site provides one of the finest viewpoints for the iconic undulating line of the Seven Sisters.",
+    "shortDescription": "Coastal access point beneath the Seven Sisters chalk cliffs with dramatic views across the eroding coastline.",
+    "latitude": "50.7431648",
+    "longitude": "0.2010491",
+    "region": "East Sussex",
+    "category": "coast",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/sussex/birling-gap-and-the-seven-sisters",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/70/Seven_Sisters_from_Birling_Gap%2C_Sussex%2C_UK.jpg",
+    "pricing": []
+  },
+  {
     "name": "Birmingham Back to Backs",
     "slug": "birmingham-back-to-backs",
     "description": "Birmingham Back to Backs is the last surviving court of back-to-back houses in the city, telling the stories of the people who lived there from the 1840s to the 1970s. Guided tours reveal rooms furnished and decorated to represent different eras, from a Victorian tailor's workshop to a 1970s sweetshop. The houses provide a vivid and moving picture of working-class life in Birmingham.",
@@ -1326,6 +1454,19 @@
         "label": "one adult, two children"
       }
     ]
+  },
+  {
+    "name": "Blakeney Point",
+    "slug": "blakeney-point",
+    "description": "Blakeney Point is a four-mile shingle spit extending into the North Sea off the Norfolk coast, one of the finest examples of a coastal spit in Britain. The nature reserve is home to breeding colonies of common and grey seals, and in summer hosts one of the largest tern colonies in England. The shifting shingle landscape and salt marshes support a remarkable diversity of coastal plants and migrant birds.",
+    "shortDescription": "Norfolk shingle spit and nature reserve renowned for seal colonies and large breeding tern populations.",
+    "latitude": "52.9597203",
+    "longitude": "1.0116269",
+    "region": "Norfolk",
+    "category": "coast",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/norfolk/blakeney-national-nature-reserve",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/8a/Blakeney_point_lifeboat_station.jpg",
+    "pricing": []
   },
   {
     "name": "Blickling Estate",
@@ -1576,6 +1717,19 @@
     ]
   },
   {
+    "name": "Boscastle",
+    "slug": "boscastle",
+    "description": "Boscastle is a picturesque harbour village on the north Cornwall coast, set in a narrow, winding inlet flanked by towering cliffs. The medieval harbour, rebuilt after devastating floods in 2004, is one of the few safe havens on this exposed coastline. The surrounding clifftop walks offer spectacular views and access to some of Cornwall's wildest coastal scenery.",
+    "shortDescription": "Historic harbour village on the north Cornwall coast set in a dramatic cliff-flanked inlet.",
+    "latitude": "50.6904678",
+    "longitude": "-4.6944244",
+    "region": "Cornwall",
+    "category": "coast",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cornwall/boscastle",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Boscastle_path.JPG",
+    "pricing": []
+  },
+  {
     "name": "Box Hill",
     "slug": "box-hill",
     "description": "Box Hill is a prominent chalk hill in the Surrey Hills Area of Outstanding Natural Beauty, named after the ancient box woodland on its steep slopes. The summit offers spectacular views over the Weald and was famously featured in the 2012 Olympic cycling road race. It is a popular destination for walking, cycling, and wildlife spotting.",
@@ -1808,6 +1962,52 @@
         "nonMemberPrice": 27,
         "memberPrice": null,
         "label": "Family one adult"
+      }
+    ]
+  },
+  {
+    "name": "Buscot Park",
+    "slug": "buscot-park",
+    "description": "Buscot Park is a late 18th-century neoclassical house set in sweeping parkland on the Oxfordshire-Gloucestershire border. The house contains the Faringdon Collection of paintings, furniture and ceramics, including Burne-Jones's famous Briar Rose series. The Italianate water garden, designed by Harold Peto, connects the house to the lake through a series of descending pools and canal.",
+    "shortDescription": "Neoclassical house with the Faringdon Collection and Harold Peto's celebrated Italianate water garden.",
+    "latitude": "51.6694865",
+    "longitude": "-1.6504287",
+    "region": "Oxfordshire",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/buscot-park",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/85/Buscot_Park_02.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "garden-only",
+        "tier": "adult",
+        "nonMemberPrice": 10,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "garden-only",
+        "tier": "child",
+        "nonMemberPrice": 5,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "house-and-garden",
+        "tier": "adult",
+        "nonMemberPrice": 14,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "house-and-garden",
+        "tier": "child",
+        "nonMemberPrice": 7,
+        "memberPrice": null,
+        "label": "Child (5-17)"
       }
     ]
   },
@@ -3891,6 +4091,19 @@
     ]
   },
   {
+    "name": "Dunstanburgh Castle",
+    "slug": "dunstanburgh-castle",
+    "description": "Dunstanburgh Castle is a dramatic 14th-century ruin standing on a remote basalt headland on the Northumberland coast, accessible only by foot. Built by Thomas, Earl of Lancaster, in 1313 as both a fortress and a political statement against Edward II, the castle's massive gatehouse and curtain walls dominate the wild coastline. The castle is managed by English Heritage but the surrounding coastline and farmland are in National Trust care.",
+    "shortDescription": "Dramatic 14th-century castle ruin on a remote Northumberland headland, accessible only on foot.",
+    "latitude": "55.4894260",
+    "longitude": "-1.5950984",
+    "region": "Northumberland",
+    "category": "castle",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/north-east/dunstanburgh-castle",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/53/Gatehouse_and_curtain_wall_of_Dunstanburgh_Castle%2C_2009.jpg",
+    "pricing": []
+  },
+  {
     "name": "Dunster Castle",
     "slug": "dunster-castle",
     "description": "Dunster Castle is a dramatically sited medieval fortress perched on a steep hill overlooking the Bristol Channel, remodelled in the 19th century as a comfortable country home. The castle has been occupied for over 1,000 years, with a gatehouse, towers, and interiors spanning the medieval, Jacobean, and Victorian periods. The subtropical terraced gardens feature rare plants, a working watermill, and views to Exmoor.",
@@ -4828,6 +5041,32 @@
     ]
   },
   {
+    "name": "George Inn",
+    "slug": "george-inn",
+    "description": "The George Inn in Southwark is London's last surviving galleried coaching inn, dating from the 17th century and rebuilt after the Southwark fire of 1676. The timber-framed inn with its open galleries overlooks a cobbled courtyard and was mentioned by Dickens in Little Dorrit. Now a working pub managed by the National Trust, it retains its historic character and atmospheric old bars.",
+    "shortDescription": "London's last galleried coaching inn, a 17th-century Southwark pub mentioned by Dickens.",
+    "latitude": "51.5042925",
+    "longitude": "-0.0904364",
+    "region": "London",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/london/george-inn",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/1c/The_George_Inn_1.jpg",
+    "pricing": []
+  },
+  {
+    "name": "George Stephenson's Birthplace",
+    "slug": "george-stephensons-birthplace",
+    "description": "George Stephenson's Birthplace is the modest stone cottage in Wylam, Northumberland, where the father of the railways was born in 1781. The single-room tenement, shared by several families, illustrates the humble origins of the engineer who built the Rocket locomotive and pioneered the world's first public railway. The cottage contains displays on Stephenson's life and the early history of rail travel.",
+    "shortDescription": "Humble Wylam cottage where the father of the railways George Stephenson was born in 1781.",
+    "latitude": "54.9792870",
+    "longitude": "-1.8047300",
+    "region": "Northumberland",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/north-east/george-stephensons-birthplace",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/81/George_Stephenson%27s_cottage_-_geograph.org.uk_-_5428.jpg",
+    "pricing": []
+  },
+  {
     "name": "Giant's Causeway",
     "slug": "giants-causeway",
     "description": "Giant's Causeway is a UNESCO World Heritage Site on the north Antrim coast, famous for its 40,000 interlocking basalt columns formed by volcanic activity 60 million years ago. Legend attributes the columns to the giant Finn McCool who built a causeway to Scotland. The visitor centre tells the geological and mythological story of this extraordinary landscape.",
@@ -5022,6 +5261,44 @@
         "nonMemberPrice": 0,
         "memberPrice": null,
         "label": "Free entry"
+      }
+    ]
+  },
+  {
+    "name": "Goddards House and Garden",
+    "slug": "goddards-house-and-garden",
+    "description": "Goddards is an Arts and Crafts house in York designed by Walter Brierley, the leading architect of Edwardian Yorkshire, and built in 1927 as a home for retired Terry's chocolate factory workers. The house features Brierley's characteristic attention to craftsmanship and materials, with handsome interiors and a fine garden designed by George Dillistone. It later served as the headquarters of the National Trust in Yorkshire.",
+    "shortDescription": "Arts and Crafts house in York designed by Walter Brierley, originally a home for Terry's chocolate workers.",
+    "latitude": "53.9402814",
+    "longitude": "-1.1040374",
+    "region": "North Yorkshire",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/yorkshire/goddards",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c7/Goddards_%28geograph_3144437%29.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 9,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 4.5,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 22.5,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
       }
     ]
   },
@@ -6179,6 +6456,19 @@
     ]
   },
   {
+    "name": "Holnicote Estate",
+    "slug": "holnicote-estate",
+    "description": "The Holnicote Estate is a 12,500-acre landscape on the northern slopes of Exmoor encompassing moorland, woodland, farmland and coast. The estate includes the picturesque villages of Selworthy and Allerford, the wooded combes of Horner Wood and access to Dunkery Beacon, the highest point on Exmoor. The ancient oak woodland of Horner Wood is one of the largest remaining fragments of the original Exmoor forest.",
+    "shortDescription": "12,500-acre Exmoor estate with picturesque villages, ancient Horner Wood and access to Dunkery Beacon.",
+    "latitude": "51.2058431",
+    "longitude": "-3.5620459",
+    "region": "Somerset",
+    "category": "countryside",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/somerset/holnicote",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/db/Approach_to_Holnicote_House%2C_Holnicote_-_geograph.org.uk_-_821368.jpg",
+    "pricing": []
+  },
+  {
     "name": "Horsey Windpump",
     "slug": "horsey-windpump",
     "description": "Horsey Windpump is a restored drainage windpump on the edge of Horsey Mere in the Norfolk Broads, built in 1912 to drain the surrounding marshes for farming. The four-storey windpump has been restored to working condition and visitors can climb to the top for panoramic views across Horsey Mere and the Broads landscape. The surrounding estate is one of the best places in England to see grey seals, with hundreds hauling out on Horsey beach each winter to pup, making it one of the largest mainland seal colonies in the country.",
@@ -6869,6 +7159,19 @@
         "label": "Free parking"
       }
     ]
+  },
+  {
+    "name": "Kynance Cove",
+    "slug": "kynance-cove",
+    "description": "Kynance Cove is a stunning beach on the Lizard Peninsula, celebrated for its turquoise waters, white sand and dramatic serpentine rock stacks. The cove has inspired artists and writers since the Victorian era and is considered one of the most beautiful beaches in Britain. At low tide, visitors can explore caves and islands formed from the colourful serpentine stone.",
+    "shortDescription": "Spectacular Lizard Peninsula beach with turquoise waters, serpentine rock stacks and hidden caves.",
+    "latitude": "49.9747229",
+    "longitude": "-5.2251225",
+    "region": "Cornwall",
+    "category": "coast",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cornwall/kynance-cove",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a0/Kynance_087.jpg",
+    "pricing": []
   },
   {
     "name": "Lacock Abbey",
@@ -7602,6 +7905,19 @@
     ]
   },
   {
+    "name": "Marsden Moor Estate",
+    "slug": "marsden-moor-estate",
+    "description": "Marsden Moor Estate is a vast expanse of open moorland on the Pennine watershed above the Colne Valley in West Yorkshire. Covering over 5,600 acres of blanket bog, heather moor and rough grassland, it is one of the largest upland estates managed by the National Trust. The moor is important for ground-nesting birds including curlew, golden plover and merlin, and the estate is the site of ongoing peatland restoration work.",
+    "shortDescription": "5,600-acre Pennine moorland estate with blanket bog, heather and important ground-nesting bird populations.",
+    "latitude": "53.6030780",
+    "longitude": "-1.9290120",
+    "region": "West Yorkshire",
+    "category": "countryside",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/yorkshire/marsden-moor",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/08/Marsden_Moor_Estate1.jpg",
+    "pricing": []
+  },
+  {
     "name": "Melford Hall",
     "slug": "melford-hall",
     "description": "Melford Hall is a turreted Tudor mansion in the village of Long Melford, home to the Hyde Parker family since 1786. The house has a distinguished history — Elizabeth I was entertained here lavishly in 1578, and Beatrix Potter was a regular visitor who used the hall as inspiration for The Tale of Jemima Puddle-Duck. The interior features a Regency library, Victorian bedrooms and a collection of Chinese porcelain, while the grounds include a charming walled garden and parkland.",
@@ -7959,6 +8275,19 @@
         "label": "1 adult, 2 children"
       }
     ]
+  },
+  {
+    "name": "Mount Grace Priory",
+    "slug": "mount-grace-priory",
+    "description": "Mount Grace Priory is the best-preserved Carthusian monastery in England, founded in 1398 in the foothills of the North York Moors. The ruins reveal the individual monks' cells with their own gardens and water supply, reflecting the Carthusian order's emphasis on solitary contemplation. One cell has been reconstructed and furnished to show how the monks lived. The site is managed by English Heritage with the surrounding land in National Trust care.",
+    "shortDescription": "Best-preserved Carthusian monastery in England with reconstructed monks' cells and individual gardens.",
+    "latitude": "54.3799153",
+    "longitude": "-1.3100660",
+    "region": "North Yorkshire",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/yorkshire/mount-grace-priory",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Mount_Grace_Priory_2015.jpg",
+    "pricing": []
   },
   {
     "name": "Mount Stewart",
@@ -8590,6 +8919,44 @@
     ]
   },
   {
+    "name": "Owletts",
+    "slug": "owletts",
+    "description": "Owletts is a red-brick Charles II house in Cobham, Kent, notable for its fine plasterwork ceiling and staircase. The house was the family home of Sir Herbert Baker, the renowned architect who designed the Bank of England and government buildings in New Delhi and Pretoria. The modest garden features a sunken parterre and mature trees.",
+    "shortDescription": "Charles II red-brick house in Cobham, family home of the architect Sir Herbert Baker.",
+    "latitude": "51.3931300",
+    "longitude": "0.3918940",
+    "region": "Kent",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/kent/owletts",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/74/Owletts%2C_seen_across_The_Street_-_geograph.org.uk_-_7013299.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 5,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 2.5,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 12.5,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
+      }
+    ]
+  },
+  {
     "name": "Oxburgh Hall",
     "slug": "oxburgh-hall",
     "description": "Oxburgh Hall is a stunning moated manor house built by the Bedingfeld family in 1482, who have lived here for over 500 years. The imposing Tudor gatehouse is one of the finest in England, and the house contains needlework by Mary, Queen of Scots. After a major conservation project, the house showcases both its medieval origins and later alterations.",
@@ -8720,6 +9087,19 @@
         "label": "1 adult, 2 children"
       }
     ]
+  },
+  {
+    "name": "Parke",
+    "slug": "parke",
+    "description": "Parke is a riverside estate on the edge of Bovey Tracey serving as the gateway to Dartmoor National Park. The parkland surrounds a Georgian house set above the River Bovey, with ancient woodland, meadows and a restored walled garden. The estate is home to diverse wildlife including otters, kingfishers and rare greater horseshoe bats.",
+    "shortDescription": "Dartmoor gateway estate at Bovey Tracey with riverside walks, ancient woodland and a walled garden.",
+    "latitude": "50.5945165",
+    "longitude": "-3.6883421",
+    "region": "Devon",
+    "category": "countryside",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/devon/parke",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/83/Parke_Estate_National_Trust_Sign.jpg",
+    "pricing": []
   },
   {
     "name": "Patterson's Spade Mill",
@@ -9346,6 +9726,19 @@
     ]
   },
   {
+    "name": "Rainham Hall",
+    "slug": "rainham-hall",
+    "description": "Rainham Hall is an elegant Georgian townhouse built in 1729 for Captain John Harle, a merchant and wharf owner in the Thames-side village of Rainham. The red-brick Queen Anne-style house retains many original features including fine panelling, a carved staircase and period fireplaces. The walled garden has been restored with planting inspired by the 18th-century landscape.",
+    "shortDescription": "Elegant 1729 Georgian townhouse in east London with original panelling and a restored walled garden.",
+    "latitude": "51.5179295",
+    "longitude": "0.1907754",
+    "region": "London",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/london/rainham-hall",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/eb/Rainham_Hall.jpg",
+    "pricing": []
+  },
+  {
     "name": "Red House",
     "slug": "red-house",
     "description": "Red House was designed by Philip Webb and William Morris in 1859 as Morris's family home and is regarded as the birthplace of the Arts and Crafts movement. The house features original Morris wall paintings, stained glass by Edward Burne-Jones, and innovative Gothic Revival architecture. The intimate garden was designed by Morris as a series of outdoor rooms.",
@@ -9468,6 +9861,19 @@
     ]
   },
   {
+    "name": "Robin Hood's Bay",
+    "slug": "robin-hoods-bay",
+    "description": "Robin Hood's Bay is a stretch of dramatic coastline on the North Yorkshire coast south of Whitby, encompassing rocky shore platforms rich in fossils and Jurassic geology. The National Trust protects the surrounding clifftop farmland and coastal footpaths, which form part of the Cleveland Way. The area is renowned for its rock pools, fossil hunting and spectacular views along the Heritage Coast.",
+    "shortDescription": "Fossil-rich North Yorkshire coastline near Whitby with dramatic cliffs and Jurassic rock pools.",
+    "latitude": "54.4302001",
+    "longitude": "-0.5322703",
+    "region": "North Yorkshire",
+    "category": "coast",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/yorkshire/robin-hoods-bay",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/00/Robin_Hood%27s_Bay_-_geograph.org.uk_-_7573003.jpg",
+    "pricing": []
+  },
+  {
     "name": "Roe Estuary",
     "slug": "roe-estuary",
     "description": "The Roe Estuary is a tranquil stretch of mudflats and salt marsh where the River Roe meets Lough Foyle in County Londonderry. It is an important wintering ground for migratory birds including whooper swans, pale-bellied brent geese, and bar-tailed godwits. The reserve offers birdwatching hides and walking paths along the estuary.",
@@ -9488,6 +9894,19 @@
         "label": "Free entry"
       }
     ]
+  },
+  {
+    "name": "Roseberry Topping",
+    "slug": "roseberry-topping",
+    "description": "Roseberry Topping is a distinctive half-cone-shaped hill on the northern edge of the North York Moors, often called the Matterhorn of Cleveland. Rising to 320 metres, the summit collapsed on one side due to mining and geological faulting, creating its dramatic profile. The steep but popular walk to the top rewards with panoramic views from the Pennines to the coast.",
+    "shortDescription": "Distinctive half-cone hill on the North York Moors edge with panoramic summit views, known as Cleveland's Matterhorn.",
+    "latitude": "54.5053982",
+    "longitude": "-1.1075048",
+    "region": "North Yorkshire",
+    "category": "countryside",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/yorkshire/roseberry-topping",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/37/Roseberry_topping_north_side.jpg",
+    "pricing": []
   },
   {
     "name": "Rowallane Garden",
@@ -10252,6 +10671,44 @@
     ]
   },
   {
+    "name": "South Foreland Lighthouse",
+    "slug": "south-foreland-lighthouse",
+    "description": "South Foreland Lighthouse is a Victorian lighthouse on the White Cliffs of Dover, notable as the first lighthouse to use an electric light in 1858 and the site of Marconi's first international radio transmission in 1899. The lighthouse offers panoramic views across the English Channel to France on clear days. Reached by a clifftop walk from the White Cliffs visitor centre, it stands as a monument to British maritime innovation.",
+    "shortDescription": "Victorian lighthouse on the White Cliffs of Dover, pioneering site for electric light and Marconi's radio.",
+    "latitude": "51.1404621",
+    "longitude": "1.3711178",
+    "region": "Kent",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/kent/south-foreland-lighthouse",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4f/South_Foreland_Lighthouse_St._Margarets_At_Cliffe_1101512_20230813_0005.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 8,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 4,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 20,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
+      }
+    ]
+  },
+  {
     "name": "Speke Hall",
     "slug": "speke-hall",
     "description": "Speke Hall is one of England's finest surviving Tudor timber-framed houses, set in tranquil gardens and woodland on the banks of the Mersey near Liverpool Airport. Built over a century from 1530, the house features priest holes, elaborate plasterwork, and a great hall. The restored Victorian gardens include the Adam and Eve topiaries and a kitchen garden.",
@@ -10546,6 +11003,44 @@
         "nonMemberPrice": 27,
         "memberPrice": null,
         "label": "1 adult and up to 3 children"
+      }
+    ]
+  },
+  {
+    "name": "Stoneacre",
+    "slug": "stoneacre",
+    "description": "Stoneacre is a half-timbered yeoman's house in the village of Otham near Maidstone, dating from the late 15th century. The house was sympathetically restored in the 1920s by Aymer Vallance, who incorporated architectural salvage from other historic buildings to create an authentic medieval interior. The cottage garden is planted in traditional style with herbaceous borders, roses and fruit trees.",
+    "shortDescription": "Late 15th-century half-timbered yeoman's house in Kent with a charming cottage garden.",
+    "latitude": "51.2520581",
+    "longitude": "0.5777636",
+    "region": "Kent",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/kent/stoneacre",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6e/Stoneacre%2C_Otham_-_geograph.org.uk_-_1614709.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 8.5,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 4.25,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 21.25,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
       }
     ]
   },
@@ -11203,6 +11698,82 @@
     ]
   },
   {
+    "name": "The Firs (Elgar's Birthplace)",
+    "slug": "the-firs-elgars-birthplace",
+    "description": "The Firs is the modest cottage in Lower Broadheath where the composer Sir Edward Elgar was born in 1857. The house and adjacent museum contain a rich collection of Elgar's manuscripts, personal belongings and concert programmes, tracing his journey from a Worcestershire music shop owner's son to England's greatest composer. The garden has been restored to reflect how it would have appeared during Elgar's childhood.",
+    "shortDescription": "Birthplace cottage of composer Sir Edward Elgar with manuscripts, personal belongings and a restored garden.",
+    "latitude": "52.1989946",
+    "longitude": "-2.2826688",
+    "region": "Worcestershire",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/the-firs",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/80/The_Firs_-_Elgar%27s_birthplace_%28geograph_5743759%29.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 11,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 5.5,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 27.5,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
+      }
+    ]
+  },
+  {
+    "name": "The Greyfriars",
+    "slug": "the-greyfriars",
+    "description": "The Greyfriars is a timber-framed merchant's house built in 1480 on Friar Street in Worcester, one of the finest examples of a late medieval town house in England. The house was rescued from demolition in 1946 by the Matley Moore family, who restored it and filled the panelled rooms with period furniture and textiles. The walled garden behind the house provides a peaceful retreat from the city centre with herbaceous borders and an orchard.",
+    "shortDescription": "Fine 15th-century timber-framed merchant's house in Worcester with panelled rooms and a walled garden.",
+    "latitude": "52.1905389",
+    "longitude": "-2.2188061",
+    "region": "Worcestershire",
+    "category": "house",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/greyfriars-house-and-garden",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d0/The_Greyfriars%2C_Friar_Street%2C_Worcester_%283919913061%29.jpg",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 11,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 5.5,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 27.5,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
+      }
+    ]
+  },
+  {
     "name": "The Langdales",
     "slug": "the-langdales",
     "description": "The Langdales encompass two of the Lake District's most dramatic valleys, Great Langdale and Little Langdale, surrounded by some of the finest peaks in England. The distinctive profile of the Langdale Pikes is one of the most recognisable mountain silhouettes in Britain. The valleys contain a Neolithic stone axe factory site and offer walks ranging from gentle riverside paths to challenging fell scrambles.",
@@ -11229,6 +11800,44 @@
         "nonMemberPrice": 9,
         "memberPrice": 0,
         "label": "All-day parking"
+      }
+    ]
+  },
+  {
+    "name": "The Needles Old Battery",
+    "slug": "the-needles-old-battery",
+    "description": "The Needles Old Battery is a Victorian coastal fort built in 1862 at the western tip of the Isle of Wight to defend against the threat of French invasion. Perched high on the chalk headland above the famous Needles rocks, the fort includes original gun barrels, a powder magazine and a 60-foot tunnel leading to a searchlight emplacement with breathtaking views. The site was later used as a Cold War rocket testing facility in the 1950s.",
+    "shortDescription": "Victorian cliff-top fort above the Needles with gun emplacements, a tunnel and Cold War rocket history.",
+    "latitude": "50.6628088",
+    "longitude": "-1.5831944",
+    "region": "Isle of Wight",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/isle-of-wight/the-needles-old-battery-and-new-battery",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4a/The_Needles_Battery.JPG",
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 9.4,
+        "memberPrice": null,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "nonMemberPrice": 4.75,
+        "memberPrice": null,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "nonMemberPrice": 23.75,
+        "memberPrice": null,
+        "label": "Family (2 adults + 3 children)"
       }
     ]
   },
@@ -11753,6 +12362,19 @@
     ]
   },
   {
+    "name": "Uffington White Horse",
+    "slug": "uffington-white-horse",
+    "description": "The Uffington White Horse is a highly stylised prehistoric hill figure, 110 metres long, cut into the chalk of the Berkshire Downs. Dating to the late Bronze Age around 3,000 years ago, it is the oldest chalk figure in Britain. The surrounding landscape includes the dramatic flat-topped Dragon Hill and the ancient earthwork of Uffington Castle.",
+    "shortDescription": "Prehistoric chalk hill figure on the Berkshire Downs, the oldest of its kind in Britain at 3,000 years old.",
+    "latitude": "51.5776034",
+    "longitude": "-1.5666628",
+    "region": "Oxfordshire",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/white-horse-hill",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/48/Uffington-White-Horse-sat.jpg",
+    "pricing": []
+  },
+  {
     "name": "Ullswater",
     "slug": "ullswater",
     "description": "Ullswater is the second largest lake in the Lake District, stretching seven and a half miles through three dramatic reaches. The National Trust cares for much of the surrounding land including the famous Glenridding Common, Glencoyne and the slopes of Helvellyn. The shores provide the setting for Wordsworth's daffodils and offer some of the finest scenery in England.",
@@ -12051,6 +12673,19 @@
     ]
   },
   {
+    "name": "Watersmeet",
+    "slug": "watersmeet",
+    "description": "Watersmeet is a beauty spot in the Exmoor valley where the East Lyn River and Hoar Oak Water converge in a deep, wooded gorge. The 19th-century fishing lodge at the confluence now serves as a National Trust tea room and information point. The surrounding ancient oak woodland, rich with mosses and ferns, is threaded with riverside walking trails.",
+    "shortDescription": "Exmoor beauty spot where two rivers meet in a deep, ancient oak woodland gorge.",
+    "latitude": "51.2231643",
+    "longitude": "-3.7993182",
+    "region": "Devon",
+    "category": "countryside",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/devon/watersmeet",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Watersmeet_House_-_geograph.org.uk_-_1364653.jpg",
+    "pricing": []
+  },
+  {
     "name": "Wellbrook Beetling Mill",
     "slug": "wellbrook-beetling-mill",
     "description": "Wellbrook Beetling Mill is the last working linen beetling mill in Northern Ireland, set in a wooded glen near Cookstown in County Tyrone. The mill demonstrates the final stage of linen production where the cloth is pounded by water-driven hammers to produce its characteristic sheen. Guided tours explain the process and the importance of the linen industry to Ulster.",
@@ -12199,6 +12834,28 @@
         "nonMemberPrice": 32.5,
         "memberPrice": null,
         "label": "Family (2 adults + 3 children)"
+      }
+    ]
+  },
+  {
+    "name": "Wheal Coates",
+    "slug": "wheal-coates",
+    "description": "Wheal Coates is a dramatic ruined tin mine perched on the clifftops near St Agnes, one of the most photographed industrial heritage sites in Cornwall. The engine houses and chimney stacks, dating from the 1870s, stand as striking monuments to Cornwall's mining past. The site is part of the Cornwall and West Devon Mining Landscape World Heritage Site.",
+    "shortDescription": "Iconic clifftop tin mine ruins near St Agnes, part of Cornwall's Mining World Heritage Site.",
+    "latitude": "50.3053082",
+    "longitude": "-5.2274108",
+    "region": "Cornwall",
+    "category": "historic-site",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/cornwall/wheal-coates",
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c3/Tin_mine_near_St_Agnes_2.JPG",
+    "pricing": [
+      {
+        "pricingType": "parking",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "nonMemberPrice": 8,
+        "memberPrice": null,
+        "label": "Car parking"
       }
     ]
   },

@@ -1,41 +1,40 @@
 // Fetch hero images from Wikipedia/Wikimedia for NT properties
 
 const properties = [
-  { id: 1, name: "Hughenden Manor", wiki: "Hughenden_Manor" },
-  { id: 2, name: "Ashridge Estate", wiki: "Ashridge" },
-  { id: 3, name: "Ascott House", wiki: "Ascott_House" },
-  { id: 4, name: "St Michael's Mount", wiki: "St_Michael%27s_Mount" },
-  { id: 5, name: "Compton Castle", wiki: "Compton_Castle" },
-  { id: 6, name: "Tintagel Old Post Office", wiki: "Tintagel_Old_Post_Office" },
-  { id: 7, name: "Finch Foundry", wiki: "Finch_Foundry" },
-  { id: 8, name: "Snowshill Manor", wiki: "Snowshill_Manor" },
-  { id: 9, name: "Westbury Court Garden", wiki: "Westbury_Court_Garden" },
-  { id: 10, name: "Smallhythe Place", wiki: "Smallhythe_Place" },
+  { id: 1, name: "Ashdown House", wiki: "Ashdown_House,_Oxfordshire" },
+  { id: 2, name: "Buscot Park", wiki: "Buscot_Park" },
+  { id: 3, name: "Uffington White Horse", wiki: "Uffington_White_Horse" },
+  { id: 4, name: "Boscastle", wiki: "Boscastle" },
+  { id: 5, name: "Kynance Cove", wiki: "Kynance_Cove" },
+  { id: 6, name: "Wheal Coates", wiki: "Wheal_Coates" },
+  { id: 7, name: "Beatrix Potter Gallery", wiki: "Beatrix_Potter_Gallery" },
+  { id: 8, name: "Watersmeet", wiki: "Watersmeet" },
+  { id: 9, name: "Parke", wiki: "Parke_(estate)" },
+  { id: 10, name: "Birling Gap", wiki: "Birling_Gap" },
   { id: 11, name: "South Foreland Lighthouse", wiki: "South_Foreland_Lighthouse" },
-  { id: 12, name: "Quebec House", wiki: "Quebec_House" },
-  { id: 13, name: "Formby", wiki: "Formby_coast" },
-  { id: 14, name: "Horsey Windpump", wiki: "Horsey_Wind_Pump" },
-  { id: 15, name: "Sutton Hoo", wiki: "Sutton_Hoo" },
-  { id: 16, name: "Barrington Court", wiki: "Barrington_Court" },
-  { id: 17, name: "Coleridge Cottage", wiki: "Coleridge_Cottage" },
-  { id: 18, name: "Dunster Working Watermill", wiki: "Dunster_Castle" },
-  { id: 19, name: "Stoneywell", wiki: "Stoneywell" },
-  { id: 20, name: "Moseley Old Hall", wiki: "Moseley_Old_Hall" },
-  { id: 21, name: "Great Chalfield Manor", wiki: "Great_Chalfield_Manor" },
-  { id: 22, name: "The Courts Garden", wiki: "The_Courts_Garden" },
-  { id: 23, name: "Westwood Manor", wiki: "Westwood_Manor" },
-  { id: 24, name: "Farnborough Hall", wiki: "Farnborough_Hall" },
-  { id: 25, name: "Dudmaston Hall", wiki: "Dudmaston" },
-  { id: 26, name: "Wilderhope Manor", wiki: "Wilderhope_Manor" },
-  { id: 27, name: "Sunnycroft", wiki: "Sunnycroft" },
-  { id: 28, name: "Treasurer's House", wiki: "Treasurer%27s_House,_York" },
-  { id: 29, name: "Ormesby Hall", wiki: "Ormesby_Hall" },
-  { id: 30, name: "The Workhouse, Southwell", wiki: "The_Workhouse,_Southwell" },
+  { id: 12, name: "Stoneacre", wiki: "Stoneacre" },
+  { id: 13, name: "Owletts", wiki: "Owletts" },
+  { id: 14, name: "The Needles Old Battery", wiki: "The_Needles_Old_Battery" },
+  { id: 15, name: "Bembridge Windmill", wiki: "Bembridge_Windmill" },
+  { id: 16, name: "George Inn", wiki: "George_Inn,_Southwark" },
+  { id: 17, name: "Rainham Hall", wiki: "Rainham_Hall" },
+  { id: 18, name: "Blakeney Point", wiki: "Blakeney_Point" },
+  { id: 19, name: "George Stephenson's Birthplace", wiki: "George_Stephenson%27s_Birthplace" },
+  { id: 20, name: "Dunstanburgh Castle", wiki: "Dunstanburgh_Castle" },
+  { id: 21, name: "Allen Banks", wiki: "Allen_Banks_and_Staward_Gorge" },
+  { id: 22, name: "Robin Hood's Bay", wiki: "Robin_Hood%27s_Bay" },
+  { id: 23, name: "Roseberry Topping", wiki: "Roseberry_Topping" },
+  { id: 24, name: "Goddards House", wiki: "Goddards_(house)" },
+  { id: 25, name: "Mount Grace Priory", wiki: "Mount_Grace_Priory" },
+  { id: 26, name: "Marsden Moor", wiki: "Marsden_Moor" },
+  { id: 27, name: "Bath Assembly Rooms", wiki: "Assembly_Rooms,_Bath" },
+  { id: 28, name: "Holnicote Estate", wiki: "Holnicote_Estate" },
+  { id: 29, name: "The Firs", wiki: "The_Firs,_Lower_Broadheath" },
+  { id: 30, name: "The Greyfriars", wiki: "Greyfriars,_Worcester" },
 ];
 
 for (const prop of properties) {
   try {
-    // Use Wikipedia API to get the main image (pageimages)
     const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${prop.wiki}`;
     const res = await fetch(url);
     const data = await res.json();
@@ -43,7 +42,6 @@ for (const prop of properties) {
     if (data.originalimage?.source) {
       console.log(`${prop.id} | ${prop.name} | ${data.originalimage.source}`);
     } else if (data.thumbnail?.source) {
-      // Get original size from thumbnail URL
       const orig = data.thumbnail.source.replace(/\/\d+px-/, '/1024px-');
       console.log(`${prop.id} | ${prop.name} | ${orig} (from thumbnail)`);
     } else {
