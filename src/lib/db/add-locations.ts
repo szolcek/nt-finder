@@ -13,726 +13,361 @@ function slugify(name: string): string {
 }
 
 const newLocations = [
+  // === BEDFORDSHIRE ===
   {
-    name: "Dunstable Downs",
-    slug: slugify("Dunstable Downs"),
+    name: "Sharpenhoe and Sundon Hills",
+    slug: slugify("Sharpenhoe and Sundon Hills"),
     category: "countryside",
     region: "Bedfordshire",
-    latitude: 51.86527779999999,
-    longitude: -0.5375,
+    latitude: 51.9617146,
+    longitude: -0.4508176,
     description:
-      "Dunstable Downs is a chalk escarpment on the northern edge of the Chiltern Hills offering spectacular views across the Vale of Aylesbury. The area is popular for kite flying, walking and wildlife spotting, with its rich chalk grassland supporting numerous butterfly species.",
+      "Sharpenhoe Clappers is a dramatic beech-topped promontory on the northern edge of the Chiltern Hills, offering panoramic views across Bedfordshire. Together with the adjacent Sundon Hills, the area features chalk grassland rich in wildflowers and butterflies.",
     shortDescription:
-      "A dramatic chalk escarpment on the Chiltern Hills with panoramic views and rich wildlife.",
+      "A beech-topped chalk promontory on the Chiltern Hills with panoramic Bedfordshire views.",
     websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/dunstable-downs-and-whipsnade-estate",
+      "https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/sharpenhoe",
     heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/e/e1/Trig_point%2C_on_Dunstable_Downs_-_geograph.org.uk_-_1440937.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
+      "https://upload.wikimedia.org/wikipedia/commons/f/f8/Sharpenhoe_from_the_Clappers_-_geograph.org.uk_-_1074664.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
   },
   {
-    name: "Botallack Mine",
-    slug: slugify("Botallack Mine"),
+    name: "Whipsnade Tree Cathedral",
+    slug: slugify("Whipsnade Tree Cathedral"),
     category: "historic-site",
-    region: "Cornwall",
-    latitude: 50.1402976,
-    longitude: -5.6888419,
+    region: "Bedfordshire",
+    latitude: 51.8529115,
+    longitude: -0.5377073,
     description:
-      "Botallack Mine is one of Cornwall's most iconic tin and copper mining sites, perched dramatically on the cliffs above the Atlantic Ocean. The Crown Engine Houses, built precariously on the cliff face, are a UNESCO World Heritage Site and symbol of Cornwall's industrial heritage.",
+      "Whipsnade Tree Cathedral is a group of trees planted in the shape of a medieval cathedral, created after the First World War as a memorial to fallen comrades. The living cathedral includes a nave, transepts, chapels and cloisters formed by different species of trees.",
     shortDescription:
-      "Iconic clifftop tin mine ruins and UNESCO World Heritage Site on the Cornish coast.",
-    websiteUrl: "https://www.nationaltrust.org.uk/visit/cornwall/botallack",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/3/38/Crown_Mines_2.png",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Godrevy",
-    slug: slugify("Godrevy"),
-    category: "coast",
-    region: "Cornwall",
-    latitude: 50.2305259,
-    longitude: -5.388579,
-    description:
-      "Godrevy is a stunning headland on the north Cornwall coast, famous for its lighthouse which inspired Virginia Woolf's novel 'To the Lighthouse'. The area offers beautiful sandy beaches, dramatic clifftop walks, and is home to a colony of grey seals.",
-    shortDescription:
-      "Beautiful headland with lighthouse, sandy beaches and seal colony on the north Cornwall coast.",
-    websiteUrl: "https://www.nationaltrust.org.uk/visit/cornwall/godrevy",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/c/c8/Godrevy_Lighthouse_2024_05.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Sandymouth Beach",
-    slug: slugify("Sandymouth Beach"),
-    category: "coast",
-    region: "Cornwall",
-    latitude: 50.86167330000001,
-    longitude: -4.556731099999999,
-    description:
-      "Sandymouth is a dramatic stretch of coastline near Bude in North Cornwall, featuring a wide sandy beach backed by twisted cliffs and waterfalls. The unusual rock formations reveal layers of geological history, and the beach is a popular spot for surfing and rockpooling.",
-    shortDescription:
-      "A dramatic sandy beach with twisted cliffs and waterfalls near Bude in North Cornwall.",
-    websiteUrl: "https://www.nationaltrust.org.uk/visit/cornwall/sandymouth",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/3/3e/Heavy_sky_at_Sandymouth_Bay%2C_near_Bude%2C_Cornwall_-_geograph.org.uk_-_4716859.jpg",
-    pricing: [
-      { pricingType: "parking", pricingCategory: "standard", tier: "adult", nonMemberPrice: "9.00", memberPrice: null, label: "Whole day parking" },
-    ] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Crook Hall",
-    slug: slugify("Crook Hall"),
-    category: "house",
-    region: "County Durham",
-    latitude: 54.7818944,
-    longitude: -1.5742311,
-    description:
-      "Crook Hall is a medieval manor house set in beautiful gardens in the heart of Durham city. Dating back to the 13th century, it is one of the oldest inhabited houses in the city, with enchanting walled gardens offering views of Durham Cathedral.",
-    shortDescription:
-      "A medieval manor house with enchanting gardens and views of Durham Cathedral.",
+      "A living cathedral of trees planted as a First World War memorial in Bedfordshire.",
     websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/north-east/crook-hall-and-gardens",
+      "https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/whipsnade-tree-cathedral",
     heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/7/73/Crook_Hall_Gardens%2C_Durham_-_geograph.org.uk_-_7830838.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
+      "https://upload.wikimedia.org/wikipedia/commons/a/ac/Whipsnade_Tree_Cathedral%2C_South_Transcept.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
   },
   {
-    name: "Stainsby Mill",
-    slug: slugify("Stainsby Mill"),
+    name: "Willington Dovecote and Stables",
+    slug: slugify("Willington Dovecote and Stables"),
+    category: "historic-site",
+    region: "Bedfordshire",
+    latitude: 52.1369377,
+    longitude: -0.3845956,
+    description:
+      "Willington Dovecote is a magnificent 16th-century stone dovecote, one of the finest in England, with over 1,500 nesting boxes. The adjacent stables date from the same period and together they are a rare survival of Tudor agricultural buildings.",
+    shortDescription:
+      "A magnificent 16th-century stone dovecote with over 1,500 nesting boxes.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/willington-dovecote-and-stables",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/9/97/WillingtonDovecote.JPG",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+
+  // === OXFORDSHIRE ===
+  {
+    name: "Great Coxwell Barn",
+    slug: slugify("Great Coxwell Barn"),
+    category: "historic-site",
+    region: "Oxfordshire",
+    latitude: 51.6444066,
+    longitude: -1.6127308,
+    description:
+      "Great Coxwell Barn is a magnificent 13th-century tithe barn built by Cistercian monks of Beaulieu Abbey. William Morris called it 'the finest piece of architecture in England', and its soaring interior with original timber roof is a masterpiece of medieval engineering.",
+    shortDescription:
+      "A 13th-century tithe barn that William Morris called 'the finest piece of architecture in England'.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/great-coxwell-barn",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/b/b6/Great_Coxwell_Barn_-_geograph.org.uk_-_1750413.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+
+  // === BUCKINGHAMSHIRE ===
+  {
+    name: "Boarstall Duck Decoy",
+    slug: slugify("Boarstall Duck Decoy"),
+    category: "countryside",
+    region: "Buckinghamshire",
+    latitude: 51.8304265,
+    longitude: -1.0957984,
+    description:
+      "Boarstall Duck Decoy is one of only four working duck decoys left in England, dating from the 17th century. The decoy pond and its curving pipe screens are set in 13 acres of woodland, now a nature reserve rich in birdlife and wildflowers.",
+    shortDescription:
+      "One of only four working duck decoys left in England, set in woodland nature reserve.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/boarstall-duck-decoy",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/5/55/BoarstallDuckDecoy.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Boarstall Tower",
+    slug: slugify("Boarstall Tower"),
+    category: "historic-site",
+    region: "Buckinghamshire",
+    latitude: 51.8232338,
+    longitude: -1.0955733,
+    description:
+      "Boarstall Tower is a 14th-century moated gatehouse, the last surviving fragment of a fortified house demolished during the Civil War. The stone tower with its cross-shaped arrow slits stands in a pleasant garden with views across the Buckinghamshire countryside.",
+    shortDescription:
+      "A 14th-century moated gatehouse, the sole survivor of a Civil War-demolished fortified house.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/boarstall-tower",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/a/af/Boarstall_Hall_and_Towers%2C_1695%2C_by_artist_Michael_Burghers%2C_England.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Buckingham Chantry Chapel",
+    slug: slugify("Buckingham Chantry Chapel"),
+    category: "historic-site",
+    region: "Buckinghamshire",
+    latitude: 52.0003441,
+    longitude: -0.9880296,
+    description:
+      "Buckingham Chantry Chapel is a restored 15th-century chapel, the oldest building in Buckingham. Originally built as a chantry chapel for the Royal Latin School, it was later used as a schoolroom and is now a small heritage centre.",
+    shortDescription:
+      "A restored 15th-century chantry chapel, the oldest building in Buckingham.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/buckingham-chantry-chapel",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/7/7b/Chantry_Chapel_buckingham.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Dorneywood Garden",
+    slug: slugify("Dorneywood Garden"),
+    category: "garden",
+    region: "Buckinghamshire",
+    latitude: 51.554585,
+    longitude: -0.646854,
+    description:
+      "Dorneywood is an early 20th-century house with beautiful gardens, used as an official residence for a senior member of the government. The gardens feature herbaceous borders, a rose garden and fine specimen trees, and are open to the public on select days by advance booking.",
+    shortDescription:
+      "A ministerial residence with beautiful gardens open on select days by advance booking.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/dorneywood-garden",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/en/4/40/Dorneywood_gate.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Long Crendon Courthouse",
+    slug: slugify("Long Crendon Courthouse"),
+    category: "historic-site",
+    region: "Buckinghamshire",
+    latitude: 51.77588,
+    longitude: -0.9899582,
+    description:
+      "Long Crendon Courthouse is a 14th-century half-timbered building that may have served as a wool staple hall before becoming a manorial courthouse. The upper floor retains its medieval timber frame and is one of the finest surviving examples of its kind in Buckinghamshire.",
+    shortDescription:
+      "A 14th-century half-timbered courthouse, one of the finest of its kind in Buckinghamshire.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/long-crendon-courthouse",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/b/bb/LongCrendonCourthouse%28DavidHawgood%29Aug2005.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Pitstone Windmill",
+    slug: slugify("Pitstone Windmill"),
+    category: "historic-site",
+    region: "Buckinghamshire",
+    latitude: 51.8317445,
+    longitude: -0.6298517,
+    description:
+      "Pitstone Windmill is one of the oldest post mills in Britain, with a date of 1627 carved into its framework. The fully restored windmill stands in open farmland below the Chiltern escarpment and is an iconic feature of the Buckinghamshire landscape.",
+    shortDescription:
+      "One of the oldest post mills in Britain, dating from 1627, below the Chiltern escarpment.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/oxfordshire-buckinghamshire-berkshire/pitstone-windmill",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/e/ec/Pitstone_Windmill_-_geograph.org.uk_-_1480797.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+
+  // === CAMBRIDGESHIRE ===
+  {
+    name: "Ramsey Abbey Gatehouse",
+    slug: slugify("Ramsey Abbey Gatehouse"),
+    category: "historic-site",
+    region: "Cambridgeshire",
+    latitude: 52.4483887,
+    longitude: -0.1028107,
+    description:
+      "Ramsey Abbey Gatehouse is a richly ornamented late 15th-century gatehouse, the principal surviving fragment of the once-great Benedictine Ramsey Abbey. The intricately carved stonework includes elaborate panelling and a fine oriel window.",
+    shortDescription:
+      "A richly carved 15th-century gatehouse, the last remnant of Benedictine Ramsey Abbey.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/cambridgeshire/ramsey-abbey-gatehouse",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/d/d8/Abbey_Gate_House_-_geograph.org.uk_-_1330157.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+
+  // === CORNWALL ===
+  {
+    name: "Cadsonbury",
+    slug: slugify("Cadsonbury"),
+    category: "countryside",
+    region: "Cornwall",
+    latitude: 50.4827482,
+    longitude: -4.3363853,
+    description:
+      "Cadsonbury is an impressive Iron Age hillfort near Callington in east Cornwall, with well-preserved ramparts enclosing a hilltop with views across the Lynher and Tamar valleys. The site is managed as wildflower meadow and is rich in butterflies and grassland birds.",
+    shortDescription:
+      "An impressive Iron Age hillfort near Callington with views across the Lynher and Tamar valleys.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/cornwall/cadsonbury",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/4/4a/Cadson_Bury_Fort_-_geograph.org.uk_-_411641.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Lawrence House",
+    slug: slugify("Lawrence House"),
+    category: "house",
+    region: "Cornwall",
+    latitude: 50.6383067,
+    longitude: -4.3623078,
+    description:
+      "Lawrence House is an elegant Georgian town house in the centre of Launceston, built in 1753. Now used as a community heritage space with pop-up exhibitions, the house showcases the history of this ancient capital of Cornwall.",
+    shortDescription:
+      "An elegant 1753 Georgian town house in Launceston, Cornwall's ancient capital.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/cornwall/lawrence-house",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/6/6c/Lawrence_House_%28Reminiscences%2C_1900%29.png",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+
+  // === DERBYSHIRE / PEAK DISTRICT ===
+  {
+    name: "Duffield Castle",
+    slug: slugify("Duffield Castle"),
+    category: "castle",
+    region: "Derbyshire",
+    latitude: 52.9927036,
+    longitude: -1.4897988,
+    description:
+      "Duffield Castle is the remains of a massive Norman keep, once one of the largest in England. Only the foundations survive, but they reveal the enormous scale of this 12th-century fortress that controlled the Derwent Valley north of Derby.",
+    shortDescription:
+      "The foundations of a massive Norman keep, once one of the largest in England.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/duffield-castle",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/0/04/Duffield_Castle_225335_a19c01e6.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "The Old Manor",
+    slug: slugify("The Old Manor"),
+    category: "house",
+    region: "Derbyshire",
+    latitude: 52.978507,
+    longitude: -1.81489,
+    description:
+      "The Old Manor at Norbury is a medieval manor house with a remarkable 13th-century hall and a beautiful herb knot garden. The house retains original features including a king post roof and medieval windows, offering a glimpse into life in a small Derbyshire manor.",
+    shortDescription:
+      "A medieval manor house at Norbury with a 13th-century hall and herb knot garden.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/the-old-manor",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/1/1f/Norbury_church_and_hall_046773_50c8b955.jpg",
+    pricing: [
+      { pricingType: "entry", pricingCategory: "standard", tier: "adult", nonMemberPrice: "8.00", memberPrice: null, label: "Adult (18+)" },
+      { pricingType: "entry", pricingCategory: "standard", tier: "child", nonMemberPrice: "4.00", memberPrice: null, label: "Child (5-17)" },
+      { pricingType: "entry", pricingCategory: "standard", tier: "family", nonMemberPrice: "20.00", memberPrice: null, label: "Family (2 Adults + up to 3 children)" },
+    ] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Winster Market House",
+    slug: slugify("Winster Market House"),
     category: "historic-site",
     region: "Derbyshire",
-    latitude: 53.18320310000001,
-    longitude: -1.3196062,
+    latitude: 53.1416396,
+    longitude: -1.6401617,
     description:
-      "Stainsby Mill is a fully working water-powered flour mill on the Hardwick Estate in Derbyshire. Dating from the late 18th century, the mill still grinds flour using traditional methods and provides a fascinating insight into rural milling heritage.",
+      "Winster Market House is a rugged stone building in the centre of the Peak District village of Winster, originally an open-arched market hall dating from the late 17th or early 18th century. It was the first property acquired by the National Trust in the Peak District.",
     shortDescription:
-      "A working water-powered flour mill on the Hardwick Estate in Derbyshire.",
+      "A 17th-century stone market house, the first NT property in the Peak District.",
     websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/stainsby-mill",
+      "https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/winster-market-house",
     heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/6/65/Stainsby_Mill_-_geograph.org.uk_-_2284146.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
+      "https://upload.wikimedia.org/wikipedia/commons/e/e1/Winster_Market_House_1.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
   },
+
+  // === DEVON ===
   {
-    name: "Baggy Point",
-    slug: slugify("Baggy Point"),
+    name: "Salcombe Countryside",
+    slug: slugify("Salcombe Countryside"),
     category: "coast",
     region: "Devon",
-    latitude: 51.1349906,
-    longitude: -4.2422814,
+    latitude: 50.2321353,
+    longitude: -3.8398558,
     description:
-      "Baggy Point is a dramatic headland near Croyde in North Devon, jutting out into the Atlantic Ocean. The clifftop walk offers stunning views along the coast, and the rocky shores below are rich in marine life and popular with rock climbers.",
+      "The Salcombe Countryside encompasses Bolberry Down, Overbeck's and the dramatic coastline between Bolt Head and Bolt Tail in the South Hams. The clifftop walks offer spectacular views, wildflower-rich grassland and some of the finest coastal scenery in Devon.",
     shortDescription:
-      "A dramatic headland near Croyde with stunning Atlantic views and rich marine life.",
-    websiteUrl: "https://www.nationaltrust.org.uk/visit/devon/baggy-point",
+      "Dramatic clifftop walks between Bolt Head and Bolt Tail in the South Hams.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/devon/bolberry-down",
     heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/7/71/Baggy_Point_-_geograph.org.uk_-_1473056.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
+      "https://upload.wikimedia.org/wikipedia/commons/9/9c/Cliff_at_Bolberry_Down%2C_Bolberry_-_geograph.org.uk_-_373008.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
   },
   {
-    name: "Heddon Valley",
-    slug: slugify("Heddon Valley"),
+    name: "Branscombe",
+    slug: slugify("Branscombe"),
+    category: "historic-site",
+    region: "Devon",
+    latitude: 50.6924731,
+    longitude: -3.137922,
+    description:
+      "Branscombe is a picturesque village in a long valley running down to the sea on the East Devon coast. The National Trust cares for much of the surrounding farmland, cliff and beach, as well as the Old Bakery, Manor Mill and Forge — a unique trio of working historic buildings.",
+    shortDescription:
+      "A picturesque Devon village with a working bakery, watermill and forge.",
+    websiteUrl: "https://www.nationaltrust.org.uk/visit/devon/branscombe",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/0/02/Branscombe_-_geograph.org.uk_-_6848.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Loughwood Meeting House",
+    slug: slugify("Loughwood Meeting House"),
+    category: "historic-site",
+    region: "Devon",
+    latitude: 50.7881592,
+    longitude: -3.0607869,
+    description:
+      "Loughwood Meeting House is a remote 17th-century Baptist chapel hidden in woodland near Dalwood in East Devon. Built secretly during a time of religious persecution, it retains its original box pews, gallery and simple whitewashed interior.",
+    shortDescription:
+      "A secret 17th-century Baptist chapel hidden in woodland, with original box pews.",
+    websiteUrl:
+      "https://www.nationaltrust.org.uk/visit/devon/loughwood-meeting-house",
+    heroImageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/3/3e/Loughwood_Meeting_House_-_geograph.org.uk_-_436406.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
+  },
+  {
+    name: "Plymbridge Woods",
+    slug: slugify("Plymbridge Woods"),
     category: "countryside",
     region: "Devon",
-    latitude: 51.2159357,
-    longitude: -3.9266187,
+    latitude: 50.408887,
+    longitude: -4.0785637,
     description:
-      "Heddon Valley is a dramatic wooded valley on the Exmoor coast where the River Heddon flows through ancient oak woodland to the sea at Heddon's Mouth. The valley offers wonderful walks through one of the largest areas of native oak woodland in the South West.",
+      "Plymbridge Woods is a wooded valley along the River Plym on the edge of Plymouth and Dartmoor, following the route of a former Great Western Railway branch line. The woods feature a striking viaduct, old quarries, and rich woodland wildlife including kingfishers and otters.",
     shortDescription:
-      "A dramatic wooded valley on the Exmoor coast with ancient oak woodland and coastal walks.",
-    websiteUrl: "https://www.nationaltrust.org.uk/visit/devon/heddon-valley",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/5/51/Heddon%27s_Mouth_-_geograph.org.uk_-_5880.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Old Harry Rocks",
-    slug: slugify("Old Harry Rocks"),
-    category: "coast",
-    region: "Dorset",
-    latitude: 50.608277,
-    longitude: -1.960769,
-    description:
-      "Old Harry Rocks are dramatic chalk formations at the eastern end of the Jurassic Coast in Dorset, marking the start of the South West Coast Path. These iconic sea stacks and arches have been sculpted by the sea over millions of years and form part of the Isle of Purbeck.",
-    shortDescription:
-      "Iconic chalk sea stacks and arches on the Jurassic Coast in Dorset.",
+      "A wooded valley along the River Plym with a viaduct, old quarries and rich wildlife.",
     websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/dorset/old-harry-rocks",
+      "https://www.nationaltrust.org.uk/visit/devon/plymbridge-woods",
     heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/4/4f/Old_Harry_rocks%2C_Dorset%2C_England.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Coggeshall Grange Barn",
-    slug: slugify("Coggeshall Grange Barn"),
-    category: "historic-site",
-    region: "Essex",
-    latitude: 51.8678743,
-    longitude: 0.6842568,
-    description:
-      "Coggeshall Grange Barn is one of the oldest surviving timber-framed barns in Europe, dating from around 1140. Originally part of a Cistercian monastery, this remarkable medieval building showcases exceptional craftsmanship and is a scheduled ancient monument.",
-    shortDescription:
-      "One of Europe's oldest surviving timber-framed barns, dating from around 1140.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/coggeshall-grange-barn",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/5/5b/Coggeshall-Grange_barn%28inside_looking_south%29.JPG",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Danbury Commons & Blakes Wood",
-    slug: slugify("Danbury Commons & Blakes Wood"),
-    category: "countryside",
-    region: "Essex",
-    latitude: 51.712498,
-    longitude: 0.5774341,
-    description:
-      "Danbury Commons and Blakes Wood form an important nature reserve in the Essex countryside, featuring ancient woodland, heathland and wildlife-rich habitats. The area supports rare species including nightingales and is criss-crossed with peaceful walking trails.",
-    shortDescription:
-      "Ancient woodland and heathland nature reserve in the Essex countryside.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/danbury-commons-and-blakes-wood",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/b/bb/Danbury_Common_-_geograph.org.uk_-_1282346.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Ashleworth Tithe Barn",
-    slug: slugify("Ashleworth Tithe Barn"),
-    category: "historic-site",
-    region: "Gloucestershire",
-    latitude: 51.92507999999999,
-    longitude: -2.266221,
-    description:
-      "Ashleworth Tithe Barn is a magnificent medieval barn built in the 15th century beside the River Severn. With its impressive stone walls and original roof timbers, it is one of the finest surviving tithe barns in England and a Grade I listed building.",
-    shortDescription:
-      "A magnificent 15th-century tithe barn beside the River Severn in Gloucestershire.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/ashleworth-tithe-barn",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/c/c0/Ashleworth_tithe_barn.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Haresfield Beacon",
-    slug: slugify("Haresfield Beacon"),
-    category: "countryside",
-    region: "Gloucestershire",
-    latitude: 51.77828599999999,
-    longitude: -2.261821,
-    description:
-      "Haresfield Beacon is a prominent viewpoint on the Cotswold escarpment offering sweeping views across the Severn Vale to the Forest of Dean and Wales beyond. The site includes an Iron Age hill fort and is surrounded by wildflower-rich grassland and ancient woodland.",
-    shortDescription:
-      "A dramatic Cotswold viewpoint with Iron Age hill fort and panoramic Severn Vale views.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/haresfield-beacon-and-standish-wood",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/9/91/View_from_Haresfield_Beacon_-_geograph.org.uk_-_1120282.jpg",
-    pricing: [
-      { pricingType: "parking", pricingCategory: "standard", tier: "adult", nonMemberPrice: "4.00", memberPrice: null, label: "Whole day parking" },
-    ] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Bembridge Fort",
-    slug: slugify("Bembridge Fort"),
-    category: "historic-site",
-    region: "Isle of Wight",
-    latitude: 50.67089559999999,
-    longitude: -1.1181013,
-    description:
-      "Bembridge Fort is a Victorian coastal defence built in the 1860s as part of the Palmerston Forts chain to protect against French invasion. The fort features underground tunnels, gun emplacements and offers panoramic views across the Solent from its rooftop.",
-    shortDescription:
-      "A Victorian coastal defence fort with underground tunnels and Solent views.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/isle-of-wight/bembridge-fort",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/9/92/Entrance_to_Bembridge_Fort%2C_Isle_of_Wight_2.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Chiddingstone",
-    slug: slugify("Chiddingstone"),
-    category: "historic-site",
-    region: "Kent",
-    latitude: 51.185947,
-    longitude: 0.146449,
-    description:
-      "Chiddingstone is one of the most picturesque village streets in Kent, with a row of beautifully preserved 16th and 17th-century half-timbered houses. The village is named after a large sandstone boulder, the Chiding Stone, said to have been used for public scolding.",
-    shortDescription:
-      "One of Kent's most picturesque villages with beautifully preserved Tudor houses.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/kent/chiddingstone",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/7/7b/Chiddingstone_Post_Office_-_geograph.org.uk_-_1260248.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Old Soar Manor",
-    slug: slugify("Old Soar Manor"),
-    category: "house",
-    region: "Kent",
-    latitude: 51.2631032,
-    longitude: 0.3202718,
-    description:
-      "Old Soar Manor is a rare surviving example of a medieval knight's dwelling, dating from around 1290. The stone-built solar block, with its chapel and undercroft, provides a fascinating glimpse into life in a 13th-century manor house.",
-    shortDescription:
-      "A rare surviving medieval knight's dwelling dating from around 1290.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/kent/old-soar-manor",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/d/d8/Old_Soar_Manor3.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Heysham Head",
-    slug: slugify("Heysham Head"),
-    category: "coast",
-    region: "Lancashire",
-    latitude: 54.0480716,
-    longitude: -2.9054855,
-    description:
-      "Heysham Head is a rocky promontory on the Lancashire coast with a remarkable collection of early Christian remains. The ruins of St Patrick's Chapel and the famous rock-cut graves, carved into the cliff edge, date back over a thousand years.",
-    shortDescription:
-      "A rocky headland with ancient rock-cut graves and early Christian ruins on the Lancashire coast.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/liverpool-lancashire/heysham-head",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/0/0a/St._Peter%27s_Church%2C_Heysham.JPG",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Grantham House",
-    slug: slugify("Grantham House"),
-    category: "house",
-    region: "Lincolnshire",
-    latitude: 52.9150047,
-    longitude: -0.6399695,
-    description:
-      "Grantham House is an elegant town house dating from the 14th century, set in peaceful walled gardens beside the River Witham. The house has a rich history spanning six centuries and its gardens offer a tranquil retreat in the heart of Grantham.",
-    shortDescription:
-      "An elegant 14th-century town house with walled gardens beside the River Witham.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/nottinghamshire-lincolnshire/grantham-house",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/2/2c/Grantham_House_-_geograph.org.uk_-_333721.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Blewcoat School",
-    slug: slugify("Blewcoat School"),
-    category: "historic-site",
-    region: "London",
-    latitude: 51.4984472,
-    longitude: -0.1359578,
-    description:
-      "The Blewcoat School is a charming Queen Anne building built in 1709 as a charity school for poor children in Westminster. Now serving as the National Trust's London gift shop, the building retains its original architectural character with a distinctive statue of a charity boy above the entrance.",
-    shortDescription:
-      "A charming 1709 Queen Anne charity school building in the heart of Westminster.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/london/blewcoat-school",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/3/36/BlewCoatSchool.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Mow Cop Castle",
-    slug: slugify("Mow Cop Castle"),
-    category: "castle",
-    region: "Staffordshire",
-    latitude: 53.1130583,
-    longitude: -2.2143475,
-    description:
-      "Mow Cop Castle is a dramatic folly built in 1754 as a summerhouse and designed to look like a ruined medieval castle. Perched at 335 metres on the Cheshire-Staffordshire border, it offers spectacular views across the Cheshire Plain and is the birthplace of Primitive Methodism.",
-    shortDescription:
-      "A dramatic 1754 castle folly on the Cheshire-Staffordshire border with panoramic views.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/shropshire-staffordshire/mow-cop-castle",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/5/57/Mowcopcastle.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Cissbury Ring",
-    slug: slugify("Cissbury Ring"),
-    category: "historic-site",
-    region: "West Sussex",
-    latitude: 50.8604598,
-    longitude: -0.3832473,
-    description:
-      "Cissbury Ring is one of the largest hillforts in England, with ramparts enclosing over 60 acres on the South Downs above Worthing. Dating from the Iron Age, the site also contains Neolithic flint mines over 5,000 years old, making it one of the most important archaeological sites in Sussex.",
-    shortDescription:
-      "One of England's largest Iron Age hillforts on the South Downs with Neolithic flint mines.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/sussex/cissbury-ring",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/8/86/Cissbury_Ring_rampart_5.JPG",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Devil's Dyke",
-    slug: slugify("Devil's Dyke"),
-    category: "countryside",
-    region: "West Sussex",
-    latitude: 50.8850936,
-    longitude: -0.2125157,
-    description:
-      "Devil's Dyke is a V-shaped valley on the South Downs near Brighton, reputed to be the longest, deepest and widest dry valley in the UK. Legend says the devil dug it to flood the churches of the Weald, and today it offers some of the finest views in Sussex.",
-    shortDescription:
-      "A dramatic dry valley on the South Downs near Brighton with legendary origins and fine views.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/sussex/devils-dyke",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/d/d0/Devils_Dyke_from_North_Hill_-_geograph.org.uk_-_7316811.jpg",
-    pricing: [
-      { pricingType: "parking", pricingCategory: "standard", tier: "adult", nonMemberPrice: "8.00", memberPrice: null, label: "Whole day parking" },
-    ] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Bredon Barn",
-    slug: slugify("Bredon Barn"),
-    category: "historic-site",
-    region: "Worcestershire",
-    latitude: 52.0311801,
-    longitude: -2.1202908,
-    description:
-      "Bredon Barn is a magnificent 14th-century tithe barn near the village of Bredon in Worcestershire. With its impressive stone construction and massive interior, it is one of the finest medieval barns in England and a testament to the agricultural wealth of the region.",
-    shortDescription:
-      "A magnificent 14th-century tithe barn near Bredon in Worcestershire.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/bredon-barn",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/3/3d/Bredon_Tithe_Barn_-_geograph.org.uk_-_318630.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Hawford Dovecote",
-    slug: slugify("Hawford Dovecote"),
-    category: "historic-site",
-    region: "Worcestershire",
-    latitude: 52.2438619,
-    longitude: -2.2263808,
-    description:
-      "Hawford Dovecote is a half-timbered 16th-century dovecote, one of the finest surviving examples in Worcestershire. The octagonal structure retains many of its original nesting boxes and provides a charming example of Tudor agricultural architecture.",
-    shortDescription:
-      "A fine half-timbered 16th-century dovecote in Worcestershire.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/hawford-dovecote",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/4/44/Hawford_Dovecote%2C_Worcestershire_-_geograph.org.uk_-_3955498.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Malham Tarn Estate",
-    slug: slugify("Malham Tarn Estate"),
-    category: "countryside",
-    region: "North Yorkshire",
-    latitude: 54.1027652,
-    longitude: -2.1758354,
-    description:
-      "Malham Tarn is one of only eight natural upland lakes in England, set in the heart of the Yorkshire Dales. The surrounding estate encompasses limestone pavement, moorland and flower-rich meadows, and has been a site of scientific research since Charles Darwin visited in 1842.",
-    shortDescription:
-      "One of England's few natural upland lakes in the heart of the Yorkshire Dales.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/yorkshire/malham-tarn",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/5/59/Malham_Tarn_2.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Upper Wharfedale",
-    slug: slugify("Upper Wharfedale"),
-    category: "countryside",
-    region: "North Yorkshire",
-    latitude: 54.1909986,
-    longitude: -2.0889236,
-    description:
-      "Upper Wharfedale is a spectacular valley in the Yorkshire Dales, stretching from Buckden to the head of the dale. The area features dramatic limestone scenery, traditional hay meadows, ancient woodlands and the picturesque village of Buckden.",
-    shortDescription:
-      "A spectacular limestone valley with traditional meadows in the Yorkshire Dales.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/yorkshire/upper-wharfedale",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/b/bb/Wharfedale_near_Buckden_%287860%29.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Conwy Suspension Bridge",
-    slug: slugify("Conwy Suspension Bridge"),
-    category: "historic-site",
-    region: "Conwy",
-    latitude: 53.2804774,
-    longitude: -3.8237597,
-    description:
-      "Conwy Suspension Bridge is an elegant bridge designed by Thomas Telford and completed in 1826, spanning the River Conwy next to the medieval castle. The bridge features distinctive castellated towers to complement the adjacent castle walls and is a masterpiece of early 19th-century engineering.",
-    shortDescription:
-      "Thomas Telford's elegant 1826 suspension bridge beside Conwy Castle.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/wales/conwy-suspension-bridge",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/f/fb/Conwy_Suspension_Bridge_from_the_castle.JPG",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Skenfrith Castle",
-    slug: slugify("Skenfrith Castle"),
-    category: "castle",
-    region: "Monmouthshire",
-    latitude: 51.878231,
-    longitude: -2.790366,
-    description:
-      "Skenfrith Castle is one of the Three Castles of Gwent, built in the early 13th century to guard the route from England into Wales. The castle features an impressive round keep and curtain walls set in a picturesque location beside the River Monnow.",
-    shortDescription:
-      "A 13th-century castle of the Three Castles of Gwent beside the River Monnow.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/wales/skenfrith-castle",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/4/46/SKENFRITH_CASTLE.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Rhossili & South Gower Coast",
-    slug: slugify("Rhossili & South Gower Coast"),
-    category: "coast",
-    region: "Swansea",
-    latitude: 51.5688603,
-    longitude: -4.2901175,
-    description:
-      "Rhossili Bay is regularly voted one of the best beaches in the UK and Europe, a three-mile sweep of golden sand on the tip of the Gower Peninsula. The dramatic coastline includes the tidal island of Worm's Head, spectacular cliffs and the remains of a medieval village.",
-    shortDescription:
-      "Award-winning three-mile beach with dramatic cliffs and tidal island on the Gower Peninsula.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/wales/rhossili-and-south-gower-coast",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/0/08/Rhosilli_village_from_the_air.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
-  },
-  {
-    name: "Cilgerran Castle",
-    slug: slugify("Cilgerran Castle"),
-    category: "castle",
-    region: "Pembrokeshire",
-    latitude: 52.0571412,
-    longitude: -4.6340686,
-    description:
-      "Cilgerran Castle is a dramatic Norman fortress perched high above the Teifi Gorge in Pembrokeshire. The castle's twin round towers, dating from the 13th century, have inspired artists including J.M.W. Turner and offer commanding views over the wooded river valley.",
-    shortDescription:
-      "A dramatic Norman castle above the Teifi Gorge that inspired Turner's paintings.",
-    websiteUrl:
-      "https://www.nationaltrust.org.uk/visit/wales/cilgerran-castle",
-    heroImageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/8/88/01_Cilgerran_Castle.jpg",
-    pricing: [] as {
-      pricingType: string;
-      pricingCategory?: string;
-      tier: string;
-      nonMemberPrice: string;
-      memberPrice?: string | null;
-      label: string;
-    }[],
+      "https://upload.wikimedia.org/wikipedia/commons/c/c4/The_car_park_at_Plymbridge_Woods_-_geograph.org.uk_-_6633770.jpg",
+    pricing: [] as { pricingType: string; pricingCategory?: string; tier: string; nonMemberPrice: string; memberPrice?: string | null; label: string }[],
   },
 ];
 
@@ -744,7 +379,6 @@ async function addLocations() {
   for (const loc of newLocations) {
     const slug = loc.slug;
 
-    // Check if already exists
     const existing = await db
       .select()
       .from(locations)
@@ -755,7 +389,6 @@ async function addLocations() {
       continue;
     }
 
-    // Insert location
     const [inserted] = await db
       .insert(locations)
       .values({
@@ -775,7 +408,6 @@ async function addLocations() {
 
     console.log(`✅ Added ${loc.name} (id: ${inserted.id})`);
 
-    // Insert pricing
     for (const p of loc.pricing) {
       await db.insert(locationPricing).values({
         locationId: inserted.id,
