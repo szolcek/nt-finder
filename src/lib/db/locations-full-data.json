@@ -11813,9 +11813,42 @@
     "longitude": "-1.3196062",
     "description": "Stainsby Mill is a fully working water-powered flour mill on the Hardwick Estate in Derbyshire. Dating from the late 18th century, the mill still grinds flour using traditional methods and provides a fascinating insight into rural milling heritage.",
     "shortDescription": "A working water-powered flour mill on the Hardwick Estate in Derbyshire.",
-    "websiteUrl": "https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/stainsby-mill",
+    "websiteUrl": "https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/hardwick-estate-stainsby-mill",
     "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/65/Stainsby_Mill_-_geograph.org.uk_-_2284146.jpg",
-    "pricing": []
+    "pricing": [
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "adult",
+        "memberPrice": null,
+        "nonMemberPrice": 7,
+        "label": "Adult (18+)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "child",
+        "memberPrice": null,
+        "nonMemberPrice": 3.5,
+        "label": "Child (5-17)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "memberPrice": null,
+        "nonMemberPrice": 17.5,
+        "label": "Family (2 adults + up to 3 children)"
+      },
+      {
+        "pricingType": "entry",
+        "pricingCategory": "standard",
+        "tier": "family",
+        "memberPrice": null,
+        "nonMemberPrice": 10.5,
+        "label": "1 adult, 2 children"
+      }
+    ]
   },
   {
     "name": "Standen House and Garden",
