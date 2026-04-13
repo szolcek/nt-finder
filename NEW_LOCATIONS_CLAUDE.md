@@ -160,12 +160,13 @@ After successfully adding locations, remove them from the "Missing NT Locations"
 - **NT website coordinates**: Also inaccurate; Google API matches what users see on the map
 - **Missing parking prices**: Free-entry properties often charge for parking
 - **Seasonal pricing**: Some properties have different prices in winter vs summer
+- **404 NT URLs**: Many smaller properties don't have dedicated NT visit pages. Always verify URLs with the Playwright MCP browser before inserting. For properties with no NT page, use Wikipedia URLs instead and link to the nearest NT parent page where possible
 
 ---
 
 ## Missing NT Locations (Not Yet in Database)
 
-As of April 2026, TrustQuest has **430 locations**. The following **131 properties** from the Wikipedia lists of NT properties are not yet in the database. URLs follow the standard NT pattern but should be verified before scraping.
+As of April 2026, TrustQuest has **489 locations**. The following **71 properties** from the Wikipedia lists of NT properties are not yet in the database. URLs follow the standard NT pattern but should be verified before scraping.
 
 ### ENGLAND
 
@@ -208,10 +209,7 @@ All Bedfordshire properties added. ✓
 - ~~**Lawrence House**~~ — Added ✓
 
 #### Cumbria / Lake District
-- **Bowder Stone** — [NT Website](https://www.nationaltrust.org.uk/visit/lake-district/bowder-stone) — countryside
-- **Cartmel Priory Gatehouse** — [NT Website](https://www.nationaltrust.org.uk/visit/lake-district/cartmel-priory-gatehouse) — historic-site
-- **Cross Keys Inn, Sedbergh** — [NT Website](https://www.nationaltrust.org.uk/visit/lake-district/cross-keys-inn) — historic-site
-- **Old Dungeon Ghyll** — [NT Website](https://www.nationaltrust.org.uk/visit/lake-district/old-dungeon-ghyll) — historic-site
+All Cumbria properties added. ✓
 
 #### Derbyshire / Peak District
 - ~~**Duffield Castle**~~ — Added ✓
@@ -226,112 +224,97 @@ All Bedfordshire properties added. ✓
 - **The Church House** — [NT Website](https://www.nationaltrust.org.uk/visit/devon/the-church-house) — historic-site — ⚠️ 404
 - ~~**Loughwood Meeting House**~~ — Added ✓
 - **Morte Point** — [NT Website](https://www.nationaltrust.org.uk/visit/devon/morte-point) — coast — ⚠️ 404
-- **The Old Mill** — [NT Website](https://www.nationaltrust.org.uk/visit/devon/the-old-mill) — historic-site
+- ~~**The Old Mill**~~ — Added ✓
 - ~~**Plymbridge Woods**~~ — Added ✓
-- **Watersmeet** — [NT Website](https://www.nationaltrust.org.uk/visit/devon/watersmeet) — countryside
+- ~~**Watersmeet**~~ — Added ✓
 
 #### Dorset
-- **Portland House** — [NT Website](https://www.nationaltrust.org.uk/visit/dorset/portland) — historic-site
+- ~~**Portland House**~~ — Added ✓
 
 #### Essex
-- **Northey Island** — [NT Website](https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/northey-island) — coast
-- **Ray Island** — [NT Website](https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/ray-island) — coast
-- **Rayleigh Mount** — [NT Website](https://www.nationaltrust.org.uk/visit/essex-bedfordshire-hertfordshire/rayleigh-mount) — historic-site
+All Essex properties added. ✓
 
 #### Gloucestershire & Cotswolds
-- **Bibury** — [NT Website](https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/bibury) — countryside
-- **Hailes Abbey** — [NT Website](https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/hailes-abbey) — historic-site
-- **Little Fleece Bookshop** — [NT Website](https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/little-fleece-bookshop) — historic-site
-- **May Hill** — [NT Website](https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/may-hill) — countryside
-- **Minchinhampton Common** — [NT Website](https://www.nationaltrust.org.uk/visit/gloucestershire-cotswolds/minchinhampton-and-rodborough-commons) — countryside
+All Gloucestershire properties added. ✓
 
 #### Hampshire
-- **Ludshott Common & Waggoners Wells** — [NT Website](https://www.nationaltrust.org.uk/visit/hampshire/ludshott-common-and-waggoners-wells) — countryside
-- **Selborne Common** — [NT Website](https://www.nationaltrust.org.uk/visit/hampshire/selborne-common) — countryside
-- **Stockbridge Down** — [NT Website](https://www.nationaltrust.org.uk/visit/hampshire/stockbridge-down) — countryside
-- **Stockbridge Marsh** — [NT Website](https://www.nationaltrust.org.uk/visit/hampshire/stockbridge-marsh) — countryside
+All Hampshire properties added. ✓
 
 #### Herefordshire
-- **Cwmmau Farmhouse** — [NT Website](https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/cwmmau-farmhouse) — historic-site
+- ~~**Cwmmau Farmhouse**~~ — Added ✓
 
 #### Isle of Wight
-- **Brighstone Shop** — [NT Website](https://www.nationaltrust.org.uk/visit/isle-of-wight/brighstone-shop-and-museum) — historic-site
-- **Borthwood Copse** — [NT Website](https://www.nationaltrust.org.uk/visit/isle-of-wight/borthwood-copse) — countryside
-- **Chillerton Down** — [NT Website](https://www.nationaltrust.org.uk/visit/isle-of-wight/chillerton-down) — countryside
-- **The Needles** — [NT Website](https://www.nationaltrust.org.uk/visit/isle-of-wight/the-needles-headland-and-tennyson-down) — coast
-- **Newtown Old Town Hall** — [NT Website](https://www.nationaltrust.org.uk/visit/isle-of-wight/newtown-old-town-hall) — historic-site
-- **St Catherine's Oratory** — [NT Website](https://www.nationaltrust.org.uk/visit/isle-of-wight/st-catherines-oratory) — historic-site
-- **Rosetta Cottage** — [NT Website](https://www.nationaltrust.org.uk/visit/isle-of-wight/rosetta-cottage) — historic-site
+All Isle of Wight properties added. ✓
 
 #### Kent
-- **Cobham Wood & Mausoleum** — [NT Website](https://www.nationaltrust.org.uk/visit/kent/cobham-wood-and-mausoleum) — countryside
-- **Oldbury Camp** — [NT Website](https://www.nationaltrust.org.uk/visit/kent/oldbury-hill) — countryside
-- **One Tree Hill & Bitchet Common** — [NT Website](https://www.nationaltrust.org.uk/visit/kent/one-tree-hill) — countryside
-- **Sprivers Garden** — [NT Website](https://www.nationaltrust.org.uk/visit/kent/sprivers-garden) — garden
-- **St John's Jerusalem** — [NT Website](https://www.nationaltrust.org.uk/visit/kent/st-johns-jerusalem) — garden
+- ~~**Cobham Wood & Mausoleum**~~ — Added ✓
+- ~~**Oldbury Camp**~~ — Added ✓
+- ~~**One Tree Hill & Bitchet Common**~~ — Added ✓
+- **Sprivers Garden** — [NT Website](https://www.nationaltrust.org.uk/visit/kent/sprivers-garden) — garden — ⚠️ 404
+- ~~**St John's Jerusalem**~~ — Added ✓
 
 #### Leicestershire
-- **Ulverscroft Nature Reserve** — [NT Website](https://www.nationaltrust.org.uk/visit/leicestershire-northamptonshire/ulverscroft) — countryside
+- **Ulverscroft Nature Reserve** — [NT Website](https://www.nationaltrust.org.uk/visit/leicestershire-northamptonshire/ulverscroft) — countryside — ⚠️ 404
 
 #### Lincolnshire
-- **Sandilands** — [NT Website](https://www.nationaltrust.org.uk/visit/nottinghamshire-lincolnshire/sandilands) — coast
+- **Sandilands** — [NT Website](https://www.nationaltrust.org.uk/visit/nottinghamshire-lincolnshire/sandilands) — coast — ⚠️ 404
 
 #### London
-- **East Sheen Common** — [NT Website](https://www.nationaltrust.org.uk/visit/london/east-sheen-common) — countryside
-- **Lindsey House** — [NT Website](https://www.nationaltrust.org.uk/visit/london/lindsey-house) — house
-- **Petts Wood & Hawkwood** — [NT Website](https://www.nationaltrust.org.uk/visit/london/petts-wood-and-hawkwood) — countryside
-- **Roman Baths, Strand Lane** — [NT Website](https://www.nationaltrust.org.uk/visit/london/roman-bath) — historic-site
-- **Selsdon Wood** — [NT Website](https://www.nationaltrust.org.uk/visit/london/selsdon-wood) — countryside
-- **Watermeads** — [NT Website](https://www.nationaltrust.org.uk/visit/london/watermeads) — countryside
+- **East Sheen Common** — [NT Website](https://www.nationaltrust.org.uk/visit/london/east-sheen-common) — countryside — ⚠️ 404
+- **Lindsey House** — [NT Website](https://www.nationaltrust.org.uk/visit/london/lindsey-house) — house — ⚠️ 404
+- **Petts Wood & Hawkwood** — [NT Website](https://www.nationaltrust.org.uk/visit/london/petts-wood-and-hawkwood) — countryside — ⚠️ 404
+- **Roman Baths, Strand Lane** — [NT Website](https://www.nationaltrust.org.uk/visit/london/roman-bath) — historic-site — ⚠️ 404
+- **Selsdon Wood** — [NT Website](https://www.nationaltrust.org.uk/visit/london/selsdon-wood) — countryside — ⚠️ 404
+- **Watermeads** — [NT Website](https://www.nationaltrust.org.uk/visit/london/watermeads) — countryside — ⚠️ 404
 
 #### Merseyside
-- **59 Rodney Street** — [NT Website](https://www.nationaltrust.org.uk/visit/liverpool-lancashire/59-rodney-street) — house
+- **59 Rodney Street** — [NT Website](https://www.nationaltrust.org.uk/visit/liverpool-lancashire/59-rodney-street) — house — ⚠️ 404
 
 #### Norfolk
-- **Darrow Wood** — [NT Website](https://www.nationaltrust.org.uk/visit/norfolk/darrow-wood) — countryside
-- **Elizabethan House Museum** — [NT Website](https://www.nationaltrust.org.uk/visit/norfolk/elizabethan-house-museum) — house
-- **St George's Guildhall** — [NT Website](https://www.nationaltrust.org.uk/visit/norfolk/st-georges-guildhall) — historic-site
+- ~~**Darrow Wood**~~ — Added ✓
+- **Elizabethan House Museum** — [NT Website](https://www.nationaltrust.org.uk/visit/norfolk/elizabethan-house-museum) — house — ⚠️ 404
+- ~~**St George's Guildhall**~~ — Added ✓
 
 #### Northamptonshire
-- **Priest's House** — [NT Website](https://www.nationaltrust.org.uk/visit/leicestershire-northamptonshire/priests-house-easton-on-the-hill) — historic-site
+- **Priest's House** — [NT Website](https://www.nationaltrust.org.uk/visit/leicestershire-northamptonshire/priests-house-easton-on-the-hill) — historic-site — ⚠️ 404
 
 #### Northumberland
-- **Northumberland Coast** — [NT Website](https://www.nationaltrust.org.uk/visit/north-east/northumberland-coast) — coast
-- **Ros Castle** — [NT Website](https://www.nationaltrust.org.uk/visit/north-east/ros-castle) — countryside
-- **St Cuthbert's Cave** — [NT Website](https://www.nationaltrust.org.uk/visit/north-east/st-cuthberts-cave) — historic-site
+- **Northumberland Coast** — [NT Website](https://www.nationaltrust.org.uk/visit/north-east/northumberland-coast) — coast — ⚠️ 404
+- **Ros Castle** — [NT Website](https://www.nationaltrust.org.uk/visit/north-east/ros-castle) — countryside — ⚠️ 404
+- **St Cuthbert's Cave** — [NT Website](https://www.nationaltrust.org.uk/visit/north-east/st-cuthberts-cave) — historic-site — ⚠️ 404
 
 #### Nottinghamshire
-- **Monksthorpe Chapel** — [NT Website](https://www.nationaltrust.org.uk/visit/nottinghamshire-lincolnshire/monksthorpe-chapel) — historic-site
+- **Monksthorpe Chapel** — [NT Website](https://www.nationaltrust.org.uk/visit/nottinghamshire-lincolnshire/monksthorpe-chapel) — historic-site — ⚠️ 404
 
 #### Shropshire
-- **Morville Hall** — [NT Website](https://www.nationaltrust.org.uk/visit/shropshire-staffordshire/morville-hall) — house
-- **Town Walls Tower** — [NT Website](https://www.nationaltrust.org.uk/visit/shropshire-staffordshire/town-walls-tower) — historic-site
+- **Morville Hall** — [NT Website](https://www.nationaltrust.org.uk/visit/shropshire-staffordshire/morville-hall) — house — ⚠️ 404
+- **Town Walls Tower** — [NT Website](https://www.nationaltrust.org.uk/visit/shropshire-staffordshire/town-walls-tower) — historic-site — ⚠️ 404
 
 #### Somerset
-- **Brean Down** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/brean-down) — coast
-- **Brean Down Fort** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/brean-down-fort) — historic-site
-- **Burrow Mump** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/burrow-mump) — historic-site
-- **Cadbury Camp** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/cadbury-camp) — historic-site
-- **Crook Peak to Shute Shelve Hill** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/crook-peak-and-shute-shelve-hill) — countryside
-- **Dolebury Warren** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/dolebury-warren) — countryside
-- **Dunster Working Watermill** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/dunster-working-watermill) — historic-site
-- **Ebbor Gorge** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/ebbor-gorge) — countryside
-- **King John's Hunting Lodge** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/king-johns-hunting-lodge) — historic-site
-- **Leigh Woods** — [NT Website](https://www.nationaltrust.org.uk/visit/bath-bristol/leigh-woods) — countryside
-- **The Priest's House, Muchelney** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/priests-house-muchelney) — historic-site
-- **Sand Point** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/sand-point-and-middle-hope) — coast
-- **Solsbury Hill** — [NT Website](https://www.nationaltrust.org.uk/visit/bath-bristol/little-solsbury-hill) — countryside
-- **Stembridge Tower Mill** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/stembridge-tower-mill) — historic-site
-- **Stoke sub Hamdon Priory** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/stoke-sub-hamdon-priory) — historic-site
-- **Walton & Ivythorn Hills** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/walton-hill-and-ivythorn-hill) — countryside
-- **Wellington Monument** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/wellington-monument) — historic-site
-- **West Pennard Court Barn** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/west-pennard-court-barn) — historic-site
-- **Yarn Market, Dunster** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/yarn-market-dunster) — historic-site
+- ~~**Brean Down**~~ — Added ✓
+- **Brean Down Fort** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/brean-down-fort) — historic-site — ⚠️ 404
+- **Burrow Mump** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/burrow-mump) — historic-site — ⚠️ 404
+- ~~**Cadbury Camp**~~ — Added ✓
+- **Crook Peak to Shute Shelve Hill** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/crook-peak-and-shute-shelve-hill) — countryside — ⚠️ 404
+- **Dolebury Warren** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/dolebury-warren) — countryside — ⚠️ 404
+- **Dunster Working Watermill** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/dunster-working-watermill) — historic-site — ⚠️ 404
+- **Ebbor Gorge** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/ebbor-gorge) — countryside — ⚠️ 404
+- ~~**King John's Hunting Lodge**~~ — Added ✓
+- ~~**Leigh Woods**~~ — Added ✓
+- **The Priest's House, Muchelney** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/priests-house-muchelney) — historic-site — ⚠️ 404
+- **Sand Point** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/sand-point-and-middle-hope) — coast — ⚠️ 404
+- **Solsbury Hill** — [NT Website](https://www.nationaltrust.org.uk/visit/bath-bristol/little-solsbury-hill) — countryside — ⚠️ 404
+- ~~**Stembridge Tower Mill**~~ — Added ✓
+- ~~**Stoke sub Hamdon Priory**~~ — Added ✓
+- **Walton & Ivythorn Hills** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/walton-hill-and-ivythorn-hill) — countryside — ⚠️ 404
+- ~~**Wellington Monument**~~ — Added ✓
+- **West Pennard Court Barn** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/west-pennard-court-barn) — historic-site — ⚠️ 404
+- **Yarn Market, Dunster** — [NT Website](https://www.nationaltrust.org.uk/visit/somerset/yarn-market-dunster) — historic-site — ⚠️ 404
 
 #### Staffordshire
-- **Downs Banks** — [NT Website](https://www.nationaltrust.org.uk/visit/shropshire-staffordshire/downs-banks) — countryside
-- **Letocetum** — [NT Website](https://www.nationaltrust.org.uk/visit/shropshire-staffordshire/letocetum-wall-roman-site) — historic-site
-- **South Peak Estate** — [NT Website](https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/south-peak-estate) — countryside
+- ~~**Downs Banks**~~ — Added ✓
+- **Letocetum** — [NT Website](https://www.nationaltrust.org.uk/visit/shropshire-staffordshire/letocetum-wall-roman-site) — historic-site — ⚠️ 404
+- **South Peak Estate** — [NT Website](https://www.nationaltrust.org.uk/visit/peak-district-derbyshire/south-peak-estate) — countryside — ⚠️ 404
 
 #### Suffolk
 - **Angel Corner** — [NT Website](https://www.nationaltrust.org.uk/visit/suffolk/angel-corner) — house
@@ -340,55 +323,55 @@ All Bedfordshire properties added. ✓
 
 #### Surrey
 - **Abinger Roughs & Netley Park** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/abinger-roughs-and-netley-park) — countryside
-- **Bookham Commons** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/bookham-commons) — countryside
-- **Clandon House** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/clandon-park) — house
+- ~~**Bookham Commons**~~ — Added ✓
+- ~~**Clandon House**~~ — Added ✓ (as Clandon Park)
 - **The Homewood** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/the-homewood) — house
 - **Hydon's Ball** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/hydons-ball) — countryside
 - **Oakhurst Cottage** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/oakhurst-cottage) — house
-- **Reigate Hill & Gatton Park** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/reigate-hill-and-gatton-park) — countryside
-- **River Wey & Godalming Navigations** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/river-wey-and-godalming-navigations) — countryside
+- ~~**Reigate Hill & Gatton Park**~~ — Added ✓
+- ~~**River Wey & Godalming Navigations**~~ — Added ✓
 - **Witley Centre** — [NT Website](https://www.nationaltrust.org.uk/visit/surrey/witley-and-milford-commons) — countryside
 
 #### Sussex
-- **Harting Down** — [NT Website](https://www.nationaltrust.org.uk/visit/sussex/harting-down) — countryside
+- ~~**Harting Down**~~ — Added ✓
 - **Lavington Common** — [NT Website](https://www.nationaltrust.org.uk/visit/sussex/lavington-common) — countryside
 - **Litlington White Horse** — [NT Website](https://www.nationaltrust.org.uk/visit/sussex/litlington-white-horse) — historic-site
 - **Swan Barn Farm** — [NT Website](https://www.nationaltrust.org.uk/visit/sussex/swan-barn-farm) — countryside
-- **Wakehurst Place Garden** — [NT Website](https://www.nationaltrust.org.uk/visit/sussex/wakehurst) — garden
+- ~~**Wakehurst Place Garden**~~ — Added ✓
 
 #### Warwickshire
-- **Kinwarton Dovecote** — [NT Website](https://www.nationaltrust.org.uk/visit/warwickshire/kinwarton-dovecote) — historic-site
-- **Roundhouse, Birmingham** — [NT Website](https://www.nationaltrust.org.uk/visit/birmingham-west-midlands/roundhouse-birmingham) — historic-site
+- ~~**Kinwarton Dovecote**~~ — Added ✓
+- ~~**Roundhouse, Birmingham**~~ — Added ✓
 
 #### Wiltshire
-- **Calstone & Cherhill Downs** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/cherhill-down-and-oldbury-castle) — countryside
-- **Cley Hill** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/cley-hill) — countryside
-- **Figsbury Ring** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/figsbury-ring) — historic-site
+- **Calstone & Cherhill Downs** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/cherhill-down-and-oldbury-castle) — countryside — ⚠️ 404
+- ~~**Cley Hill**~~ — Added ✓
+- ~~**Figsbury Ring**~~ — Added ✓
 - **Heelis** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/heelis) — historic-site
-- **Fox Talbot Museum** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/lacock-abbey-fox-talbot-museum-and-village) — historic-site
+- **Fox Talbot Museum** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/lacock-abbey-fox-talbot-museum-and-village) — historic-site — ⚠️ 404 (Lacock page exists at /visit/wiltshire/lacock)
 - **Little Clarendon** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/little-clarendon) — house
-- **Pepperbox Hill** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/pepperbox-hill) — countryside
-- **Philipps House & Dinton Park** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/philipps-house-and-dinton-park) — house
+- ~~**Pepperbox Hill**~~ — Added ✓
+- **Philipps House & Dinton Park** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/philipps-house-and-dinton-park) — house — ⚠️ 404
 - **Piggledene** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/piggledene) — countryside
 - **The Coombes** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/the-coombes) — countryside
 - **White Barrow** — [NT Website](https://www.nationaltrust.org.uk/visit/wiltshire/white-barrow) — historic-site
 
 #### Worcestershire
-- **The Firs (Elgar Birthplace Museum)** — [NT Website](https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/the-firs-elgars-birthplace-museum) — house
-- **Knowles Mill** — [NT Website](https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/knowles-mill) — historic-site
-- **Middle Littleton Tythe Barn** — [NT Website](https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/middle-littleton-tithe-barn) — historic-site
-- **Rosedene (Chartist cottage)** — [NT Website](https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/rosedene) — house
-- **Wichenford Dovecote** — [NT Website](https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/wichenford-dovecote) — historic-site
+- **The Firs (Elgar Birthplace Museum)** — [NT Website](https://www.nationaltrust.org.uk/visit/worcestershire-herefordshire/the-firs-elgars-birthplace-museum) — house — ⚠️ 404
+- ~~**Knowles Mill**~~ — Added ✓
+- ~~**Middle Littleton Tythe Barn**~~ — Added ✓
+- ~~**Rosedene (Chartist cottage)**~~ — Added ✓
+- ~~**Wichenford Dovecote**~~ — Added ✓
 
 #### Yorkshire (East / Humberside)
-- **Maister House** — [NT Website](https://www.nationaltrust.org.uk/visit/yorkshire/maister-house) — house
+- ~~**Maister House**~~ — Added ✓
 
 #### Yorkshire (North)
-- **Braithwaite Hall** — [NT Website](https://www.nationaltrust.org.uk/visit/yorkshire/braithwaite-hall) — house
-- **Bridestones, Crosscliff & Blakey Topping** — [NT Website](https://www.nationaltrust.org.uk/visit/yorkshire/bridestones-crosscliff-and-blakey-topping) — countryside
-- **Middlethorpe Hall** — [NT Website](https://www.nationaltrust.org.uk/visit/yorkshire/middlethorpe-hall) — house
-- **Moulton Hall** — [NT Website](https://www.nationaltrust.org.uk/visit/yorkshire/moulton-hall) — house
-- **Yorkshire Coast** — [NT Website](https://www.nationaltrust.org.uk/visit/yorkshire/yorkshire-coast) — coast
+- ~~**Braithwaite Hall**~~ — Added ✓
+- ~~**Bridestones, Crosscliff & Blakey Topping**~~ — Added ✓
+- **Middlethorpe Hall** — [NT Website](https://www.nationaltrust.org.uk/visit/yorkshire/middlethorpe-hall) — house — ⚠️ 404
+- **Moulton Hall** — [NT Website](https://www.nationaltrust.org.uk/visit/yorkshire/moulton-hall) — house — ⚠️ 404
+- ~~**Yorkshire Coast**~~ — Added ✓
 
 ---
 
@@ -412,6 +395,6 @@ All 24 Northern Ireland properties are already in the database. ✓
 
 ---
 
-**Total missing: ~131 properties** (131 England, 0 Wales, 0 Northern Ireland)
+**Total missing: ~71 properties** (71 England, 0 Wales, 0 Northern Ireland)
 
 > **Note:** NT website URLs above follow the standard pattern but should be verified before scraping — some may use different region slugs or combined pages. Many URLs in the original list were incorrect (14 of 34 Wales URLs were 404s). Always verify with WebFetch before scraping.
