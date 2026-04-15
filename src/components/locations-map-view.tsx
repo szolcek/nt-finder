@@ -290,27 +290,23 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
     cameraRef.current = { center, zoom };
   }, []);
 
-  // Sync state → URL search params
+  // Sync state → URL search params (debounced to avoid forced reflows)
   useEffect(() => {
-    const sync = () => {
-      const params = new URLSearchParams();
-      if (search) params.set("q", search);
-      if (categoryFilter !== "all") params.set("cat", categoryFilter);
-      if (viewFilter !== "all") params.set("view", viewFilter);
-      if (selectedId) params.set("selected", String(selectedId));
-      const cam = cameraRef.current;
-      if (cam.center && cam.zoom) {
-        params.set("lat", cam.center.lat.toFixed(4));
-        params.set("lng", cam.center.lng.toFixed(4));
-        params.set("z", cam.zoom.toFixed(1));
-      }
-      const qs = params.toString();
-      const url = qs ? `/locations?${qs}` : "/locations";
-      window.history.replaceState(null, "", url);
-    };
-    sync();
-    const id = setInterval(sync, 1000);
-    return () => clearInterval(id);
+    const params = new URLSearchParams();
+    if (search) params.set("q", search);
+    if (categoryFilter !== "all") params.set("cat", categoryFilter);
+    if (viewFilter !== "all") params.set("view", viewFilter);
+    if (selectedId) params.set("selected", String(selectedId));
+    const cam = cameraRef.current;
+    if (cam.center && cam.zoom) {
+      params.set("lat", cam.center.lat.toFixed(4));
+      params.set("lng", cam.center.lng.toFixed(4));
+      params.set("z", cam.zoom.toFixed(1));
+    }
+    const qs = params.toString();
+    const url = qs ? `/locations?${qs}` : "/locations";
+    const id = setTimeout(() => window.history.replaceState(null, "", url), 300);
+    return () => clearTimeout(id);
   }, [search, categoryFilter, viewFilter, selectedId]);
 
   // Build a locationId → name lookup
@@ -574,6 +570,23 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
   );
   const progressPct = Math.round((visitedCount / locations.length) * 100);
 
+  // Incremental rendering — show 30 cards initially, load more on scroll
+  const BATCH_SIZE = 30;
+  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+
+  // Reset visible count when filters change
+  useEffect(() => {
+    setVisibleCount(BATCH_SIZE);
+  }, [search, categoryFilter, viewFilter, nearMe, nearMeRadius]);
+
+  // Load more cards when scrolling near the bottom of the list
+  const handleGridScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    if (el.scrollTop + el.clientHeight >= el.scrollHeight - 600) {
+      setVisibleCount((prev) => prev + BATCH_SIZE);
+    }
+  }, []);
+
   // Scroll selected card into view
   useEffect(() => {
     if (!selectedId || !listRef.current) return;
@@ -741,7 +754,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
 
   // ── Card grid (shared) ──────────────────────────────────────────────────
   const cardGrid = (
-    <div ref={listRef} className="flex-1 overflow-y-auto">
+    <div ref={listRef} onScroll={handleGridScroll} className="flex-1 overflow-y-auto">
       <div className="mx-auto max-w-[1100px] px-4 pb-12 pt-5 md:px-6">
         <div className="mb-5 flex items-baseline justify-between">
           <div>
@@ -773,21 +786,24 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
             No properties match your filters.
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
-            {(nearMeList ?? recommended.items).map((loc) => (
-              <PropertyCard
-                key={loc.id}
-                location={loc}
-                isSelected={loc.id === selectedId}
-                visited={visited[loc.name] || null}
-                wishlisted={!!wishlist[loc.name]}
-                distance={"dist" in loc ? (loc as CardLocation).dist : undefined}
-                onSelect={handleSelect}
-                onToggleVisited={toggleVisited}
-                onToggleWishlist={toggleWishlist}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-1 gap-x-5 gap-y-8 sm:grid-cols-2 xl:grid-cols-3">
+              {(nearMeList ?? recommended.items).slice(0, visibleCount).map((loc) => (
+                <div key={loc.id} style={{ contentVisibility: "auto", containIntrinsicSize: "auto 320px" }}>
+                  <PropertyCard
+                    location={loc}
+                    isSelected={loc.id === selectedId}
+                    visited={visited[loc.name] || null}
+                    wishlisted={!!wishlist[loc.name]}
+                    distance={"dist" in loc ? (loc as CardLocation).dist : undefined}
+                    onSelect={handleSelect}
+                    onToggleVisited={toggleVisited}
+                    onToggleWishlist={toggleWishlist}
+                  />
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </div>
