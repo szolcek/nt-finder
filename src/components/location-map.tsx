@@ -151,25 +151,30 @@ function createMarkerContent(
   return wrapper;
 }
 
-/** Creates a DOM element for a cluster marker */
+/** Creates a DOM element for a cluster marker — white rounded pill with NT-green text */
 function createClusterContent(count: number): HTMLDivElement {
-  let size = 32;
-  let fontSize = 12;
-  if (count >= 10) {
-    size = 40;
-    fontSize = 14;
-  }
-  if (count >= 25) {
-    size = 48;
-    fontSize = 16;
-  }
+  const size = count >= 25 ? 44 : count >= 10 ? 38 : 32;
+  const fontSize = count >= 25 ? 15 : count >= 10 ? 14 : 13;
 
   const wrapper = document.createElement("div");
   wrapper.className = "nt-marker-enter";
-  wrapper.innerHTML = `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1}" fill="#4ade80" stroke="#005a2d" stroke-width="1.5" opacity="0.9"/>
-    <text x="50%" y="50%" text-anchor="middle" dy=".35em" fill="#fff" font-family="system-ui,sans-serif" font-weight="bold" font-size="${fontSize}">${count}</text>
-  </svg>`;
+  wrapper.innerHTML = `<div style="
+    min-width:${size}px;
+    height:${size}px;
+    padding:0 ${Math.round(size / 4)}px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#ffffff;
+    color:#007a3d;
+    font-family:system-ui,-apple-system,sans-serif;
+    font-weight:700;
+    font-size:${fontSize}px;
+    border-radius:999px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15),0 0 0 1.5px rgba(0,122,61,0.25);
+    white-space:nowrap;
+    cursor:pointer;
+  ">${count}</div>`;
 
   return wrapper;
 }
@@ -455,7 +460,7 @@ function ClusteredMarkers({
     });
   }, [selectedLocationId, locations, visited, wishlist]);
 
-  // Pan to selected location — only when selection changes
+  // Pan + zoom to selected location — only when selection changes
   const prevSelectedRef = useRef<number | null | undefined>(null);
   useEffect(() => {
     if (!map || !selectedLocationId) return;
@@ -467,6 +472,11 @@ function ClusteredMarkers({
       lat: Number(loc.latitude),
       lng: Number(loc.longitude),
     });
+    // Zoom in closer if the user is currently zoomed out
+    const currentZoom = map.getZoom() ?? 6;
+    if (currentZoom < 13) {
+      map.setZoom(13);
+    }
   }, [map, selectedLocationId, locations]);
 
   // InfoWindow for selected location
