@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -30,11 +31,13 @@ export function LocationCard({
       onClick={() => onSelect?.(location.id)}
     >
       {!compact && location.heroImageUrl && (
-        <div className="aspect-video overflow-hidden rounded-t-lg">
-          <img
+        <div className="relative aspect-video overflow-hidden rounded-t-lg">
+          <Image
             src={location.heroImageUrl}
             alt={location.name}
-            className="h-full w-full object-cover transition-transform group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, 50vw"
+            className="object-cover transition-transform group-hover:scale-105"
           />
         </div>
       )}

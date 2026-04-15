@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import { getCategoryConfig } from "@/lib/categories";
 import { toggleVisit, syncLocalStorageVisits } from "@/actions/visits";
 
@@ -99,6 +100,7 @@ function formatDistance(miles: number): string {
     : `${miles.toFixed(1)} mi`;
 }
 
+
 // ─── Haversine distance (miles) ─────────────────────────────────────────────
 
 function haversine(lat1: number, lng1: number, lat2: number, lng2: number): number {
@@ -152,11 +154,12 @@ function PropertyCard({
     >
       <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-muted shadow-[0_1px_3px_rgba(0,0,0,0.06)]">
         {location.heroImageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={location.heroImageUrl}
             alt={location.name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full items-center justify-center text-4xl">

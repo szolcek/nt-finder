@@ -20,6 +20,7 @@ import { PhotoGallery } from "@/components/photo-gallery";
 import { PhotoUpload } from "@/components/photo-upload";
 import { VisitToggle } from "@/components/visit-toggle";
 import { BackToMap } from "@/components/back-to-map";
+import Image from "next/image";
 import { auth } from "@/lib/auth";
 
 export const revalidate = 3600;
@@ -168,11 +169,14 @@ export default async function LocationPage({
         <BackToMap />
 
         {location.heroImageUrl && (
-          <div className="mt-4 overflow-hidden rounded-2xl shadow-lg shadow-slate-200/50 ring-1 ring-slate-100">
-            <img
+          <div className="relative mt-4 aspect-[2/1] overflow-hidden rounded-2xl shadow-lg shadow-slate-200/50 ring-1 ring-slate-100 sm:aspect-[2.2/1]">
+            <Image
               src={location.heroImageUrl}
               alt={location.name}
-              className="aspect-[2/1] w-full object-cover sm:aspect-[2.2/1]"
+              fill
+              sizes="(max-width: 1152px) 100vw, 1152px"
+              priority
+              className="object-cover"
             />
           </div>
         )}
