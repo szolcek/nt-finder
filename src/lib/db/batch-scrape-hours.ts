@@ -17,33 +17,42 @@ type ScrapeResult = {
   notes: string[];
 };
 
+type Mark = "x" | "~" | " ";
+
 function readTracker() {
   const md = readFileSync(TRACKER, "utf8");
   const lines = md.split("\n");
-  const items: { line: number; slug: string; done: boolean; raw: string }[] =
-    [];
+  const items: {
+    line: number;
+    slug: string;
+    mark: Mark;
+    raw: string;
+  }[] = [];
   lines.forEach((raw, line) => {
-    const m = raw.match(/^- \[( |x)\] `([^`]+)` — /);
+    const m = raw.match(/^- \[([ x~])\] `([^`]+)` — /);
     if (m) {
-      items.push({ line, slug: m[2], done: m[1] === "x", raw });
+      items.push({ line, slug: m[2], mark: m[1] as Mark, raw });
     }
   });
   return { lines, items };
 }
 
-function tickTracker(slug: string) {
+function markTracker(slug: string, mark: Mark) {
   const { lines, items } = readTracker();
   const item = items.find((i) => i.slug === slug);
   if (!item) return;
-  lines[item.line] = item.raw.replace(/- \[ \]/, "- [x]");
+  lines[item.line] = item.raw.replace(/- \[[ x~]\]/, `- [${mark}]`);
 
   const total = items.length;
+  const settled = items.filter(
+    (i) => i.mark !== " " || i.slug === slug,
+  ).length;
   const done = items.filter(
-    (i) => i.done || i.slug === slug,
+    (i) => (i.mark === "x" && i.slug !== slug) || (i.slug === slug && mark === "x"),
   ).length;
   const progressIdx = lines.findIndex((l) => l.startsWith("Progress:"));
   if (progressIdx >= 0) {
-    lines[progressIdx] = `Progress: ${done}/${total} done.`;
+    lines[progressIdx] = `Progress: ${done}/${total} populated, ${settled}/${total} settled.`;
   }
   writeFileSync(TRACKER, lines.join("\n"));
 }
@@ -92,10 +101,17 @@ async function main() {
     .orderBy(locations.id);
 
   const { items } = readTracker();
-  const tracker = new Map(items.map((i) => [i.slug, i.done]));
+  const tracker = new Map(items.map((i) => [i.slug, i.mark]));
 
   const todo = rows
-    .filter((r) => r.websiteUrl && !tracker.get(r.slug) && !r.openingHours)
+    .filter((r) => {
+      if (!r.websiteUrl) return false;
+      const mark = tracker.get(r.slug);
+      // skip already-done and explicitly-skipped (no asset table on page)
+      if (mark === "x" || mark === "~") return false;
+      if (r.openingHours) return false;
+      return true;
+    })
     .slice(0, LIMIT);
 
   console.log(`Processing ${todo.length} of remaining locations\n`);
@@ -110,6 +126,7 @@ async function main() {
 
     if (!/^https?:\/\/(www\.)?nationaltrust\.org\.uk\//.test(url)) {
       console.log(`${prefix} ${r.slug} — skip (non-NT URL: ${url})`);
+      markTracker(r.slug, "~");
       failures.push({ slug: r.slug, reason: "non-NT URL" });
       continue;
     }
@@ -120,7 +137,8 @@ async function main() {
       const assets = data.today?.assets ?? [];
 
       if (assets.length === 0) {
-        console.log(`${prefix} ${r.slug} — no asset table found`);
+        console.log(`${prefix} ${r.slug} — no asset table`);
+        markTracker(r.slug, "~");
         failures.push({ slug: r.slug, reason: "no asset table" });
         continue;
       }
@@ -130,7 +148,7 @@ async function main() {
         .set({ openingHours: data, updatedAt: new Date() })
         .where(eq(locations.id, r.id));
 
-      tickTracker(r.slug);
+      markTracker(r.slug, "x");
       okCount++;
       console.log(
         `${prefix} ✓ ${r.slug} (${assets.length} assets)`,
@@ -138,6 +156,7 @@ async function main() {
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       console.log(`${prefix} ✗ ${r.slug} — ${msg.slice(0, 200)}`);
+      // leave unmarked so transient errors retry next run
       failures.push({ slug: r.slug, reason: msg.slice(0, 200) });
     }
   }

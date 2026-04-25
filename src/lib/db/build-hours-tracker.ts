@@ -22,39 +22,60 @@ async function main() {
     .where(isNotNull(locations.websiteUrl))
     .orderBy(locations.id);
 
-  // Preserve ticks from existing tracker
-  const existingDone = new Set<string>();
+  // Preserve marks from existing tracker
+  const existingMarks = new Map<string, "x" | "~">();
   if (existsSync(TRACKER)) {
     const md = readFileSync(TRACKER, "utf8");
-    const re = /- \[x\] `([^`]+)`/g;
+    const re = /- \[([x~])\] `([^`]+)`/g;
     let m;
-    while ((m = re.exec(md)) !== null) existingDone.add(m[1]);
+    while ((m = re.exec(md)) !== null) {
+      existingMarks.set(m[2], m[1] as "x" | "~");
+    }
+  }
+
+  // Also pull skip marks from latest failures file
+  if (existsSync("hours-failures.json")) {
+    try {
+      const fails = JSON.parse(readFileSync("hours-failures.json", "utf8")) as {
+        slug: string;
+        reason: string;
+      }[];
+      for (const f of fails) {
+        if (/no asset table|non-NT URL/.test(f.reason)) {
+          if (!existingMarks.has(f.slug)) existingMarks.set(f.slug, "~");
+        }
+      }
+    } catch {}
   }
 
   const lines: string[] = [];
   lines.push(`# Opening Hours Scrape Tracker`);
   lines.push(``);
   lines.push(
-    `Total: ${rows.length} locations. Tick mark = scraped + DB updated.`,
+    `Total: ${rows.length}. [x] = data populated, [~] = NT page has no opening table.`,
   );
   lines.push(``);
-  let doneCount = 0;
+  let populated = 0;
+  let settled = 0;
   for (const r of rows) {
-    const ntDone = !!r.openingHours || existingDone.has(r.slug);
-    if (ntDone) doneCount++;
-    const tick = ntDone ? "x" : " ";
-    lines.push(`- [${tick}] \`${r.slug}\` — ${r.name}`);
+    const existing = existingMarks.get(r.slug);
+    let mark: "x" | "~" | " " = " ";
+    if (r.openingHours) mark = "x";
+    else if (existing) mark = existing;
+    if (mark === "x") populated++;
+    if (mark !== " ") settled++;
+    lines.push(`- [${mark}] \`${r.slug}\` — ${r.name}`);
   }
   lines.splice(
     2,
     0,
-    `Progress: ${doneCount}/${rows.length} done.`,
+    `Progress: ${populated}/${rows.length} populated, ${settled}/${rows.length} settled.`,
     ``,
   );
 
   writeFileSync(TRACKER, lines.join("\n") + "\n");
   console.log(
-    `Wrote ${TRACKER}: ${rows.length} locations, ${doneCount} already done.`,
+    `Wrote ${TRACKER}: ${rows.length} locations, ${populated} populated, ${settled} settled.`,
   );
   await client.end();
 }
