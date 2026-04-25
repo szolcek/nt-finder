@@ -39,6 +39,9 @@ yarn-error.log*
 # playwright
 .playwright-mcp/
 
+# audit artifacts
+coord-audit-*.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
