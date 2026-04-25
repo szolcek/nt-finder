@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { MapPin, Globe, Clock, Star } from "lucide-react";
 import { getCategoryConfig } from "@/lib/categories";
 import { PricingTable } from "@/components/pricing-table";
+import { OpeningHours, type OpeningHoursData } from "@/components/opening-hours";
 import { ReviewList } from "@/components/review-list";
 import { ReviewForm } from "@/components/review-form";
 import { PhotoGallery } from "@/components/photo-gallery";
@@ -324,6 +325,23 @@ export default async function LocationPage({
 
           {/* Sidebar */}
           <div className="space-y-6">
+            {location.openingHours && (
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-50 via-indigo-50/40 to-white p-6 sm:p-8">
+                <div className="absolute -left-10 top-8 h-36 w-36 rounded-full bg-violet-200/30 blur-3xl" />
+                <div className="relative">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Clock className="h-4 w-4 text-slate-500" />
+                    <h2 className="text-lg font-semibold text-slate-900">
+                      Opening times
+                    </h2>
+                  </div>
+                  <OpeningHours
+                    data={location.openingHours as OpeningHoursData}
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-sky-50 via-teal-50/40 to-white p-6 sm:p-8 lg:sticky lg:top-20">
               <div className="absolute -right-10 top-8 h-36 w-36 rounded-full bg-sky-200/30 blur-3xl" />
               <div className="relative">

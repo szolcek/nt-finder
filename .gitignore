@@ -41,6 +41,8 @@ yarn-error.log*
 
 # audit artifacts
 coord-audit-*.json
+hours-failures.json
+dunham-page.png
 
 # typescript
 *.tsbuildinfo
