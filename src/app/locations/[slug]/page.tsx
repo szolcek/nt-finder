@@ -325,7 +325,7 @@ export default async function LocationPage({
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {location.openingHours && (
+            {location.openingHours != null && (
               <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-violet-50 via-indigo-50/40 to-white p-6 sm:p-8">
                 <div className="absolute -left-10 top-8 h-36 w-36 rounded-full bg-violet-200/30 blur-3xl" />
                 <div className="relative">
