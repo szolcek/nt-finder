@@ -4,6 +4,7 @@ import { locations, userVisits } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { LocationsMapView } from "@/components/locations-map-view";
 import { auth } from "@/lib/auth";
+import { extractOpenings } from "@/lib/opening-hours";
 
 export const metadata = {
   title: "Locations",
@@ -13,7 +14,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function LocationsPage() {
-  const [allLocations, session] = await Promise.all([
+  const [rawLocations, session] = await Promise.all([
     db
       .select({
         id: locations.id,
@@ -25,11 +26,19 @@ export default async function LocationsPage() {
         region: locations.region,
         category: locations.category,
         heroImageUrl: locations.heroImageUrl,
+        openingHours: locations.openingHours,
       })
       .from(locations)
       .where(eq(locations.isPublished, true)),
     auth(),
   ]);
+
+  const allLocations = rawLocations.map(({ openingHours, ...rest }) => {
+    const openings = extractOpenings(openingHours);
+    return Object.keys(openings).length > 0
+      ? { ...rest, openings }
+      : rest;
+  });
 
   // Fetch DB visits for authenticated users
   let dbVisits: Record<number, { visitedAt: string }[]> | null = null;

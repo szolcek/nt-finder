@@ -189,6 +189,7 @@ export interface LocationData {
   region: string | null;
   category: string | null;
   heroImageUrl: string | null;
+  openings?: import("@/lib/opening-hours").LocationOpenings;
 }
 
 export interface LocationMapProps {

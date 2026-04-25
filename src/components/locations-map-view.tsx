@@ -3,6 +3,14 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { LocationMap, type LocationData } from "./location-map";
+import {
+  ASSET_KEYS,
+  ASSET_LABELS,
+  isOpenAt,
+  minutesToTime,
+  timeToMinutes,
+  type AssetKey,
+} from "@/lib/opening-hours";
 import Link from "next/link";
 import {
   Search,
@@ -268,6 +276,16 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
   const [viewFilter, setViewFilter] = useState<ViewFilter>(
     () => (searchParams.get("view") as ViewFilter) || "all"
   );
+  const [openAsset, setOpenAsset] = useState<AssetKey | null>(() => {
+    const v = searchParams.get("openAsset");
+    return v && (ASSET_KEYS as string[]).includes(v) ? (v as AssetKey) : null;
+  });
+  const [openAt, setOpenAt] = useState<string>(() => {
+    const v = searchParams.get("openAt");
+    if (v && timeToMinutes(v) !== null) return v;
+    const now = new Date();
+    return `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  });
   const [nearMe, setNearMe] = useState(false);
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [locating, setLocating] = useState(false);
@@ -299,6 +317,10 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
     if (search) params.set("q", search);
     if (categoryFilter !== "all") params.set("cat", categoryFilter);
     if (viewFilter !== "all") params.set("view", viewFilter);
+    if (openAsset) {
+      params.set("openAsset", openAsset);
+      params.set("openAt", openAt);
+    }
     if (selectedId) params.set("selected", String(selectedId));
     const cam = cameraRef.current;
     if (cam.center && cam.zoom) {
@@ -310,7 +332,7 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
     const url = qs ? `/locations?${qs}` : "/locations";
     const id = setTimeout(() => window.history.replaceState(null, "", url), 300);
     return () => clearTimeout(id);
-  }, [search, categoryFilter, viewFilter, selectedId]);
+  }, [search, categoryFilter, viewFilter, openAsset, openAt, selectedId]);
 
   // Build a locationId → name lookup
   const idToName = useMemo(() => {
@@ -482,6 +504,8 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
   }, [searchFiltered, categoryFilter, visited, wishlist]);
 
   // Compute filtered list
+  const openAtMin = useMemo(() => timeToMinutes(openAt), [openAt]);
+
   const filtered = useMemo(() => {
     let result = searchFiltered;
 
@@ -497,8 +521,20 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
       result = result.filter((l) => !!wishlist[l.name]);
     }
 
+    if (openAsset && openAtMin !== null) {
+      result = result.filter((l) => isOpenAt(l.openings?.[openAsset], openAtMin));
+    }
+
     return result;
-  }, [searchFiltered, categoryFilter, viewFilter, visited, wishlist]);
+  }, [
+    searchFiltered,
+    categoryFilter,
+    viewFilter,
+    visited,
+    wishlist,
+    openAsset,
+    openAtMin,
+  ]);
 
   // Near me sorted list — filtered by radius
   const nearMeList = useMemo<CardLocation[] | null>(() => {
@@ -733,7 +769,80 @@ export function LocationsMapView({ locations, dbVisits, isAuthenticated }: Locat
           </div>
         </div>
 
-        {/* Row 3 (conditional): Near-Me radius slider */}
+        {/* Row 3: Open-at filter */}
+        <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl border border-violet-200/70 bg-violet-50/40 px-3 py-2">
+          <span className="text-xs font-semibold text-violet-700 shrink-0">
+            Show open:
+          </span>
+
+          <div className="flex flex-1 flex-wrap items-center gap-1.5">
+            {ASSET_KEYS.map((k) => {
+              const isActive = openAsset === k;
+              const count = openAtMin !== null
+                ? searchFiltered.filter((l) =>
+                    isOpenAt(l.openings?.[k], openAtMin),
+                  ).length
+                : searchFiltered.filter((l) => !!l.openings?.[k]).length;
+              const isEmpty = count === 0;
+              return (
+                <button
+                  key={k}
+                  onClick={() => !isEmpty && setOpenAsset(isActive ? null : k)}
+                  disabled={isEmpty}
+                  className={cn(
+                    "rounded-full border px-3 py-1.5 text-xs font-medium transition",
+                    isActive
+                      ? "border-violet-600 bg-violet-600 text-white"
+                      : isEmpty
+                        ? "border-transparent text-muted-foreground/30 cursor-not-allowed"
+                        : "border-violet-300/70 bg-white text-violet-700 hover:border-violet-500 hover:bg-violet-100",
+                  )}
+                >
+                  {ASSET_LABELS[k]}
+                  <span className="ml-1.5 text-[10px] opacity-70">{count}</span>
+                </button>
+              );
+            })}
+            {openAsset && (
+              <button
+                onClick={() => setOpenAsset(null)}
+                className="rounded-full px-2 py-1 text-[11px] font-medium text-violet-700 hover:bg-violet-100"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="text-[11px] text-violet-700/70">at</span>
+            <input
+              type="time"
+              value={openAt}
+              onChange={(e) => setOpenAt(e.target.value)}
+              className="rounded-full border border-violet-300 bg-white px-3 py-1 text-xs font-medium tabular-nums text-violet-700 transition"
+            />
+            <button
+              onClick={() => {
+                const now = new Date();
+                setOpenAt(
+                  `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`,
+                );
+              }}
+              className="rounded-full px-2 py-1 text-[11px] font-medium text-violet-700 transition hover:bg-violet-100"
+              title="Use current time"
+            >
+              Now
+            </button>
+          </div>
+
+          {openAsset && (
+            <span className="basis-full text-[10px] text-violet-700/60 italic">
+              Spring/summer hours — check the property page for current schedule.
+            </span>
+          )}
+        </div>
+
+        {/* Row 4 (conditional): Near-Me radius slider */}
         {nearMe && userCoords && (
           <div className="flex items-center gap-3 rounded-full border border-sky-100 bg-sky-50/80 px-4 py-2">
             <span className="text-xs font-medium text-sky-700 shrink-0">Radius</span>
